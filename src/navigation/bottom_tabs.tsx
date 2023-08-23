@@ -1,17 +1,23 @@
 import { Pressable, Text, View } from "react-native"
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons';
-import React from "react"
+import React, { FC } from "react"
 import { Download } from "../screens/download"
 import { Mappa } from "../screens/mappa"
 import { Route } from "../screens/route"
 
-const NavItem = ({props, name, icon}) => {
+interface INavItem {
+    props: any
+    name: string
+    icon: string
+}
+
+const NavItem: FC<INavItem> = ({props, name, icon}) => {
     return (
         <Pressable {...props}>
             <View style={{width:"70%", backgroundColor:"red"}}>
                 <Icon name={icon} color="black" size={25}/>
-                <Text>ciao</Text>
+                <Text>{name}</Text>
             </View>
         </Pressable>
     )
