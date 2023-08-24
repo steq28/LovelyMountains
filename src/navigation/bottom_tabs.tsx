@@ -32,7 +32,8 @@ export const BottomTabsNavigation = () => {
         <Tab.Navigator
             screenOptions={{
                 headerShown: false,
-                tabBarStyle: { height: 70},
+                tabBarStyle: { height: 70, borderTopWidth: 0},
+
             }}
             sceneContainerStyle={{backgroundColor:colors.secondary}}
         >
