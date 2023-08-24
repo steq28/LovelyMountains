@@ -5,6 +5,8 @@ import React, { FC } from "react"
 import { Download } from "../screens/download"
 import { Mappa } from "../screens/mappa"
 import { Route } from "../screens/route"
+import { colors } from "../utils/colors";
+import { Settings } from "../screens/settings";
 
 interface INavItem {
     props: any
@@ -15,9 +17,8 @@ interface INavItem {
 const NavItem: FC<INavItem> = ({props, name, icon}) => {
     return (
         <Pressable {...props}>
-            <View style={{width:"70%", backgroundColor:"red"}}>
-                <Icon name={icon} color="black" size={25}/>
-                <Text>{name}</Text>
+            <View style={{width:"70%", height:"100%", alignItems:"center", justifyContent:"center"}}>
+                <Icon name={icon} color={props?.accessibilityState?.selected ? colors.primary : colors.light} size={30}/>
             </View>
         </Pressable>
     )
@@ -30,36 +31,46 @@ export const BottomTabsNavigation = () => {
     return (
         <Tab.Navigator
             screenOptions={{
-                //headerShown: false,
-                headerShown: true,
+                headerShown: false,
+                tabBarStyle: { height: 70},
             }}
+            sceneContainerStyle={{backgroundColor:colors.secondary}}
         >
             <Tab.Screen
                 options={{
-                    tabBarButton: (props) => <NavItem props={props} name={"Mappa"} icon={"map"}/>,
-                    tabBarInactiveTintColor: 'tomato',
-                    tabBarActiveTintColor: 'gray',
+                    tabBarButton: (props) => <NavItem props={props} name={"Mappa"} icon={props?.accessibilityState?.selected ? "map" : "map-outline"}/>,
+                    tabBarInactiveTintColor: colors.light,
+                    tabBarActiveTintColor: colors.primary,
                 }}
                 name="Mappa"
                 component={Mappa}
             />
             <Tab.Screen
                 options={{
-                    tabBarButton: (props) => <NavItem props={props} name={"Route"} icon={"location-outline"}/>,
-                    tabBarInactiveTintColor: 'tomato',
-                    tabBarActiveTintColor: 'gray',
+                    tabBarButton: (props) => <NavItem props={props} name={"Route"} icon={props?.accessibilityState?.selected ? "trail-sign" : "trail-sign-outline"}/>,
+                    tabBarInactiveTintColor: colors.light,
+                    tabBarActiveTintColor: colors.primary,
                 }}
                 name="Route"
                 component={Route}
             />
             <Tab.Screen
                 options={{
-                    tabBarButton: (props) => <NavItem props={props} name={"Download"} icon={"cloud-download-outline"} />,
-                    tabBarInactiveTintColor: 'tomato',
-                    tabBarActiveTintColor: 'gray',
+                    tabBarButton: (props) => <NavItem props={props} name={"Download"} icon={props?.accessibilityState?.selected ? "download" : "download-outline"} />,
+                    tabBarInactiveTintColor: colors.light,
+                    tabBarActiveTintColor: colors.primary,
                 }}
                 name="Download"
                 component={Download}
+            />
+            <Tab.Screen
+                options={{
+                    tabBarButton: (props) => <NavItem props={props} name={"Settings"} icon={props?.accessibilityState?.selected ? "cog" : "cog-outline"} />,
+                    tabBarInactiveTintColor: colors.light,
+                    tabBarActiveTintColor: colors.primary,
+                }}
+                name="Settings"
+                component={Settings}
             />
         </Tab.Navigator>
     )
