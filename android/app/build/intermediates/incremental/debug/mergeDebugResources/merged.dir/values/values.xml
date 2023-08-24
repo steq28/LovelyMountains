@@ -159,6 +159,11 @@
     <color name="foreground_material_light">@android:color/black</color>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
+    <color name="mapbox_blue">#1E8CAB</color>
+    <color name="mapbox_gray">#7D7F80</color>
+    <color name="mapbox_gray_dark">#5F5F5F</color>
+    <color name="mapbox_location_layer_blue">#4A90E2</color>
+    <color name="mapbox_location_layer_gray">#A1B0C0</color>
     <color name="material_blue_grey_800">#ff37474f</color>
     <color name="material_blue_grey_900">#ff263238</color>
     <color name="material_blue_grey_950">#ff21272b</color>
@@ -288,6 +293,7 @@
     <dimen name="cardview_compat_inset_shadow">1dp</dimen>
     <dimen name="cardview_default_elevation">2dp</dimen>
     <dimen name="cardview_default_radius">2dp</dimen>
+    <dimen name="compass_view_size">48dp</dimen>
     <dimen name="compat_button_inset_horizontal_material">4dp</dimen>
     <dimen name="compat_button_inset_vertical_material">6dp</dimen>
     <dimen name="compat_button_padding_horizontal_material">8dp</dimen>
@@ -357,6 +363,21 @@
     <dimen name="item_touch_helper_max_drag_scroll_per_frame">20dp</dimen>
     <dimen name="item_touch_helper_swipe_escape_max_velocity">800dp</dimen>
     <dimen name="item_touch_helper_swipe_escape_velocity">120dp</dimen>
+    <dimen name="mapbox_angular_velocity_multiplier">1.3dp</dimen>
+    <dimen name="mapbox_defaultMultiTapMovementThreshold">5dp</dimen>
+    <dimen name="mapbox_defaultScaleSpanSinceStartThreshold">7dp</dimen>
+    <dimen name="mapbox_defaultShovePixelThreshold">16dp</dimen>
+    <dimen name="mapbox_density_constant">0.29dp</dimen>
+    <dimen name="mapbox_internalMinSpan23">10mm</dimen>
+    <dimen name="mapbox_internalMinSpan24">6mm</dimen>
+    <dimen name="mapbox_locationComponentTrackingInitialMoveThreshold">25dp</dimen>
+    <dimen name="mapbox_locationComponentTrackingMultiFingerMoveThreshold">400dp</dimen>
+    <dimen name="mapbox_minimum_angled_scale_speed">0.9dp</dimen>
+    <dimen name="mapbox_minimum_angular_velocity">0.10dp</dimen>
+    <dimen name="mapbox_minimum_scale_span_when_rotating">75dp</dimen>
+    <dimen name="mapbox_minimum_scale_speed">0.6dp</dimen>
+    <dimen name="mapbox_minimum_scale_velocity">225dp</dimen>
+    <dimen name="mapbox_my_locationview_outer_circle">18dp</dimen>
     <item format="float" name="material_emphasis_disabled" type="dimen">0.38</item>
     <item format="float" name="material_emphasis_high_type" type="dimen">0.87</item>
     <item format="float" name="material_emphasis_medium" type="dimen">0.6</item>
@@ -590,6 +611,7 @@
     <item name="labelled_by" type="id"/>
     <item name="line1" type="id"/>
     <item name="line3" type="id"/>
+    <item name="mapView" type="id"/>
     <item name="mtrl_card_checked_layer_id" type="id"/>
     <item name="mtrl_child_content_container" type="id"/>
     <item name="mtrl_internal_children_alpha_tag" type="id"/>
@@ -741,6 +763,20 @@
     <string name="image_description" translatable="false">Image</string>
     <string name="imagebutton_description" translatable="false">Button, Image</string>
     <string name="link_description" translatable="false">Link</string>
+    <string name="mapbox_attributionErrorNoBrowser">No web browser installed on device, can\'t open web page.</string>
+    <string name="mapbox_attributionTelemetryMessage">You are helping to make OpenStreetMap and Mapbox maps better by contributing anonymous usage data.</string>
+    <string name="mapbox_attributionTelemetryNegative">Disagree</string>
+    <string name="mapbox_attributionTelemetryNeutral">More info</string>
+    <string name="mapbox_attributionTelemetryPositive">Agree</string>
+    <string name="mapbox_attributionTelemetryTitle">Make Mapbox Maps Better</string>
+    <string name="mapbox_attributionsDialogTitle">Powered by Mapbox Maps</string>
+    <string name="mapbox_compassContentDescription">Map compass. Activate to reset the map rotation to North.</string>
+    <string name="mapbox_myLocationViewContentDescription">Location View. This shows your location on the map.</string>
+    <string name="mapbox_telemetryImproveMap">Improve This Map</string>
+    <string name="mapbox_telemetryLink" translatable="false">https://www.mapbox.com/telemetry/</string>
+    <string name="mapbox_telemetrySettings">Telemetry Settings</string>
+    <string name="mapbox_warning_attribution_disabled">Attribution must be enabled if you use data from sources that require it. See https://docs.mapbox.com/help/getting-started/attribution/ for more details.</string>
+    <string name="mapbox_warning_logo_disabled" translatable="false">The Mapbox logo wordmark must remain enabled in accordance with our Terms of Service. See https://www.mapbox.com/legal/tos for more details.</string>
     <string name="menu_description" translatable="false">Menu</string>
     <string name="menubar_description" translatable="false">Menu Bar</string>
     <string name="menuitem_description" translatable="false">Menu Item</string>
@@ -7115,4 +7151,178 @@
         <attr name="android:inflatedId"/>
         <attr name="android:id"/>
     </declare-styleable>
+    <declare-styleable name="mapbox_MapView"><attr format="boolean" name="mapbox_scaleBarEnabled"/><attr name="mapbox_scaleBarGravity">
+            
+            <flag name="top" value="0x30"/>
+            
+            <flag name="bottom" value="0x50"/>
+            
+            <flag name="left" value="0x03"/>
+            
+            <flag name="right" value="0x05"/>
+            
+            <flag name="center_vertical" value="0x10"/>
+            
+            <flag name="fill_vertical" value="0x70"/>
+            
+            <flag name="center_horizontal" value="0x01"/>
+            
+            <flag name="fill_horizontal" value="0x07"/>
+            
+            <flag name="center" value="0x11"/>
+            
+            <flag name="fill" value="0x77"/>
+            
+            <flag name="clip_vertical" value="0x80"/>
+            
+            <flag name="clip_horizontal" value="0x08"/>
+            
+            <flag name="start" value="0x00800003"/>
+            
+            <flag name="end" value="0x00800005"/>
+        </attr><attr format="dimension" name="mapbox_scaleBarMarginLeft"/><attr format="dimension" name="mapbox_scaleBarMarginTop"/><attr format="dimension" name="mapbox_scaleBarMarginRight"/><attr format="dimension" name="mapbox_scaleBarMarginBottom"/><attr format="color" name="mapbox_scaleBarTextColor"/><attr format="color" name="mapbox_scaleBarPrimaryColor"/><attr format="color" name="mapbox_scaleBarSecondaryColor"/><attr format="dimension" name="mapbox_scaleBarBorderWidth"/><attr format="dimension" name="mapbox_scaleBarHeight"/><attr format="dimension" name="mapbox_scaleBarTextBarMargin"/><attr format="dimension" name="mapbox_scaleBarTextBorderWidth"/><attr format="dimension" name="mapbox_scaleBarTextSize"/><attr format="boolean" name="mapbox_scaleBarIsMetricUnits"/><attr format="integer" name="mapbox_scaleBarRefreshInterval"/><attr format="boolean" name="mapbox_scaleBarShowTextBorder"/><attr format="float" name="mapbox_scaleBarRatio"/><attr format="boolean" name="mapbox_scaleBarUseContinuousRendering"/><attr format="boolean" name="mapbox_locationComponentEnabled"/><attr format="boolean" name="mapbox_locationComponentPulsingEnabled"/><attr format="color" name="mapbox_locationComponentPulsingColor"/><attr format="dimension" name="mapbox_locationComponentPulsingMaxRadius"/><attr format="boolean" name="mapbox_locationComponentShowAccuracyRing"/><attr format="color" name="mapbox_locationComponentAccuracyRingColor"/><attr format="color" name="mapbox_locationComponentAccuracyRingBorderColor"/><attr format="string" name="mapbox_locationComponentLayerAbove"/><attr format="string" name="mapbox_locationComponentLayerBelow"/><attr format="boolean" name="mapbox_locationComponentPuckBearingEnabled"/><attr format="enum" name="mapbox_locationComponentPuckBearingSource">
+          
+          <enum name="heading" value="0"/>
+          
+          <enum name="course" value="1"/>
+        </attr><attr format="enum" name="mapbox_locationComponentLocationPuck">
+          
+          <enum name="location_puck_2_d" value="0"/>
+          
+          <enum name="location_puck_3_d" value="1"/>
+        </attr><attr format="reference" name="mapbox_locationComponentLocationPuckLocationPuck2DTopImage"/><attr format="reference" name="mapbox_locationComponentLocationPuckLocationPuck2DBearingImage"/><attr format="reference" name="mapbox_locationComponentLocationPuckLocationPuck2DShadowImage"/><attr format="string" name="mapbox_locationComponentLocationPuckLocationPuck2DScaleExpression"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck2DOpacity"/><attr format="string" name="mapbox_locationComponentLocationPuckLocationPuck3DModelUri"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DPosition_lon"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DPosition_lat"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelOpacity"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelScale_x"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelScale_y"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelScale_z"/><attr format="string" name="mapbox_locationComponentLocationPuckLocationPuck3DModelScaleExpression"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelTranslation_lon"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelTranslation_lat"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelTranslation_z"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelRotation_x"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelRotation_y"/><attr format="float" name="mapbox_locationComponentLocationPuckLocationPuck3DModelRotation_z"/><attr format="boolean" name="mapbox_attributionEnabled"/><attr format="color" name="mapbox_attributionIconColor"/><attr name="mapbox_attributionGravity">
+            
+            <flag name="top" value="0x30"/>
+            
+            <flag name="bottom" value="0x50"/>
+            
+            <flag name="left" value="0x03"/>
+            
+            <flag name="right" value="0x05"/>
+            
+            <flag name="center_vertical" value="0x10"/>
+            
+            <flag name="fill_vertical" value="0x70"/>
+            
+            <flag name="center_horizontal" value="0x01"/>
+            
+            <flag name="fill_horizontal" value="0x07"/>
+            
+            <flag name="center" value="0x11"/>
+            
+            <flag name="fill" value="0x77"/>
+            
+            <flag name="clip_vertical" value="0x80"/>
+            
+            <flag name="clip_horizontal" value="0x08"/>
+            
+            <flag name="start" value="0x00800003"/>
+            
+            <flag name="end" value="0x00800005"/>
+        </attr><attr format="dimension" name="mapbox_attributionMarginLeft"/><attr format="dimension" name="mapbox_attributionMarginTop"/><attr format="dimension" name="mapbox_attributionMarginRight"/><attr format="dimension" name="mapbox_attributionMarginBottom"/><attr format="boolean" name="mapbox_attributionClickable"/><attr format="boolean" name="mapbox_gesturesRotateEnabled"/><attr format="boolean" name="mapbox_gesturesPinchToZoomEnabled"/><attr format="boolean" name="mapbox_gesturesScrollEnabled"/><attr format="boolean" name="mapbox_gesturesSimultaneousRotateAndPinchToZoomEnabled"/><attr format="boolean" name="mapbox_gesturesPitchEnabled"/><attr format="enum" name="mapbox_gesturesScrollMode">
+          
+          <enum name="horizontal" value="0"/>
+          
+          <enum name="vertical" value="1"/>
+          
+          <enum name="horizontal_and_vertical" value="2"/>
+        </attr><attr format="boolean" name="mapbox_gesturesDoubleTapToZoomInEnabled"/><attr format="boolean" name="mapbox_gesturesDoubleTouchToZoomOutEnabled"/><attr format="boolean" name="mapbox_gesturesQuickZoomEnabled"/><attr format="float" name="mapbox_gesturesFocalPointX"/><attr format="float" name="mapbox_gesturesFocalPointY"/><attr format="boolean" name="mapbox_gesturesPinchToZoomDecelerationEnabled"/><attr format="boolean" name="mapbox_gesturesRotateDecelerationEnabled"/><attr format="boolean" name="mapbox_gesturesScrollDecelerationEnabled"/><attr format="boolean" name="mapbox_gesturesIncreaseRotateThresholdWhenPinchingToZoom"/><attr format="boolean" name="mapbox_gesturesIncreasePinchToZoomThresholdWhenRotating"/><attr format="float" name="mapbox_gesturesZoomAnimationAmount"/><attr format="boolean" name="mapbox_gesturesPinchScrollEnabled"/><attr format="boolean" name="mapbox_compassEnabled"/><attr name="mapbox_compassGravity">
+            
+            <flag name="top" value="0x30"/>
+            
+            <flag name="bottom" value="0x50"/>
+            
+            <flag name="left" value="0x03"/>
+            
+            <flag name="right" value="0x05"/>
+            
+            <flag name="center_vertical" value="0x10"/>
+            
+            <flag name="fill_vertical" value="0x70"/>
+            
+            <flag name="center_horizontal" value="0x01"/>
+            
+            <flag name="fill_horizontal" value="0x07"/>
+            
+            <flag name="center" value="0x11"/>
+            
+            <flag name="fill" value="0x77"/>
+            
+            <flag name="clip_vertical" value="0x80"/>
+            
+            <flag name="clip_horizontal" value="0x08"/>
+            
+            <flag name="start" value="0x00800003"/>
+            
+            <flag name="end" value="0x00800005"/>
+        </attr><attr format="dimension" name="mapbox_compassMarginLeft"/><attr format="dimension" name="mapbox_compassMarginTop"/><attr format="dimension" name="mapbox_compassMarginRight"/><attr format="dimension" name="mapbox_compassMarginBottom"/><attr format="float" name="mapbox_compassOpacity"/><attr format="float" name="mapbox_compassRotation"/><attr format="boolean" name="mapbox_compassVisibility"/><attr format="boolean" name="mapbox_compassFadeWhenFacingNorth"/><attr format="boolean" name="mapbox_compassClickable"/><attr format="reference" name="mapbox_compassImage"/><attr format="boolean" name="mapbox_logoEnabled"/><attr name="mapbox_logoGravity">
+            
+            <flag name="top" value="0x30"/>
+            
+            <flag name="bottom" value="0x50"/>
+            
+            <flag name="left" value="0x03"/>
+            
+            <flag name="right" value="0x05"/>
+            
+            <flag name="center_vertical" value="0x10"/>
+            
+            <flag name="fill_vertical" value="0x70"/>
+            
+            <flag name="center_horizontal" value="0x01"/>
+            
+            <flag name="fill_horizontal" value="0x07"/>
+            
+            <flag name="center" value="0x11"/>
+            
+            <flag name="fill" value="0x77"/>
+            
+            <flag name="clip_vertical" value="0x80"/>
+            
+            <flag name="clip_horizontal" value="0x08"/>
+            
+            <flag name="start" value="0x00800003"/>
+            
+            <flag name="end" value="0x00800005"/>
+        </attr><attr format="dimension" name="mapbox_logoMarginLeft"/><attr format="dimension" name="mapbox_logoMarginTop"/><attr format="dimension" name="mapbox_logoMarginRight"/><attr format="dimension" name="mapbox_logoMarginBottom"/><attr format="enum" name="mapbox_mapContextMode">
+            
+            <enum name="unique" value="0"/>
+            
+            <enum name="shared" value="1"/>
+            
+            <enum name="tile" value="2"/>
+        </attr><attr format="enum" name="mapbox_mapConstrainMode">
+            
+            <enum name="none" value="0"/>
+            
+            <enum name="height_only" value="1"/>
+            
+            <enum name="width_and_height" value="2"/>
+        </attr><attr format="enum" name="mapbox_mapViewportMode">
+            
+            <enum name="default_viewport" value="0"/>
+            
+            <enum name="flipped_y" value="1"/>
+        </attr><attr format="enum" name="mapbox_mapOrientation">
+            
+            <enum name="upwards" value="0"/>
+            
+            <enum name="rightwards" value="1"/>
+            
+            <enum name="downwards" value="2"/>
+            
+            <enum name="lefttwards" value="3"/>
+        </attr><attr format="boolean" name="mapbox_mapCrossSourceCollisionsEnabled"/><attr format="boolean" name="mapbox_optimizeForTerrainEnabled"/><attr format="float" name="mapbox_mapPixelRatio"/><attr format="enum" name="mapbox_mapSurface">
+            
+            <enum name="surface_view" value="0"/>
+            
+            <enum name="texture_view" value="1"/>
+        </attr><attr format="integer" name="mapbox_mapAntialiasingSampleCount"/><attr format="string" name="mapbox_resourcesAccessToken"/><attr format="string" name="mapbox_resourcesBaseUrl"/><attr format="string" name="mapbox_mapFontFamily"/><attr format="enum" name="mapbox_mapGlyphRasterizationMode">
+            
+            <enum name="no_glyphs_rasterized_locally" value="0"/>
+            
+            <enum name="ideographs_rasterized_locally" value="1"/>
+            
+            <enum name="all_glyphs_rasterized_locally" value="2"/>
+        </attr><attr format="float" name="mapbox_cameraTargetLat"/><attr format="float" name="mapbox_cameraTargetLng"/><attr format="float" name="mapbox_cameraZoom"/><attr format="float" name="mapbox_cameraBearing"/><attr format="float" name="mapbox_cameraPitch"/><attr format="float" name="mapbox_cameraAnchorX"/><attr format="float" name="mapbox_cameraAnchorY"/><attr format="float" name="mapbox_cameraPaddingTop"/><attr format="float" name="mapbox_cameraPaddingLeft"/><attr format="float" name="mapbox_cameraPaddingBottom"/><attr format="float" name="mapbox_cameraPaddingRight"/><attr format="string" name="mapbox_styleUri"/></declare-styleable>
 </resources>
