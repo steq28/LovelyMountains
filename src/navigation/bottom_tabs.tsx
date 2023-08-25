@@ -3,10 +3,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Icon from 'react-native-vector-icons/Ionicons';
 import React, { FC } from "react"
 import { Download } from "../screens/download"
-import { Mappa } from "../screens/mappa"
 import { Route } from "../screens/route"
 import { colors } from "../utils/colors";
 import { Settings } from "../screens/settings";
+import { MapStack } from "./map_stack";
 
 interface INavItem {
     props: any
@@ -43,8 +43,8 @@ export const BottomTabsNavigation = () => {
                     tabBarInactiveTintColor: colors.light,
                     tabBarActiveTintColor: colors.primary,
                 }}
-                name="Mappa"
-                component={Mappa}
+                name="MapStack"
+                component={MapStack}
             />
             <Tab.Screen
                 options={{
@@ -57,7 +57,7 @@ export const BottomTabsNavigation = () => {
             />
             <Tab.Screen
                 options={{
-                    tabBarButton: (props) => <NavItem props={props} name={"Download"} icon={props?.accessibilityState?.selected ? "download" : "download-outline"} />,
+                    tabBarButton: (props) => <NavItem props={props} name={"Download"} icon={props?.accessibilityState?.selected ? "arrow-down-circle" : "arrow-down-circle-outline"} />,
                     tabBarInactiveTintColor: colors.light,
                     tabBarActiveTintColor: colors.primary,
                 }}
