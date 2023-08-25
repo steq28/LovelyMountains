@@ -11,15 +11,15 @@
 11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 11-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:5:5-77
 11-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:5:22-75
-12    <uses-permission android:name="android.permission.INTERNET" /> <!-- Always include this permission -->
+12    <uses-permission android:name="android.permission.INTERNET" />
 12-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:3:3-65
 12-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:3:20-62
-13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
-13-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:6:3-79
-13-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:6:20-76
+13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+13-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:4:3-79
+13-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:4:20-76
 14    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-14-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:9:3-77
-14-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:9:20-74
+14-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:5:3-77
+14-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:5:20-74
 15    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\lino\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:5-76
 15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\lino\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:22-73
@@ -42,22 +42,22 @@
 24-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:18:22-76
 25
 26    <application
-26-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:11:3-30:17
+26-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:7:3-26:17
 27        android:name="com.lovelymountains.MainApplication"
-27-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:12:5-36
+27-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:8:5-36
 28        android:allowBackup="false"
-28-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:16:5-32
+28-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:12:5-32
 29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 29-->[androidx.core:core:1.7.0] C:\Users\lino\.gradle\caches\transforms-3\75e4635b66fa4e4e84e71b52579837ce\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
 30        android:debuggable="true"
 31        android:icon="@mipmap/ic_launcher"
-31-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:14:5-39
+31-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:10:5-39
 32        android:label="@string/app_name"
-32-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:13:5-37
+32-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:9:5-37
 33        android:roundIcon="@mipmap/ic_launcher_round"
-33-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:15:5-50
+33-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:11:5-50
 34        android:theme="@style/AppTheme"
-34-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:17:5-36
+34-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:13:5-36
 35        android:usesCleartextTraffic="true" >
 35-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:8:9-44
 36        <activity
@@ -67,28 +67,28 @@
 38            android:exported="false" />
 38-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:84-108
 39        <activity
-39-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:18:5-29:16
+39-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:14:5-25:16
 40            android:name="com.lovelymountains.MainActivity"
-40-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:19:7-35
+40-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:15:7-35
 41            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-41-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:21:7-116
+41-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:17:7-116
 42            android:exported="true"
-42-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:24:7-30
+42-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:20:7-30
 43            android:label="@string/app_name"
-43-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:20:7-39
+43-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:16:7-39
 44            android:launchMode="singleTask"
-44-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:22:7-38
+44-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:18:7-38
 45            android:windowSoftInputMode="adjustResize" >
-45-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:23:7-49
+45-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:19:7-49
 46            <intent-filter>
-46-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:25:7-28:23
+46-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:21:7-24:23
 47                <action android:name="android.intent.action.MAIN" />
-47-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:26:9-61
-47-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:26:17-58
+47-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:22:9-61
+47-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:22:17-58
 48
 49                <category android:name="android.intent.category.LAUNCHER" />
-49-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:27:9-69
-49-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:27:19-66
+49-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:23:9-69
+49-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:23:19-66
 50            </intent-filter>
 51        </activity>
 52
