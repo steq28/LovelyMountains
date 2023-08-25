@@ -1,8 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Pressable} from 'react-native';
+import {View, StyleSheet, PermissionsAndroid, Pressable, Platform, StatusBar} from 'react-native';
 import GetLocation from 'react-native-get-location';
 import Mapbox, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SearchBox } from '../components/SearchBox';
 
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -47,9 +49,14 @@ export const Mappa = ({navigation}) => {
         console.warn(code, message);
       });
   }, []);
+  
+  const insets = useSafeAreaInsets();
+
   return (
     <View style={styles.page}>
-      <Pressable style={{position:"absolute", top:0, left:0, backgroundColor:"red", width:100, height:100, zIndex:99}} onPress={()=>navigation.navigate("SearchScreen")}/>
+      <View style={{position:"absolute", top:0, width:"100%",alignItems:"center", zIndex:100, paddingTop: Platform.OS==="android" ? StatusBar.currentHeight : insets.top}}>
+        <SearchBox icon={"prism-outline"} placeholder={"Cerca luoghi"} onPress={()=>navigation.navigate("SearchScreen")}/>
+      </View>
       <View style={styles.container}>
         <Mapbox.MapView
           ref={map}

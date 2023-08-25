@@ -6,7 +6,7 @@ import { colors } from './src/utils/colors';
 export default function App(): JSX.Element {
   return (
     <View style={{flex:1}}>
-      <StatusBar barStyle={'dark-content'} backgroundColor={colors.secondary}/>
+      <StatusBar barStyle={'dark-content'} backgroundColor={"transparent"} translucent/>
       <Navigation/>
     </View>
   );
