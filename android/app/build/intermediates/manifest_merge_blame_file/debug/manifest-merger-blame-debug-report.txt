@@ -9,94 +9,153 @@
 9        android:targetSdkVersion="33" />
 10
 11    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-11-->Z:\01_New_Desktop\LovelyMountains\android\app\src\debug\AndroidManifest.xml:5:5-77
-11-->Z:\01_New_Desktop\LovelyMountains\android\app\src\debug\AndroidManifest.xml:5:22-75
-12    <uses-permission android:name="android.permission.INTERNET" />
-12-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:3:5-67
-12-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:3:22-64
-13    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-13-->[com.facebook.flipper:flipper:0.182.0] C:\Users\stefa\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:5-76
-13-->[com.facebook.flipper:flipper:0.182.0] C:\Users\stefa\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:22-73
-14
-15    <application
-15-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:5:5-24:19
-16        android:name="com.lovelymountains.MainApplication"
-16-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:6:7-38
-17        android:allowBackup="false"
-17-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:10:7-34
-18        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-18-->[androidx.core:core:1.7.0] C:\Users\stefa\.gradle\caches\transforms-3\75e4635b66fa4e4e84e71b52579837ce\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
-19        android:debuggable="true"
-20        android:icon="@mipmap/ic_launcher"
-20-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:8:7-41
-21        android:label="@string/app_name"
-21-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:7:7-39
-22        android:roundIcon="@mipmap/ic_launcher_round"
-22-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:9:7-52
-23        android:theme="@style/AppTheme"
-23-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:11:7-38
-24        android:usesCleartextTraffic="true" >
-24-->Z:\01_New_Desktop\LovelyMountains\android\app\src\debug\AndroidManifest.xml:8:9-44
-25        <activity
-25-->Z:\01_New_Desktop\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:9-111
-26            android:name="com.facebook.react.devsupport.DevSettingsActivity"
-26-->Z:\01_New_Desktop\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:19-83
-27            android:exported="false" />
-27-->Z:\01_New_Desktop\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:84-108
-28        <activity
-28-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:12:7-23:18
-29            android:name="com.lovelymountains.MainActivity"
-29-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:13:9-37
-30            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
-30-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:15:9-118
-31            android:exported="true"
-31-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:18:9-32
-32            android:label="@string/app_name"
-32-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:14:9-41
-33            android:launchMode="singleTask"
-33-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:16:9-40
-34            android:windowSoftInputMode="adjustResize" >
-34-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:17:9-51
-35            <intent-filter>
-35-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:19:9-22:25
-36                <action android:name="android.intent.action.MAIN" />
-36-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:20:13-65
-36-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:20:21-62
-37
-38                <category android:name="android.intent.category.LAUNCHER" />
-38-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:21:13-73
-38-->Z:\01_New_Desktop\LovelyMountains\android\app\src\main\AndroidManifest.xml:21:23-70
-39            </intent-filter>
-40        </activity>
-41
-42        <meta-data
-42-->[com.facebook.soloader:soloader:0.10.5] C:\Users\stefa\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
-43            android:name="com.facebook.soloader.enabled"
-43-->[com.facebook.soloader:soloader:0.10.5] C:\Users\stefa\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
-44            android:value="false" />
-44-->[com.facebook.soloader:soloader:0.10.5] C:\Users\stefa\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
-45
-46        <provider
-46-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
-47            android:name="androidx.startup.InitializationProvider"
-47-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:27:13-67
-48            android:authorities="com.lovelymountains.androidx-startup"
-48-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:28:13-68
-49            android:exported="false" >
-49-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:29:13-37
-50            <meta-data
-50-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
-51                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-51-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
-52                android:value="androidx.startup" />
-52-->[androidx.emoji2:emoji2:1.0.0] C:\Users\stefa\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
-53            <meta-data
-53-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\stefa\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
-54                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-54-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\stefa\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
-55                android:value="androidx.startup" />
-55-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\stefa\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
-56        </provider>
-57    </application>
-58
-59</manifest>
+11-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:5:5-77
+11-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:5:22-75
+12    <uses-permission android:name="android.permission.INTERNET" /> <!-- Always include this permission -->
+12-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:3:3-65
+12-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:3:20-62
+13    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include only if your app benefits from precise location access. -->
+13-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:6:3-79
+13-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:6:20-76
+14    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+14-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:9:3-77
+14-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:9:20-74
+15    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\lino\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:5-76
+15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\lino\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:22-73
+16
+17    <uses-feature
+17-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:10:5-12:35
+18        android:glEsVersion="0x00020000"
+18-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:11:9-41
+19        android:required="true" />
+19-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:12:9-32
+20    <uses-feature
+20-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:13:5-15:36
+21        android:name="android.hardware.wifi"
+21-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:14:9-45
+22        android:required="false" />
+22-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:15:9-33
+23
+24    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+24-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:18:5-79
+24-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:18:22-76
+25
+26    <application
+26-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:11:3-30:17
+27        android:name="com.lovelymountains.MainApplication"
+27-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:12:5-36
+28        android:allowBackup="false"
+28-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:16:5-32
+29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+29-->[androidx.core:core:1.7.0] C:\Users\lino\.gradle\caches\transforms-3\75e4635b66fa4e4e84e71b52579837ce\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+30        android:debuggable="true"
+31        android:icon="@mipmap/ic_launcher"
+31-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:14:5-39
+32        android:label="@string/app_name"
+32-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:13:5-37
+33        android:roundIcon="@mipmap/ic_launcher_round"
+33-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:15:5-50
+34        android:theme="@style/AppTheme"
+34-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:17:5-36
+35        android:usesCleartextTraffic="true" >
+35-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:8:9-44
+36        <activity
+36-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:9-111
+37            android:name="com.facebook.react.devsupport.DevSettingsActivity"
+37-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:19-83
+38            android:exported="false" />
+38-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\debug\AndroidManifest.xml:11:84-108
+39        <activity
+39-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:18:5-29:16
+40            android:name="com.lovelymountains.MainActivity"
+40-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:19:7-35
+41            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+41-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:21:7-116
+42            android:exported="true"
+42-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:24:7-30
+43            android:label="@string/app_name"
+43-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:20:7-39
+44            android:launchMode="singleTask"
+44-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:22:7-38
+45            android:windowSoftInputMode="adjustResize" >
+45-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:23:7-49
+46            <intent-filter>
+46-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:25:7-28:23
+47                <action android:name="android.intent.action.MAIN" />
+47-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:26:9-61
+47-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:26:17-58
+48
+49                <category android:name="android.intent.category.LAUNCHER" />
+49-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:27:9-69
+49-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:27:19-66
+50            </intent-filter>
+51        </activity>
+52
+53        <provider
+53-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:22:9-30:20
+54            android:name="androidx.startup.InitializationProvider"
+54-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:23:13-67
+55            android:authorities="com.lovelymountains.androidx-startup"
+55-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:24:13-68
+56            android:exported="false" >
+56-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:25:13-37
+57            <meta-data
+57-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:27:13-29:52
+58                android:name="com.mapbox.maps.loader.MapboxMapsInitializer"
+58-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:28:17-76
+59                android:value="androidx.startup" />
+59-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:29:17-49
+60            <!-- This entry makes MapboxSDKCommonInitializer discoverable. -->
+61            <meta-data
+61-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:21:13-23:52
+62                android:name="com.mapbox.common.MapboxSDKCommonInitializer"
+62-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:22:17-76
+63                android:value="androidx.startup" />
+63-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:23:17-49
+64            <meta-data
+64-->[androidx.emoji2:emoji2:1.0.0] C:\Users\lino\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+65                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+65-->[androidx.emoji2:emoji2:1.0.0] C:\Users\lino\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:32:17-75
+66                android:value="androidx.startup" />
+66-->[androidx.emoji2:emoji2:1.0.0] C:\Users\lino\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:33:17-49
+67            <meta-data
+67-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lino\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+68                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+68-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lino\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+69                android:value="androidx.startup" />
+69-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\lino\.gradle\caches\transforms-3\d5d05479173d466a6bd0989b3b3e5ef4\transformed\jetified-lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+70        </provider>
+71
+72        <receiver
+72-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:26:9-33:20
+73            android:name="com.mapbox.common.location.LocationUpdatesReceiver"
+73-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:27:13-78
+74            android:enabled="true"
+74-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:28:13-35
+75            android:exported="false" >
+75-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:29:13-37
+76            <intent-filter>
+76-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:30:13-32:29
+77                <action android:name="com.mapbox.common.location.LocationUpdatesReceiver.ACTION_PROCESS_LOCATION_UPDATES" />
+77-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:31:17-125
+77-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:31:25-122
+78            </intent-filter>
+79        </receiver>
+80
+81        <service
+81-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:35:9-37:40
+82            android:name="com.mapbox.common.LifecycleService"
+82-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:36:13-62
+83            android:exported="false" />
+83-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:37:13-37
+84
+85        <meta-data
+85-->[com.facebook.soloader:soloader:0.10.5] C:\Users\lino\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37
+86            android:name="com.facebook.soloader.enabled"
+86-->[com.facebook.soloader:soloader:0.10.5] C:\Users\lino\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:13:13-57
+87            android:value="false" />
+87-->[com.facebook.soloader:soloader:0.10.5] C:\Users\lino\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:14:13-34
+88    </application>
+89
+90</manifest>
