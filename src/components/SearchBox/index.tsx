@@ -1,12 +1,12 @@
 import React from "react";
-import { Dimensions, Pressable, TextInput, View } from "react-native";
+import { Dimensions, Keyboard, Pressable, TextInput, View } from "react-native";
 import { styles } from "./styles";
 import {BoxShadow} from 'react-native-shadow';
 import { colors } from "../../utils/colors";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
 
-export const SearchBox = ({icon, placeholder}) =>{
+export const SearchBox = ({icon, placeholder, onPress=null}) =>{
     const width= Dimensions.get("window").width - 60
     const navigation = useNavigation<any>()
 
@@ -25,11 +25,18 @@ export const SearchBox = ({icon, placeholder}) =>{
     return(
         <BoxShadow setting={shadowOpt}>
             <View style={styles.wrapper}>
-                <Pressable onPress={()=>{navigation.goBack()}} style={{width:"10%"}}>
+                <Pressable
+                    onPress={()=>{
+                        Keyboard.dismiss()
+                        navigation.goBack()
+                    }}
+                    style={{width:"10%"}}
+                >
                     <Icon name={icon} color={colors.medium} size={25}/>
                 </Pressable>
-                <TextInput placeholder={placeholder} placeholderTextColor={colors.light} style={styles.textInput}/>
+                <TextInput autoFocus placeholder={placeholder} placeholderTextColor={colors.light} style={styles.textInput}/>
             </View>
+            {onPress && <Pressable style={{width:"100%", height:"100%", position:"absolute"}} onPress={onPress} />}
         </BoxShadow>
     );
 };

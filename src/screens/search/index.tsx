@@ -9,7 +9,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 export const SearchScreen = () =>{
     return(
-        <KeyboardAwareScrollView keyboardShouldPersistTaps={'never'} contentContainerStyle={{ height: "100%" }}>
+        <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'}  contentContainerStyle={{ height: "100%" }}>
             <SafeAreaView edges={['top', 'left', 'right']} style={{flex:1, backgroundColor:colors.secondary, paddingHorizontal:30}}>
                 <View style={{height:"10%"}}>
                     <SearchBox icon={"arrow-back-outline"} placeholder={"Cerca luoghi"}/>
