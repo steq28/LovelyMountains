@@ -1,10 +1,12 @@
 import React from 'react';
 import {Navigation} from './src/navigation';
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
+import { colors } from './src/utils/colors';
 
 export default function App(): JSX.Element {
   return (
     <View style={{flex:1}}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={colors.secondary}/>
       <Navigation/>
     </View>
   );

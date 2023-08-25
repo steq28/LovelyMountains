@@ -8,7 +8,7 @@ Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
 );
 
-export const Mappa = () => {
+export const Mappa = ({navigation}) => {
   const [location, setLocation] = useState([0, 0]);
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const camera = useRef<Camera>(null);
@@ -47,9 +47,9 @@ export const Mappa = () => {
         console.warn(code, message);
       });
   }, []);
-
   return (
     <View style={styles.page}>
+      <Pressable style={{position:"absolute", top:0, left:0, backgroundColor:"red", width:100, height:100, zIndex:99}} onPress={()=>navigation.navigate("SearchScreen")}/>
       <View style={styles.container}>
         <Mapbox.MapView
           ref={map}
