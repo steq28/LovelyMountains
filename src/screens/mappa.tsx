@@ -5,6 +5,8 @@ import Mapbox, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchBox } from '../components/SearchBox';
+import { colors } from '../utils/colors';
+import { useTranslations } from '../hooks/useTranslations';
 
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -15,6 +17,7 @@ export const Mappa = ({navigation}) => {
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const camera = useRef<Camera>(null);
   const map = useRef<Mapbox.MapView>(null);
+  const { tra } = useTranslations();
 
   const requestLocationPermission = async () => {
     try {
@@ -55,7 +58,7 @@ export const Mappa = ({navigation}) => {
   return (
     <View style={styles.page}>
       <View style={{position:"absolute", top:0, width:"100%",alignItems:"center", zIndex:100, paddingTop: Platform.OS==="android" ? StatusBar.currentHeight : insets.top}}>
-        <SearchBox icon={"prism-outline"} placeholder={"Cerca luoghi"} onPress={()=>navigation.navigate("SearchScreen")}/>
+        <SearchBox icon={"prism-outline"} placeholder={tra("search.cerca")} onPress={()=>navigation.navigate("SearchScreen")}/>
       </View>
       <View style={styles.container}>
         <Mapbox.MapView
@@ -92,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: colors.secondary,
   },
   container: {
     height: '100%',

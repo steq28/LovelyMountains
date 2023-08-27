@@ -14,7 +14,7 @@ interface INavItem {
     icon: string
 }
 
-const NavItem: FC<INavItem> = ({props, name, icon}) => {
+const NavItem: FC<INavItem> = ({props, icon}) => {
     return (
         <Pressable {...props}>
             <View style={{width:"70%", height:"100%", alignItems:"center", justifyContent:"center"}}>

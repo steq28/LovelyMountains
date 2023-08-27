@@ -1,12 +1,19 @@
-import React from "react";
+import React, { FC } from "react";
 import { Dimensions, Keyboard, Pressable, TextInput, View } from "react-native";
 import { styles } from "./styles";
 import {BoxShadow} from 'react-native-shadow';
 import { colors } from "../../utils/colors";
 import Icon from "react-native-vector-icons/Ionicons";
 import { useNavigation } from "@react-navigation/native";
+import { LocalSvg } from "react-native-svg";
 
-export const SearchBox = ({icon, placeholder, onPress=null}) =>{
+interface ISearchBox{
+    icon: string,
+    placeholder: string,
+    onPress: () => void | null
+}
+
+export const SearchBox: FC<ISearchBox> = ({icon, placeholder, onPress=null}) =>{
     const width= Dimensions.get("window").width - 60
     const navigation = useNavigation<any>()
 
@@ -32,9 +39,12 @@ export const SearchBox = ({icon, placeholder, onPress=null}) =>{
                     }}
                     style={{width:"10%"}}
                 >
-                    <Icon name={icon} color={colors.medium} size={25}/>
+                    {!onPress && <Icon name={icon} color={colors.medium} size={25}/>}
+                    {onPress &&
+                        <LocalSvg asset={require("../../assets/images/svg/logo-mountains-medium.svg")} height={"100%"} width={"100%"}/>
+                    }
                 </Pressable>
-                <TextInput autoFocus placeholder={placeholder} placeholderTextColor={colors.light} style={styles.textInput}/>
+                <TextInput autoFocus={onPress ? false : true} focusable={onPress ? false : true} placeholder={placeholder} placeholderTextColor={colors.light} style={styles.textInput}/>
             </View>
             {onPress && <Pressable style={{width:"100%", height:"100%", position:"absolute"}} onPress={onPress} />}
         </BoxShadow>
