@@ -1,13 +1,19 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Pressable, Platform, StatusBar} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Pressable,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import GetLocation from 'react-native-get-location';
 import Mapbox, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchBox } from '../components/SearchBox';
-import { colors } from '../utils/colors';
-import { useTranslations } from '../hooks/useTranslations';
-
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SearchBox} from '../components/SearchBox';
+import {colors} from '../utils/colors';
+import {useTranslations} from '../hooks/useTranslations';
 
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -19,7 +25,7 @@ export const Mappa = ({navigation}) => {
   const camera = useRef<Camera>(null);
   const map = useRef<Mapbox.MapView>(null);
   const insets = useSafeAreaInsets();
-  const { tra } = useTranslations();
+  const {tra} = useTranslations();
 
   const requestLocationPermission = async () => {
     try {
@@ -37,14 +43,15 @@ export const Mappa = ({navigation}) => {
     }
   };
 
-  const queryFeature = async () => {
-    const features = await map.current?.queryRenderedFeaturesAtPoint(
-      [0, 0],
-      null,
-      ['poi-label'],
-    );
-    console.log(features);
-  };
+  // const queryFeature = async () => {
+  //   let bounds = await map.current?.getVisibleBounds();
+  //   const features = await map.current?.queryRenderedFeaturesInRect(
+  //     [],
+  //     ['==', 'type', 'Point'],
+  //     ['hospital'],
+  //   );
+  //   console.log(features);
+  // };
 
   useEffect(() => {
     requestLocationPermission();
@@ -63,13 +70,24 @@ export const Mappa = ({navigation}) => {
         console.warn(code, message);
       });
   }, []);
-  
-  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.page}>
-      <View style={{position:"absolute", top:0, width:"100%",alignItems:"center", zIndex:100, paddingTop: Platform.OS==="android" ? StatusBar.currentHeight : insets.top}}>
-        <SearchBox icon={"prism-outline"} placeholder={tra("search.cerca")} onPress={()=>navigation.navigate("SearchScreen")}/>
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          alignItems: 'center',
+          zIndex: 100,
+          paddingTop:
+            Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
+        }}>
+        <SearchBox
+          icon={'prism-outline'}
+          placeholder={tra('search.cerca')}
+          onPress={() => navigation.navigate('SearchScreen')}
+        />
       </View>
       <View style={styles.container}>
         <Mapbox.MapView
@@ -79,11 +97,13 @@ export const Mappa = ({navigation}) => {
           scaleBarEnabled={false}
           compassPosition={{
             top:
-              Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
+              Platform.OS === 'android'
+                ? StatusBar.currentHeight + 75
+                : insets.top,
             right: 10,
           }}
           styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d">
-          <Mapbox.UserLocation />
+          <Mapbox.UserLocation showsUserHeadingIndicator={true} />
           <Camera ref={camera} />
         </Mapbox.MapView>
         <Pressable
@@ -103,6 +123,13 @@ export const Mappa = ({navigation}) => {
           }}>
           <Icon name={'cloud-download-outline'} color={'#333333'} size={30} />
         </Pressable>
+        {/* <Pressable
+          style={[styles.button, {bottom: 200}]}
+          onPress={() => {
+            queryFeature();
+          }}>
+          <Icon name={'prism-outline'} color={'#333333'} size={30} />
+        </Pressable> */}
       </View>
     </View>
   );
