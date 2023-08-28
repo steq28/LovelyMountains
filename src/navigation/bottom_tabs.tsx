@@ -7,6 +7,7 @@ import { Route } from "../screens/route"
 import { colors } from "../utils/colors";
 import { Settings } from "../screens/settings";
 import { MapStack } from "./map_stack";
+import { SettingsStack } from "./settings_stack";
 
 interface INavItem {
     props: any
@@ -70,8 +71,8 @@ export const BottomTabsNavigation = () => {
                     tabBarInactiveTintColor: colors.light,
                     tabBarActiveTintColor: colors.primary,
                 }}
-                name="Settings"
-                component={Settings}
+                name="SettingsStack"
+                component={SettingsStack}
             />
         </Tab.Navigator>
     )

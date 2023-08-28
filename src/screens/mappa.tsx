@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SearchBox } from '../components/SearchBox';
 import { colors } from '../utils/colors';
 import { useTranslations } from '../hooks/useTranslations';
+import { useFocusEffect } from '@react-navigation/native';
 
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -52,11 +53,18 @@ export const Mappa = ({navigation}) => {
         console.warn(code, message);
       });
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBackgroundColor("transparent")
+    }, [])
+  );
   
   const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.page}>
+      <StatusBar barStyle={'dark-content'} backgroundColor={"transparent"} translucent/>
       <View style={{position:"absolute", top:0, width:"100%",alignItems:"center", zIndex:100, paddingTop: Platform.OS==="android" ? StatusBar.currentHeight : insets.top}}>
         <SearchBox icon={"prism-outline"} placeholder={tra("search.cerca")} onPress={()=>navigation.navigate("SearchScreen")}/>
       </View>

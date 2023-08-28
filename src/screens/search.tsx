@@ -1,16 +1,21 @@
 import React from "react"
-import { ScrollView, View, Text, StyleSheet, Pressable } from "react-native"
+import { ScrollView, View, Text, StyleSheet, Pressable, StatusBar } from "react-native"
 import { SearchBox } from "../components/SearchBox"
 import { colors } from "../utils/colors"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { ResultCardSearch } from "../components/ResultCardSearch"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view"
 import { useTranslations } from "../hooks/useTranslations"
-import i18n from "../translations"
-
+import { useFocusEffect } from "@react-navigation/native"
 
 export const SearchScreen = () =>{
     const { tra } = useTranslations();
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //         StatusBar.setBackgroundColor(colors.secondary)
+    //     }, [])
+    // );
+      
     return(
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'}  contentContainerStyle={{ height: "100%" }}>
             <SafeAreaView edges={['top', 'left', 'right']} style={{flex:1, backgroundColor:colors.secondary, paddingHorizontal:30}}>
@@ -31,7 +36,6 @@ export const SearchScreen = () =>{
                         <ResultCardSearch isEnd={false} name={"Monte Resegone, Monza (MB)"} icon={"timer-outline"}/>
                         <ResultCardSearch isEnd={true} name={"San Giovanni Bianco, Bergamo"} icon={"timer-outline"}/>
                     </View>
-                    <Pressable onPress={()=>{i18n.changeLanguage("en")}} style={{height:100, width:100, backgroundColor:"red"}}/>
                 </ScrollView>
             </SafeAreaView>
         </KeyboardAwareScrollView>
