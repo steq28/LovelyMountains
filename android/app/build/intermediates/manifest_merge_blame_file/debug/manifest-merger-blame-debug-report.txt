@@ -78,8 +78,8 @@
 43-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:16:7-39
 44            android:launchMode="singleTask"
 44-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:18:7-38
-45            android:windowSoftInputMode="adjustResize" >
-45-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:19:7-49
+45            android:windowSoftInputMode="stateUnspecified|adjustPan" >
+45-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:19:7-63
 46            <intent-filter>
 46-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:21:7-24:23
 47                <action android:name="android.intent.action.MAIN" />

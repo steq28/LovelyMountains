@@ -8,6 +8,7 @@ import { SearchBox } from '../components/SearchBox';
 import { colors } from '../utils/colors';
 import { useTranslations } from '../hooks/useTranslations';
 
+
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
 );
@@ -17,6 +18,7 @@ export const Mappa = ({navigation}) => {
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const camera = useRef<Camera>(null);
   const map = useRef<Mapbox.MapView>(null);
+  const insets = useSafeAreaInsets();
   const { tra } = useTranslations();
 
   const requestLocationPermission = async () => {
@@ -33,6 +35,15 @@ export const Mappa = ({navigation}) => {
     } catch (err) {
       console.warn(err);
     }
+  };
+
+  const queryFeature = async () => {
+    const features = await map.current?.queryRenderedFeaturesAtPoint(
+      [0, 0],
+      null,
+      ['poi-label'],
+    );
+    console.log(features);
   };
 
   useEffect(() => {
@@ -64,6 +75,13 @@ export const Mappa = ({navigation}) => {
         <Mapbox.MapView
           ref={map}
           style={styles.map}
+          compassEnabled={true}
+          scaleBarEnabled={false}
+          compassPosition={{
+            top:
+              Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
+            right: 10,
+          }}
           styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d">
           <Mapbox.UserLocation />
           <Camera ref={camera} />
