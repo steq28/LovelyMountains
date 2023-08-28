@@ -1,8 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Pressable} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Pressable,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import GetLocation from 'react-native-get-location';
 import Mapbox, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -13,6 +21,7 @@ export const Mappa = ({navigation}) => {
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const camera = useRef<Camera>(null);
   const map = useRef<Mapbox.MapView>(null);
+  const insets = useSafeAreaInsets();
 
   const requestLocationPermission = async () => {
     try {
@@ -28,6 +37,15 @@ export const Mappa = ({navigation}) => {
     } catch (err) {
       console.warn(err);
     }
+  };
+
+  const queryFeature = async () => {
+    const features = await map.current?.queryRenderedFeaturesAtPoint(
+      [0, 0],
+      null,
+      ['poi-label'],
+    );
+    console.log(features);
   };
 
   useEffect(() => {
@@ -47,13 +65,32 @@ export const Mappa = ({navigation}) => {
         console.warn(code, message);
       });
   }, []);
+
   return (
     <View style={styles.page}>
-      <Pressable style={{position:"absolute", top:0, left:0, backgroundColor:"red", width:100, height:100, zIndex:99}} onPress={()=>navigation.navigate("SearchScreen")}/>
+      <Pressable
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          backgroundColor: 'red',
+          width: 100,
+          height: 100,
+          zIndex: 99,
+        }}
+        onPress={() => navigation.navigate('SearchScreen')}
+      />
       <View style={styles.container}>
         <Mapbox.MapView
           ref={map}
           style={styles.map}
+          compassEnabled={true}
+          scaleBarEnabled={false}
+          compassPosition={{
+            top:
+              Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
+            right: 10,
+          }}
           styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d">
           <Mapbox.UserLocation />
           <Camera ref={camera} />
