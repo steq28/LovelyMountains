@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {View, StyleSheet, PermissionsAndroid, Pressable, Platform, StatusBar} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  PermissionsAndroid,
+  Pressable,
+  Platform,
+  StatusBar,
+} from 'react-native';
 import GetLocation from 'react-native-get-location';
 import Mapbox, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,7 +25,8 @@ export const Mappa = ({navigation}) => {
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const camera = useRef<Camera>(null);
   const map = useRef<Mapbox.MapView>(null);
-  const { tra } = useTranslations();
+  const insets = useSafeAreaInsets();
+  const {tra} = useTranslations();
 
   const requestLocationPermission = async () => {
     try {
@@ -35,6 +43,16 @@ export const Mappa = ({navigation}) => {
       console.warn(err);
     }
   };
+
+  // const queryFeature = async () => {
+  //   let bounds = await map.current?.getVisibleBounds();
+  //   const features = await map.current?.queryRenderedFeaturesInRect(
+  //     [],
+  //     ['==', 'type', 'Point'],
+  //     ['hospital'],
+  //   );
+  //   console.log(features);
+  // };
 
   useEffect(() => {
     requestLocationPermission();
@@ -59,8 +77,6 @@ export const Mappa = ({navigation}) => {
       StatusBar.setBackgroundColor("transparent")
     }, [])
   );
-  
-  const insets = useSafeAreaInsets();
 
   return (
     <View style={styles.page}>
@@ -72,8 +88,17 @@ export const Mappa = ({navigation}) => {
         <Mapbox.MapView
           ref={map}
           style={styles.map}
+          compassEnabled={true}
+          scaleBarEnabled={false}
+          compassPosition={{
+            top:
+              Platform.OS === 'android'
+                ? StatusBar.currentHeight + 75
+                : insets.top,
+            right: 10,
+          }}
           styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d">
-          <Mapbox.UserLocation />
+          <Mapbox.UserLocation showsUserHeadingIndicator={true} />
           <Camera ref={camera} />
         </Mapbox.MapView>
         <Pressable
@@ -93,6 +118,13 @@ export const Mappa = ({navigation}) => {
           }}>
           <Icon name={'cloud-download-outline'} color={'#333333'} size={30} />
         </Pressable>
+        {/* <Pressable
+          style={[styles.button, {bottom: 200}]}
+          onPress={() => {
+            queryFeature();
+          }}>
+          <Icon name={'prism-outline'} color={'#333333'} size={30} />
+        </Pressable> */}
       </View>
     </View>
   );
