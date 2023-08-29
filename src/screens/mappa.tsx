@@ -10,10 +10,11 @@ import {
 import GetLocation from 'react-native-get-location';
 import Mapbox, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {SearchBox} from '../components/SearchBox';
-import {colors} from '../utils/colors';
-import {useTranslations} from '../hooks/useTranslations';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SearchBox } from '../components/SearchBox';
+import { colors } from '../utils/colors';
+import { useTranslations } from '../hooks/useTranslations';
+import { useFocusEffect } from '@react-navigation/native';
 
 Mapbox.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -71,23 +72,17 @@ export const Mappa = ({navigation}) => {
       });
   }, []);
 
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBackgroundColor("transparent")
+    }, [])
+  );
+
   return (
     <View style={styles.page}>
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          width: '100%',
-          alignItems: 'center',
-          zIndex: 100,
-          paddingTop:
-            Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
-        }}>
-        <SearchBox
-          icon={'prism-outline'}
-          placeholder={tra('search.cerca')}
-          onPress={() => navigation.navigate('SearchScreen')}
-        />
+      <StatusBar barStyle={'dark-content'} backgroundColor={"transparent"} translucent/>
+      <View style={{position:"absolute", top:0, width:"100%",alignItems:"center", zIndex:100, paddingTop: Platform.OS==="android" ? StatusBar.currentHeight : insets.top}}>
+        <SearchBox icon={"prism-outline"} placeholder={tra("search.cerca")} onPress={()=>navigation.navigate("SearchScreen")}/>
       </View>
       <View style={styles.container}>
         <Mapbox.MapView
