@@ -7,11 +7,15 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/Ionicons';
 import i18n from '../../translations'
 import { RadioButton, RadioGroup } from 'react-native-radio-buttons-group'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLanguage } from '../../redux/settingsSlice'
 
 export const Lingua = ({navigation})=>{
+    const dispatch = useDispatch()
     const { tra } = useTranslations();
     const insets = useSafeAreaInsets();
-    const [language, setLanguage] = useState("it")
+    const {lingua} = useSelector(state => state.settings)
+    //const [language, setLanguage] = useState(lingua)
 
     const radioButtons = useMemo(() => ([
         {
@@ -27,11 +31,6 @@ export const Lingua = ({navigation})=>{
             end: true
         }
     ]), []);
-
-    const setSelectedId = (val:string) =>{
-        i18n.changeLanguage(val)
-        setLanguage(val)
-    }
     
     return(
         <KeyboardAwareScrollView keyboardShouldPersistTaps={'always'}  contentContainerStyle={{ height: '100%', paddingTop: Platform.OS==='android' ? StatusBar.currentHeight : insets.top}}>
@@ -47,10 +46,11 @@ export const Lingua = ({navigation})=>{
                         <RadioButton
                             {...button}
                             key={button.id}
-                            selected={button.id === language}
+                            selected={button.id === lingua}
                             onPress={() => {
                                 i18n.changeLanguage(button.id)
-                                setLanguage(button.id)
+                                //setLanguage(button.id)
+                                dispatch(setLanguage(button.id))
                             }}
                             labelStyle={{
                                 color: colors.primary,
