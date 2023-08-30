@@ -25,6 +25,7 @@
     "react-native-get-location": "^4.0.0",
     "react-native-ionicons": "^4.6.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
+    "react-native-navigation-bar-color": "^2.0.2",
     "react-native-radio-buttons-group": "^3.0.3",
     "react-native-reanimated": "^3.4.2",
     "react-native-safe-area-context": "^4.7.1",

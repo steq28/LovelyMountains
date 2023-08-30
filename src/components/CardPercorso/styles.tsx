@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     statsText:{
         fontFamily:"InriaSans-Regular",
         color: colors.medium,
-        fontSize: 14,
+        fontSize: 13,
         marginTop:3
     },
 

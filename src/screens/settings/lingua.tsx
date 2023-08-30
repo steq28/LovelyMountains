@@ -55,8 +55,8 @@ export const Lingua = ({navigation})=>{
                             labelStyle={{
                                 color: colors.primary,
                                 fontFamily:'InriaSans-Regular',
-                                fontSize:15,
-                                marginVertical:5,
+                                fontSize:16,
+                                marginVertical:10,
                             }}
                             containerStyle={{
                                 borderBottomWidth: button.end ? 0 : 0.2,

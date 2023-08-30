@@ -16,7 +16,8 @@ export const styles = StyleSheet.create({
     placeText:{
         fontFamily:"InriaSans-Regular",
         color:colors.primary,
-        marginLeft:10
+        marginLeft:10,
+        fontSize:16
     },
     iconView:{
         width:30,
