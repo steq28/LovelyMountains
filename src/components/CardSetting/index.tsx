@@ -9,7 +9,7 @@ export const CardSetting = ({isEnd = false, name, icon, onPress}) =>{
     return(
         <Pressable style={[styles.wrapper, {borderBottomWidth: isEnd ? 0 : 0.5}]} onPress={onPress}>
             <View style={{flexDirection:"row", alignItems:"center"}}>
-                <View style={{width:30, height:30,borderRadius:5, alignItems:"center", justifyContent:"center", backgroundColor:colors.primary}}>
+                <View style={styles.iconView}>
                     <Icon name={icon} size={20} color={colors.secondary}/>
                 </View>
                 <Text style={styles.placeText} numberOfLines={1}>{name}</Text>

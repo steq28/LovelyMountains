@@ -10,6 +10,7 @@ import com.facebook.react.defaults.DefaultReactNativeHost;
 import com.facebook.soloader.SoLoader;
 import java.util.List;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
+import com.thebylito.navigationbarcolor.NavigationBarColorPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
