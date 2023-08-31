@@ -1,4 +1,7 @@
 export default {
+    mappa:{
+        abilitaGeo: "Please enable geolocalization!"
+    },
     search:{
         cerca: "Search places"
     },

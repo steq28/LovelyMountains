@@ -1,4 +1,7 @@
 export default {
+    mappa:{
+        abilitaGeo: "Abilita la geolocalizzazione!"
+    },
     search:{
         cerca: "Cerca luoghi"
     },

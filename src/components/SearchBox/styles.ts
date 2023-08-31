@@ -13,10 +13,11 @@ export const styles = StyleSheet.create({
         flexDirection:'row',
         paddingHorizontal: 15,
         alignItems:'center',
+        justifyContent:"space-between"
     },
 
     textInput:{
-        width:'90%',
+        width:'89%',
         fontFamily:'InriaSans-Regular',
         fontSize:17,
         color:colors.primary

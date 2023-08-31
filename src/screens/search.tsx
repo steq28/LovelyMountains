@@ -8,6 +8,7 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useTranslations} from '../hooks/useTranslations';
 import i18n from '../translations';
 import axios from 'axios';
+import { PrincipalWrapper } from '../components/PrincipalWrapper';
 
 export const SearchScreen = () => {
   const {tra} = useTranslations();
@@ -28,16 +29,7 @@ export const SearchScreen = () => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      keyboardShouldPersistTaps={'always'}
-      contentContainerStyle={{height: '100%'}}>
-      <SafeAreaView
-        edges={['top', 'left', 'right']}
-        style={{
-          flex: 1,
-          backgroundColor: colors.secondary,
-          paddingHorizontal: 30,
-        }}>
+      <PrincipalWrapper>
         <View style={{height: '10%'}}>
           <SearchBox
             icon={'arrow-back-outline'}
@@ -106,8 +98,7 @@ export const SearchScreen = () => {
             style={{height: 100, width: 100, backgroundColor: 'red'}}
           />
         </ScrollView>
-      </SafeAreaView>
-    </KeyboardAwareScrollView>
+      </PrincipalWrapper>
   );
 };
 
