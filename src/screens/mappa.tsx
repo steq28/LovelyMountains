@@ -8,7 +8,6 @@ import {
   StatusBar,
   ActivityIndicator,
   ToastAndroid,
-  LogBox,
 } from 'react-native';
 import GetLocation from 'react-native-get-location';
 import MapboxGL, {Camera} from '@rnmapbox/maps';
@@ -21,8 +20,10 @@ import { useFocusEffect } from '@react-navigation/native';
 import SystemSetting from 'react-native-system-setting';
 import React = require('react');
 import { PrincipalWrapper } from '../components/PrincipalWrapper';
-
-LogBox.ignoreLogs(['`new NativeEventEmitter()`']); 
+import { useDispatch } from 'react-redux';
+import i18n from '../translations';
+import { setLanguage } from '../redux/settingsSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -36,6 +37,7 @@ export const Mappa = ({navigation}) => {
   const map = useRef<MapboxGL.MapView>(null);
   const insets = useSafeAreaInsets();
   const {tra} = useTranslations();
+  const dispatch= useDispatch()
 
   const requestLocationPermission = async () => {
     try {
@@ -50,6 +52,20 @@ export const Mappa = ({navigation}) => {
       }
     } catch (err) {
       console.warn(err);
+    }
+  };
+
+  
+  
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem('lingua');
+      if (value !== null) {
+        i18n.changeLanguage(value)
+        dispatch(setLanguage(value))
+      }
+    } catch (e) {
+      // error reading value
     }
   };
 
@@ -85,6 +101,7 @@ export const Mappa = ({navigation}) => {
   }
 
   useEffect(() => {
+    getData();
     requestLocationPermission();
     getPosition()
     if(JSON.stringify(location) == JSON.stringify([0,0]))

@@ -9,6 +9,7 @@ import i18n from '../../translations'
 import { RadioButton, RadioGroup } from 'react-native-radio-buttons-group'
 import { useDispatch, useSelector } from 'react-redux'
 import { setLanguage } from '../../redux/settingsSlice'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const Lingua = ({navigation})=>{
     const dispatch = useDispatch()
@@ -51,6 +52,7 @@ export const Lingua = ({navigation})=>{
                                 i18n.changeLanguage(button.id)
                                 //setLanguage(button.id)
                                 dispatch(setLanguage(button.id))
+                                AsyncStorage.setItem('lingua', button.id);
                             }}
                             labelStyle={{
                                 color: colors.primary,
