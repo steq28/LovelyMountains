@@ -48,5 +48,6 @@ com.lovelymountains.app-packaged_res-46 C:\Users\lino\Desktop\random\LovelyMount
 com.lovelymountains.app-packaged_res-47 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-reanimated\android\build\intermediates\packaged_res\debug
 com.lovelymountains.app-packaged_res-48 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-safe-area-context\android\build\intermediates\packaged_res\debug
 com.lovelymountains.app-packaged_res-49 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-screens\android\build\intermediates\packaged_res\debug
-com.lovelymountains.app-packaged_res-50 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
-com.lovelymountains.app-packaged_res-51 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug
+com.lovelymountains.app-packaged_res-50 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-splash-screen\android\build\intermediates\packaged_res\debug
+com.lovelymountains.app-packaged_res-51 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-svg\android\build\intermediates\packaged_res\debug
+com.lovelymountains.app-packaged_res-52 C:\Users\lino\Desktop\random\LovelyMountains\node_modules\react-native-vector-icons\android\build\intermediates\packaged_res\debug
