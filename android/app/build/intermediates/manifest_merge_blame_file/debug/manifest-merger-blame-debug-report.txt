@@ -25,21 +25,21 @@
 15-->[com.facebook.flipper:flipper:0.182.0] C:\Users\lino\.gradle\caches\transforms-3\e13f88164840fe641a466d05cd8edac7\transformed\jetified-flipper-0.182.0\AndroidManifest.xml:16:22-73
 16
 17    <uses-feature
-17-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:10:5-12:35
+17-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:10:5-12:35
 18        android:glEsVersion="0x00020000"
-18-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:11:9-41
+18-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:11:9-41
 19        android:required="true" />
-19-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:12:9-32
+19-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:12:9-32
 20    <uses-feature
-20-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:13:5-15:36
+20-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:13:5-15:36
 21        android:name="android.hardware.wifi"
-21-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:14:9-45
+21-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:14:9-45
 22        android:required="false" />
-22-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:15:9-33
+22-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:15:9-33
 23
 24    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-24-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:18:5-79
-24-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:18:22-76
+24-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:18:5-79
+24-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:18:22-76
 25
 26    <application
 26-->C:\Users\lino\Desktop\random\LovelyMountains\android\app\src\main\AndroidManifest.xml:7:3-26:17
@@ -93,26 +93,26 @@
 51        </activity>
 52
 53        <provider
-53-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:22:9-30:20
+53-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:22:9-30:20
 54            android:name="androidx.startup.InitializationProvider"
-54-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:23:13-67
+54-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:23:13-67
 55            android:authorities="com.lovelymountains.androidx-startup"
-55-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:24:13-68
+55-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:24:13-68
 56            android:exported="false" >
-56-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:25:13-37
+56-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:25:13-37
 57            <meta-data
-57-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:27:13-29:52
+57-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:27:13-29:52
 58                android:name="com.mapbox.maps.loader.MapboxMapsInitializer"
-58-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:28:17-76
+58-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:28:17-76
 59                android:value="androidx.startup" />
-59-->[com.mapbox.maps:android-core:10.14.1] C:\Users\lino\.gradle\caches\transforms-3\0ec23d433c6bd55d8d362b5bb9619043\transformed\jetified-android-core-10.14.1\AndroidManifest.xml:29:17-49
+59-->[com.mapbox.maps:android-core:10.15.0] C:\Users\lino\.gradle\caches\transforms-3\5492e0d72f868e33f91875e1b6df9bcb\transformed\jetified-android-core-10.15.0\AndroidManifest.xml:29:17-49
 60            <!-- This entry makes MapboxSDKCommonInitializer discoverable. -->
 61            <meta-data
-61-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:21:13-23:52
+61-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:21:13-23:52
 62                android:name="com.mapbox.common.MapboxSDKCommonInitializer"
-62-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:22:17-76
+62-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:22:17-76
 63                android:value="androidx.startup" />
-63-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:23:17-49
+63-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:23:17-49
 64            <meta-data
 64-->[androidx.emoji2:emoji2:1.0.0] C:\Users\lino\.gradle\caches\transforms-3\223146ef33e3aa619e8b04649706e145\transformed\jetified-emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
 65                android:name="androidx.emoji2.text.EmojiCompatInitializer"
@@ -128,27 +128,27 @@
 70        </provider>
 71
 72        <receiver
-72-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:26:9-33:20
+72-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:26:9-33:20
 73            android:name="com.mapbox.common.location.LocationUpdatesReceiver"
-73-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:27:13-78
+73-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:27:13-78
 74            android:enabled="true"
-74-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:28:13-35
+74-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:28:13-35
 75            android:exported="false" >
-75-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:29:13-37
+75-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:29:13-37
 76            <intent-filter>
-76-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:30:13-32:29
+76-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:30:13-32:29
 77                <action android:name="com.mapbox.common.location.LocationUpdatesReceiver.ACTION_PROCESS_LOCATION_UPDATES" />
-77-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:31:17-125
-77-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:31:25-122
+77-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:31:17-125
+77-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:31:25-122
 78            </intent-filter>
 79        </receiver>
 80
 81        <service
-81-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:35:9-37:40
+81-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:35:9-37:40
 82            android:name="com.mapbox.common.LifecycleService"
-82-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:36:13-62
+82-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:36:13-62
 83            android:exported="false" />
-83-->[com.mapbox.common:common:23.6.0] C:\Users\lino\.gradle\caches\transforms-3\5931ae7452a9c0799073437df7546cd8\transformed\jetified-common-23.6.0\AndroidManifest.xml:37:13-37
+83-->[com.mapbox.common:common:23.7.0] C:\Users\lino\.gradle\caches\transforms-3\344bc0d5b660754ad7329cd7f35cdf68\transformed\jetified-common-23.7.0\AndroidManifest.xml:37:13-37
 84
 85        <meta-data
 85-->[com.facebook.soloader:soloader:0.10.5] C:\Users\lino\.gradle\caches\transforms-3\ec3312a013bd7d8a70466a1977a1dba4\transformed\jetified-soloader-0.10.5\AndroidManifest.xml:12:9-14:37

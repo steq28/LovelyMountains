@@ -6,16 +6,15 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {ResultCardSearch} from '../components/ResultCardSearch';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useTranslations} from '../hooks/useTranslations';
-import i18n from '../translations';
 import axios from 'axios';
-import { PrincipalWrapper } from '../components/PrincipalWrapper';
+import {PrincipalWrapper} from '../components/PrincipalWrapper';
+import {Keyboard} from 'react-native';
 
-export const SearchScreen = () => {
+export const SearchScreen = ({navigation}) => {
   const {tra} = useTranslations();
   const [autocomplete, setAutocomplete] = useState([]);
 
   const queryPlaces = async query => {
-    console.log(query);
     if (query.length > 4) {
       await axios
         .get(
@@ -25,19 +24,22 @@ export const SearchScreen = () => {
           //console.log(res.data.features);
           setAutocomplete(res.data.features);
         });
+    } else {
+      setAutocomplete([]);
     }
   };
 
   return (
-      <PrincipalWrapper>
-        <View style={{height: '10%'}}>
-          <SearchBox
-            icon={'arrow-back-outline'}
-            placeholder={tra('search.cerca')}
-            callback={queryPlaces}
-          />
-        </View>
-        <ScrollView style={{flexGrow: 1}}>
+    <PrincipalWrapper>
+      <View style={{height: '10%'}}>
+        <SearchBox
+          icon={'arrow-back-outline'}
+          placeholder={tra('search.cerca')}
+          callback={queryPlaces}
+        />
+      </View>
+      <ScrollView keyboardShouldPersistTaps={'always'} style={{flexGrow: 1}}>
+        {autocomplete.length > 0 && (
           <View style={{marginTop: 15}}>
             <Text style={styles.sectionTitle}>luoghi</Text>
             {autocomplete.length == 0 && (
@@ -66,13 +68,22 @@ export const SearchScreen = () => {
                     key={index}
                     isEnd={index == autocomplete.length - 1 ? true : false}
                     name={item.properties.name}
+                    callback={() => {
+                      Keyboard.dismiss();
+                      navigation.navigate('Mappa', {
+                        searchResult: true,
+                        searchCoordinates: item.geometry.coordinates,
+                      });
+                    }}
                     icon={'location-outline'}
                   />
                 ))}
               </View>
             )}
           </View>
+        )}
 
+        {autocomplete.length == 0 && (
           <View style={{marginTop: 20}}>
             <Text style={styles.sectionTitle}>recenti</Text>
             <ResultCardSearch
@@ -91,14 +102,9 @@ export const SearchScreen = () => {
               icon={'timer-outline'}
             />
           </View>
-          <Pressable
-            onPress={() => {
-              i18n.changeLanguage('en');
-            }}
-            style={{height: 100, width: 100, backgroundColor: 'red'}}
-          />
-        </ScrollView>
-      </PrincipalWrapper>
+        )}
+      </ScrollView>
+    </PrincipalWrapper>
   );
 };
 
