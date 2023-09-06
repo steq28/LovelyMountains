@@ -4,7 +4,7 @@ import { colors } from "../utils/colors"
 import { useTranslations } from "../hooks/useTranslations"
 import { useFocusEffect } from "@react-navigation/native"
 import { CardPercorso } from "../components/CardPercorso"
-import { BottonBase } from "../components/BottoneBase"
+import { BottoneBase } from "../components/BottoneBase"
 import { PrincipalWrapper } from "../components/PrincipalWrapper"
 
 export const Download = ()=>{
@@ -24,9 +24,9 @@ export const Download = ()=>{
                         <Text allowFontScaling={false} style={styles.titoloModal}>{tra("download.titoloModal")}</Text>
                         <Text allowFontScaling={false} style={styles.testoModal}>{tra("download.seiSicuro")}</Text>
                         <View style={{flexDirection:"row", width:"100%", alignItems:"center", justifyContent:"center", marginTop:15}}>
-                            <BottonBase text={tra("download.conferma")} onPress={()=>setShowModal(false)} />
+                            <BottoneBase text={tra("download.conferma")} onPress={()=>setShowModal(false)} />
                             <View style={{width:10}}></View>
-                            <BottonBase text={tra("download.annulla")} outlined onPress={()=>setShowModal(false)}/>
+                            <BottoneBase text={tra("download.annulla")} outlined onPress={()=>setShowModal(false)}/>
                         </View>
                     </View>
                 </View>

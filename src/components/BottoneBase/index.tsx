@@ -10,7 +10,7 @@ interface IBottoneBase{
     size?: "small" | "big"
 }
 
-export const BottonBase: FC<IBottoneBase> = ({text, onPress, outlined=false, fixedWidth, size}) =>{
+export const BottoneBase: FC<IBottoneBase> = ({text, onPress, outlined=false, fixedWidth, size}) =>{
     return(
         <Pressable style={[styles.wrapper, outlined && styles.wrapperOutlined, fixedWidth, size=="big" && styles.wrapperBig]} onPress={onPress}>
             <Text allowFontScaling={false} style={[styles.text, outlined && styles.textOutlined, size=="big" && styles.textBig]}>{text}</Text>
