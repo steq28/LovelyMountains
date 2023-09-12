@@ -51,8 +51,11 @@ export const SearchBox: FC<ISearchBox> = ({
                 navigation.goBack();
               }}
               style={{width: '10%'}}>
-              {!onPress && icon && <Icon name={icon} color={colors.medium} size={25} />}
-              {onPress && icon && (
+              {!onPress && <Icon name={icon} color={colors.medium} size={25} />}
+              {onPress && !hiker && (
+                <Icon name={nonHikerIcon} color={colors.medium} size={25} />
+              )}
+              {onPress && hiker && (
                 <LocalSvg
                   asset={require('../../assets/images/svg/logo-mountains-medium.svg')}
                   height={'100%'}

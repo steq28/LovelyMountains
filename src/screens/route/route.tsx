@@ -7,7 +7,7 @@ import {colors} from '../../utils/colors';
 import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {BottonBase} from '../../components/BottoneBase';
+import {BottoneBase} from '../../components/BottoneBase';
 
 export const Route = ({route, navigation}) => {
   const {searchStatus} = route?.params;
@@ -320,7 +320,7 @@ export const Route = ({route, navigation}) => {
             />
           </View>
           {/* TODO fix language */}
-          <BottonBase text={'Calcola Percorso'} onPress={() => calculate()} />
+          <BottoneBase text={'Calcola Percorso'} onPress={() => calculate()} />
         </SafeAreaView>
       </KeyboardAwareScrollView>
       <Pressable
