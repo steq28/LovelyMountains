@@ -1,7 +1,7 @@
 import React from 'react';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
 import {Route} from '../screens/route/route';
-import {percorsoSelezionato} from '../screens/route/percorsoSelezionato';
+import { PercorsoSelezionato } from '../screens/route/percorsoSelezionato';
 
 const Stack = createStackNavigator();
 
@@ -14,8 +14,8 @@ export const RouteStack = () => {
       }}>
       <Stack.Screen name="Route" component={Route} />
       <Stack.Screen
-        name="percorsoSelezionato"
-        component={percorsoSelezionato}
+        name="PercorsoSelezionato"
+        component={PercorsoSelezionato}
       />
     </Stack.Navigator>
   );

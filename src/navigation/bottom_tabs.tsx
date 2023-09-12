@@ -9,6 +9,7 @@ import {colors} from '../utils/colors';
 import {Settings} from '../screens/settings';
 import {MapStack} from './map_stack';
 import {SettingsStack} from './settings_stack';
+import { TransitionPresets } from '@react-navigation/stack';
 
 interface INavItem {
   props: any;
@@ -68,7 +69,7 @@ export const BottomTabsNavigation = () => {
           tabBarButton: props => (
             <NavItem
               props={props}
-              name={'Route'}
+              name={'RouteStack'}
               icon={
                 props?.accessibilityState?.selected
                   ? 'trail-sign'
@@ -79,7 +80,7 @@ export const BottomTabsNavigation = () => {
           tabBarInactiveTintColor: colors.light,
           tabBarActiveTintColor: colors.primary,
         }}
-        name="Route"
+        name="RouteStack"
         component={RouteStack}
       />
       <Tab.Screen
