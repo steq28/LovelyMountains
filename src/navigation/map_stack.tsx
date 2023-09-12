@@ -19,6 +19,7 @@ export const MapStack = () => {
         headerShown: false,
         //animationEnabled:false,
         cardStyleInterpolator: forFade,
+        freezeOnBlur:false
       }}>
       <Stack.Screen
         name="Mappa"

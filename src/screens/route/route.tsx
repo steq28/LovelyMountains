@@ -325,7 +325,7 @@ export const Route = ({route, navigation}) => {
       </KeyboardAwareScrollView>
       <Pressable
         style={{height: 100, width: 100, backgroundColor: 'red'}}
-        onPress={() => navigation.navigate('percorsoSelezionato')}
+        onPress={() => navigation.navigate('PercorsoSelezionato')}
       />
     </View>
   );
