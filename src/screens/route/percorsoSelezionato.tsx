@@ -5,13 +5,11 @@ import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 import {colors} from '../../utils/colors';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { PrincipalWrapper } from '../../components/PrincipalWrapper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import MapboxGL, { Camera } from '@rnmapbox/maps';
 import { BottoneBase } from '../../components/BottoneBase';
-import { ScrollView } from 'react-native-gesture-handler';
 
 export const PercorsoSelezionato = ({navigation}) => {
   const {tra} = useTranslations();
