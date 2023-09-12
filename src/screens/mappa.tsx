@@ -12,57 +12,58 @@ import {
 import GetLocation from 'react-native-get-location';
 import MapboxGL, {Camera} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { SearchBox } from '../components/SearchBox';
-import { colors } from '../utils/colors';
-import { useTranslations } from '../hooks/useTranslations';
-import { useFocusEffect } from '@react-navigation/native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SearchBox} from '../components/SearchBox';
+import {colors} from '../utils/colors';
+import {useTranslations} from '../hooks/useTranslations';
+import {useFocusEffect} from '@react-navigation/native';
 import SystemSetting from 'react-native-system-setting';
 import React = require('react');
-import { PrincipalWrapper } from '../components/PrincipalWrapper';
-import { useDispatch } from 'react-redux';
+import {PrincipalWrapper} from '../components/PrincipalWrapper';
+import {useDispatch} from 'react-redux';
 import i18n from '../translations';
-import { setLanguage } from '../redux/settingsSlice';
+import {setLanguage} from '../redux/settingsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
 );
 
-export const Mappa = ({navigation}) => {
-  const [location, setLocation] = useState([0, 0]);
+export const Mappa = ({route, navigation}) => {
+  const {searchResult, searchCoordinates} = route?.params;
+  const [currentLocation, setcurrentLocation] = useState([0, 0]);
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const camera = useRef<Camera>(null);
   const map = useRef<MapboxGL.MapView>(null);
   const insets = useSafeAreaInsets();
   const {tra} = useTranslations();
-  const dispatch= useDispatch()
+  const dispatch = useDispatch();
 
   const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        sethasLocationPermissions(true);
-        console.log('You can use the location');
-      } else {
-        console.log('location permission denied');
+    if (Platform.OS == 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          sethasLocationPermissions(true);
+          console.log('You can use the location');
+        } else {
+          console.log('location permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
       }
-    } catch (err) {
-      console.warn(err);
     }
   };
 
-  
-  
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('lingua');
       if (value !== null) {
-        i18n.changeLanguage(value)
-        dispatch(setLanguage(value))
+        i18n.changeLanguage(value);
+        dispatch(setLanguage(value));
       }
     } catch (e) {
       // error reading value
@@ -78,51 +79,78 @@ export const Mappa = ({navigation}) => {
   //   );
   //   console.log(features);
   // };
-  const getPosition = (zoomCamera=false) =>{
+  const getPosition = (zoomCamera = false) => {
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 15000,
     })
       .then(location => {
-        setLocation([location.longitude, location.latitude]);
-        if(zoomCamera){
+        setcurrentLocation([location.longitude, location.latitude]);
+        if (zoomCamera) {
           camera.current?.setCamera({
             centerCoordinate: [location.longitude, location.latitude],
             zoomLevel: 14,
           });
-          setLoading(false)
+          setLoading(false);
         }
       })
       .catch(error => {
         const {code, message} = error;
         console.info(code, message);
-        setLoading(false)
+        setLoading(false);
       });
-  }
+  };
+
+  useEffect(() => {
+    if (searchResult) {
+      camera.current?.setCamera({
+        centerCoordinate: searchCoordinates,
+        zoomLevel: 14,
+        animationMode: 'flyTo',
+      });
+    }
+  }, [searchCoordinates]);
 
   useEffect(() => {
     getData();
     requestLocationPermission();
-    getPosition()
-    if(JSON.stringify(location) == JSON.stringify([0,0]))
+    getPosition();
+    if (JSON.stringify(currentLocation) == JSON.stringify([0, 0]))
       camera.current?.setCamera({
         centerCoordinate: [9.365615, 45.602012],
       });
-    StatusBar.setTranslucent(true)
-    StatusBar.setBackgroundColor("transparent")
+    Platform.OS === 'android' && StatusBar.setTranslucent(true);
+    Platform.OS === 'android' && StatusBar.setBackgroundColor('transparent');
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      StatusBar.setBackgroundColor('transparent')
-    }, [])
+      Platform.OS === 'android' && StatusBar.setBackgroundColor('transparent');
+    }, []),
   );
 
   return (
     <PrincipalWrapper fullscreen>
-      <StatusBar barStyle={'dark-content'} backgroundColor={'transparent'} translucent/>
-      <View style={{position:'absolute', top:0, width:'100%',alignItems:'center', zIndex:100, paddingTop: Platform.OS==='android' ? StatusBar.currentHeight : insets.top}}>
-        <SearchBox icon={'prism-outline'} placeholder={tra('search.cerca')} onPress={()=>navigation.navigate('SearchScreen')}/>
+      <StatusBar
+        barStyle={'dark-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
+      <View
+        style={{
+          position: 'absolute',
+          top: 0,
+          width: '100%',
+          alignItems: 'center',
+          zIndex: 100,
+          paddingTop:
+            Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
+        }}>
+        <SearchBox
+          icon={'prism-outline'}
+          placeholder={tra('search.cerca')}
+          onPress={() => navigation.navigate('SearchScreen')}
+        />
       </View>
       <View style={styles.container}>
         <MapboxGL.MapView
@@ -141,36 +169,54 @@ export const Mappa = ({navigation}) => {
             right: 10,
           }}
           styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d">
-          <MapboxGL.UserLocation showsUserHeadingIndicator={true} animated androidRenderMode={'compass'} />
+          <MapboxGL.UserLocation
+            showsUserHeadingIndicator={true}
+            animated
+            androidRenderMode={'compass'}
+          />
+          {searchResult && (
+            <MapboxGL.PointAnnotation
+              id="searchResult"
+              title="searchResult"
+              coordinate={searchCoordinates}
+            />
+          )}
           <Camera ref={camera} />
         </MapboxGL.MapView>
         <Pressable
           style={styles.button}
           disabled={loading}
           onPress={() => {
-            setLoading(true)
-            
-            SystemSetting.isLocationEnabled().then((enable)=>{
-              if(enable){
-                if(JSON.stringify(location)!= JSON.stringify([0,0])){
-                  camera.current?.setCamera({
-                    centerCoordinate: location,
-                    zoomLevel: 14,
-                    animationMode:'flyTo',
-                  });
-                  setLoading(false)
-                  StatusBar.setTranslucent(true)
-                  StatusBar.setBackgroundColor("transparent")
-                }else
-                  getPosition(true)
-              }else{
-                ToastAndroid.show(tra("mappa.abilitaGeo"), ToastAndroid.SHORT);
-                setLoading(false)
-              }
-            })
+            setLoading(true);
 
+            SystemSetting.isLocationEnabled().then(enable => {
+              if (enable) {
+                if (JSON.stringify(currentLocation) != JSON.stringify([0, 0])) {
+                  camera.current?.setCamera({
+                    centerCoordinate: currentLocation,
+                    zoomLevel: 14,
+                    animationMode: 'flyTo',
+                  });
+                  setLoading(false);
+                  Platform.OS === 'android' && StatusBar.setTranslucent(true);
+                  Platform.OS === 'android' &&
+                    StatusBar.setBackgroundColor('transparent');
+                } else getPosition(true);
+              } else {
+                ToastAndroid.show(tra('mappa.abilitaGeo'), ToastAndroid.SHORT);
+                setLoading(false);
+              }
+            });
           }}>
-          {loading ? <ActivityIndicator size={35} color={colors.primary}/> : <Icon name={'navigate-circle-outline'} color={'#333333'} size={35} />}
+          {loading ? (
+            <ActivityIndicator size={35} color={colors.primary} />
+          ) : (
+            <Icon
+              name={'navigate-circle-outline'}
+              color={'#333333'}
+              size={35}
+            />
+          )}
         </Pressable>
         <Pressable
           style={[styles.button, {bottom: 30}]}
@@ -187,7 +233,7 @@ export const Mappa = ({navigation}) => {
           <Icon name={'prism-outline'} color={'#333333'} size={30} />
         </Pressable> */}
       </View>
-      </PrincipalWrapper>
+    </PrincipalWrapper>
   );
 };
 
@@ -213,6 +259,6 @@ const styles = StyleSheet.create({
     right: 10,
     borderRadius: 30,
     padding: 9,
-    elevation: 4
+    elevation: 4,
   },
 });

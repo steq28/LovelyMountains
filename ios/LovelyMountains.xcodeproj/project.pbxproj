@@ -14,12 +14,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-LovelyMountains-LovelyMountainsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-LovelyMountains-LovelyMountainsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		CC4C7815C1C14D60A80BBB93 /* InriaSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 639085E4529D41888FB36AF7 /* InriaSans-Bold.ttf */; };
-		0FFF2CE7E3554BF3A4ACEFDA /* InriaSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B3711C502ADD4E36AC54DAB7 /* InriaSans-BoldItalic.ttf */; };
-		13C87504D0104AD7A31065CE /* InriaSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 154B383991E442B6A3D98EB2 /* InriaSans-Italic.ttf */; };
-		D61E1AC40CF04380A4BE0613 /* InriaSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B625120A80F41439204649C /* InriaSans-Light.ttf */; };
-		04F3F653DAD2465391F6AD0A /* InriaSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52CD48A5DFE149479E760E4A /* InriaSans-LightItalic.ttf */; };
-		02B47ADAD8A846B59767FA91 /* InriaSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE54EDD783994DFC97D67742 /* InriaSans-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,12 +44,6 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LovelyMountains/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-LovelyMountains-LovelyMountainsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovelyMountains-LovelyMountainsTests.release.xcconfig"; path = "Target Support Files/Pods-LovelyMountains-LovelyMountainsTests/Pods-LovelyMountains-LovelyMountainsTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		639085E4529D41888FB36AF7 /* InriaSans-Bold.ttf */ = {isa = PBXFileReference; name = "InriaSans-Bold.ttf"; path = "../src/assets/fonts/InriaSans-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B3711C502ADD4E36AC54DAB7 /* InriaSans-BoldItalic.ttf */ = {isa = PBXFileReference; name = "InriaSans-BoldItalic.ttf"; path = "../src/assets/fonts/InriaSans-BoldItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		154B383991E442B6A3D98EB2 /* InriaSans-Italic.ttf */ = {isa = PBXFileReference; name = "InriaSans-Italic.ttf"; path = "../src/assets/fonts/InriaSans-Italic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		6B625120A80F41439204649C /* InriaSans-Light.ttf */ = {isa = PBXFileReference; name = "InriaSans-Light.ttf"; path = "../src/assets/fonts/InriaSans-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		52CD48A5DFE149479E760E4A /* InriaSans-LightItalic.ttf */ = {isa = PBXFileReference; name = "InriaSans-LightItalic.ttf"; path = "../src/assets/fonts/InriaSans-LightItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		AE54EDD783994DFC97D67742 /* InriaSans-Regular.ttf */ = {isa = PBXFileReference; name = "InriaSans-Regular.ttf"; path = "../src/assets/fonts/InriaSans-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,7 +122,6 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
-				4DA11A4282CA46EC9AFFED8F /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -160,20 +147,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		4DA11A4282CA46EC9AFFED8F /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				639085E4529D41888FB36AF7 /* InriaSans-Bold.ttf */,
-				B3711C502ADD4E36AC54DAB7 /* InriaSans-BoldItalic.ttf */,
-				154B383991E442B6A3D98EB2 /* InriaSans-Italic.ttf */,
-				6B625120A80F41439204649C /* InriaSans-Light.ttf */,
-				52CD48A5DFE149479E760E4A /* InriaSans-LightItalic.ttf */,
-				AE54EDD783994DFC97D67742 /* InriaSans-Regular.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -271,12 +244,6 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				CC4C7815C1C14D60A80BBB93 /* InriaSans-Bold.ttf in Resources */,
-				0FFF2CE7E3554BF3A4ACEFDA /* InriaSans-BoldItalic.ttf in Resources */,
-				13C87504D0104AD7A31065CE /* InriaSans-Italic.ttf in Resources */,
-				D61E1AC40CF04380A4BE0613 /* InriaSans-Light.ttf in Resources */,
-				04F3F653DAD2465391F6AD0A /* InriaSans-LightItalic.ttf in Resources */,
-				02B47ADAD8A846B59767FA91 /* InriaSans-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -597,7 +564,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -625,12 +592,14 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -668,7 +637,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -688,12 +657,14 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

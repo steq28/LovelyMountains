@@ -1,10 +1,13 @@
+
 import React, { useCallback, useRef } from 'react';
 import {Dimensions, Platform, Pressable, SafeAreaView, StyleSheet, View} from 'react-native';
+
 import {useTranslations} from '../../hooks/useTranslations';
 import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 import {colors} from '../../utils/colors';
+
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import { PrincipalWrapper } from '../../components/PrincipalWrapper';
 import Icon from 'react-native-vector-icons/Ionicons';

@@ -41,17 +41,17 @@ export const Download = ()=>{
 }
 
 export const styles = StyleSheet.create({
-    titoloModal:{
-        color:colors.primary,
-        fontFamily:"InriaSans-Bold",
-        fontSize:20,
-        textAlign:"center",
-        marginBottom:15
-    },
-    testoModal:{
-        color:colors.primary,
-        fontFamily:"InriaSans-Light",
-        fontSize:17,
-        textAlign:"center",
-    }
-})
+  titoloModal: {
+    color: colors.primary,
+    fontFamily: 'InriaSans-Bold',
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 15,
+  },
+  testoModal: {
+    color: colors.primary,
+    fontFamily: 'InriaSans-Light',
+    fontSize: 17,
+    textAlign: 'center',
+  },
+});
