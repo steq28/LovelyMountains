@@ -34,7 +34,9 @@ export const Settings = ({navigation}) => {
           isEnd
           name={tra('impostazioni.chi')}
           icon={'heart-circle-outline'}
-          onPress={undefined}
+          onPress={() => {
+            navigation.navigate('AboutUs');
+          }}
         />
       </View>
     </PrincipalWrapper>
