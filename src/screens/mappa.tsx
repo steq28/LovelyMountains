@@ -41,18 +41,20 @@ export const Mappa = ({route, navigation}) => {
   const dispatch = useDispatch();
 
   const requestLocationPermission = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        sethasLocationPermissions(true);
-        console.log('You can use the location');
-      } else {
-        console.log('location permission denied');
+    if (Platform.OS == 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        );
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          sethasLocationPermissions(true);
+          console.log('You can use the location');
+        } else {
+          console.log('location permission denied');
+        }
+      } catch (err) {
+        console.warn(err);
       }
-    } catch (err) {
-      console.warn(err);
     }
   };
 
@@ -117,13 +119,13 @@ export const Mappa = ({route, navigation}) => {
       camera.current?.setCamera({
         centerCoordinate: [9.365615, 45.602012],
       });
-    StatusBar.setTranslucent(true);
-    StatusBar.setBackgroundColor('transparent');
+    Platform.OS === 'android' && StatusBar.setTranslucent(true);
+    Platform.OS === 'android' && StatusBar.setBackgroundColor('transparent');
   }, []);
 
   useFocusEffect(
     React.useCallback(() => {
-      StatusBar.setBackgroundColor('transparent');
+      Platform.OS === 'android' && StatusBar.setBackgroundColor('transparent');
     }, []),
   );
 
@@ -196,8 +198,9 @@ export const Mappa = ({route, navigation}) => {
                     animationMode: 'flyTo',
                   });
                   setLoading(false);
-                  StatusBar.setTranslucent(true);
-                  StatusBar.setBackgroundColor('transparent');
+                  Platform.OS === 'android' && StatusBar.setTranslucent(true);
+                  Platform.OS === 'android' &&
+                    StatusBar.setBackgroundColor('transparent');
                 } else getPosition(true);
               } else {
                 ToastAndroid.show(tra('mappa.abilitaGeo'), ToastAndroid.SHORT);
