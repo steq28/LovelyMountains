@@ -147,6 +147,7 @@ export const Mappa = ({route, navigation}) => {
             Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
         }}>
         <SearchBox
+          hiker={true}
           icon={'prism-outline'}
           placeholder={tra('search.cerca')}
           onPress={() => navigation.navigate('SearchScreen')}

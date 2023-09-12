@@ -10,7 +10,9 @@ import {LocalSvg} from 'react-native-svg';
 interface ISearchBox {
   icon?: string;
   placeholder: string;
-  callback?: () => string | null;
+  hiker: boolean;
+  nonHikerIcon: string;
+  callback: () => string | null;
   onPress: () => void | null;
   small?: boolean
 }
@@ -18,6 +20,8 @@ interface ISearchBox {
 export const SearchBox: FC<ISearchBox> = ({
   icon,
   placeholder,
+  hiker,
+  nonHikerIcon,
   onPress = null,
   callback = null,
   small = false,

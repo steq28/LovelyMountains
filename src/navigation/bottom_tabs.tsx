@@ -9,6 +9,7 @@ import {colors} from '../utils/colors';
 import {Settings} from '../screens/settings';
 import {MapStack} from './map_stack';
 import {SettingsStack} from './settings_stack';
+import {Platform} from 'react-native';
 import { TransitionPresets } from '@react-navigation/stack';
 
 interface INavItem {
@@ -46,7 +47,10 @@ export const BottomTabsNavigation = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        tabBarStyle: {height: 70, borderTopWidth: 0},
+        tabBarStyle: {
+          height: Platform.OS == 'android' ? 70 : 90,
+          borderTopWidth: 0,
+        },
       }}
       sceneContainerStyle={{backgroundColor: colors.secondary}}>
       <Tab.Screen

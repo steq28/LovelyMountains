@@ -29,7 +29,14 @@ export const MapStack = () => {
           searchCoordinates: [0, 0],
         }}
       />
-      <Stack.Screen name="SearchScreen" component={SearchScreen} />
+      <Stack.Screen
+        name="SearchScreen"
+        component={SearchScreen}
+        initialParams={{
+          fromRoute: false,
+          pickEnabled: false,
+        }}
+      />
     </Stack.Navigator>
   );
 };

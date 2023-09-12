@@ -25,7 +25,8 @@ export const PercorsoSelezionato = ({navigation}) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      StatusBar.setBackgroundColor(colors.secondary);
+      Platform.OS === 'android' &&
+        StatusBar.setBackgroundColor(colors.secondary);
     }, []),
   );
 
