@@ -10,6 +10,8 @@ import {LocalSvg} from 'react-native-svg';
 interface ISearchBox {
   icon: string;
   placeholder: string;
+  hiker: boolean;
+  nonHikerIcon: string;
   callback: () => string | null;
   onPress: () => void | null;
 }
@@ -17,6 +19,8 @@ interface ISearchBox {
 export const SearchBox: FC<ISearchBox> = ({
   icon,
   placeholder,
+  hiker,
+  nonHikerIcon,
   onPress = null,
   callback = null,
 }) => {
@@ -45,7 +49,10 @@ export const SearchBox: FC<ISearchBox> = ({
           }}
           style={{width: '10%'}}>
           {!onPress && <Icon name={icon} color={colors.medium} size={25} />}
-          {onPress && (
+          {onPress && !hiker && (
+            <Icon name={nonHikerIcon} color={colors.medium} size={25} />
+          )}
+          {onPress && hiker && (
             <LocalSvg
               asset={require('../../assets/images/svg/logo-mountains-medium.svg')}
               height={'100%'}

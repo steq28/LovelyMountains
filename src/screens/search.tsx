@@ -10,7 +10,8 @@ import axios from 'axios';
 import {PrincipalWrapper} from '../components/PrincipalWrapper';
 import {Keyboard} from 'react-native';
 
-export const SearchScreen = ({navigation}) => {
+export const SearchScreen = ({route, navigation}) => {
+  const {pickEnabled, fromRoute, searchInput, searchStatus} = route?.params;
   const {tra} = useTranslations();
   const [autocomplete, setAutocomplete] = useState([]);
 
@@ -70,10 +71,20 @@ export const SearchScreen = ({navigation}) => {
                     name={item.properties.name}
                     callback={() => {
                       Keyboard.dismiss();
-                      navigation.navigate('Mappa', {
-                        searchResult: true,
-                        searchCoordinates: item.geometry.coordinates,
-                      });
+                      if (!fromRoute) {
+                        navigation.navigate('Mappa', {
+                          searchResult: true,
+                          searchCoordinates: item.geometry.coordinates,
+                        });
+                      } else {
+                        searchStatus[searchInput] = {
+                          searchName: item.properties.name,
+                          searchCoordinates: item.geometry.coordinates,
+                        };
+                        navigation.navigate('Route', {
+                          searchStatus: searchStatus,
+                        });
+                      }
                     }}
                     icon={'location-outline'}
                   />

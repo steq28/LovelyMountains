@@ -8,7 +8,7 @@ import {colors} from '../../utils/colors';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-export const percorsoSelezionato = () => {
+export const PercorsoSelezionato = () => {
   const {tra} = useTranslations();
   const insets = useSafeAreaInsets();
 
@@ -18,7 +18,8 @@ export const percorsoSelezionato = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      StatusBar.setBackgroundColor(colors.secondary);
+      Platform.OS === 'android' &&
+        StatusBar.setBackgroundColor(colors.secondary);
     }, []),
   );
 
