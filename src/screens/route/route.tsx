@@ -62,7 +62,7 @@ export const Route = ({route, navigation}) => {
     }).then(resp => {
       let a = resp.json();
       a.then(data => {
-        console.log(data);
+        navigation.navigate('PercorsoSelezionato', {track: data});
       });
       // this.setState(
       //   {

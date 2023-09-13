@@ -10,7 +10,7 @@ import {
   ToastAndroid,
 } from 'react-native';
 import GetLocation from 'react-native-get-location';
-import MapboxGL, {Camera} from '@rnmapbox/maps';
+import MapboxGL, {Camera, PointAnnotation} from '@rnmapbox/maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SearchBox} from '../components/SearchBox';
@@ -103,10 +103,10 @@ export const Mappa = ({route, navigation}) => {
 
   useEffect(() => {
     if (searchResult) {
+      console.log('fired');
       camera.current?.setCamera({
         centerCoordinate: searchCoordinates,
         zoomLevel: 14,
-        animationMode: 'flyTo',
       });
     }
   }, [searchCoordinates]);
@@ -179,8 +179,18 @@ export const Mappa = ({route, navigation}) => {
             <MapboxGL.PointAnnotation
               id="searchResult"
               title="searchResult"
-              coordinate={searchCoordinates}
-            />
+              coordinate={searchCoordinates}>
+              <View
+                style={{
+                  height: 30,
+                  width: 30,
+                  backgroundColor: 'red',
+                  borderRadius: 50,
+                  borderColor: '#fff',
+                  borderWidth: 3,
+                }}
+              />
+            </MapboxGL.PointAnnotation>
           )}
           <Camera ref={camera} />
         </MapboxGL.MapView>
