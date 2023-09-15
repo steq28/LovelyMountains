@@ -2,6 +2,7 @@ import React from 'react';
 import {TransitionPresets, createStackNavigator} from '@react-navigation/stack';
 import {Route} from '../screens/route/route';
 import {PercorsoSelezionato} from '../screens/route/percorsoSelezionato';
+import {SaveTrack} from '../screens/route/saveTrack';
 
 const Stack = createStackNavigator();
 
@@ -27,6 +28,7 @@ export const RouteStack = () => {
         name="PercorsoSelezionato"
         component={PercorsoSelezionato}
       />
+      <Stack.Screen name="SaveTrack" component={SaveTrack} />
     </Stack.Navigator>
   );
 };

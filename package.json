@@ -23,8 +23,10 @@
     "react-dom": "^18.2.0",
     "react-i18next": "^13.2.0",
     "react-native": "0.72.4",
+    "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.12.1",
     "react-native-get-location": "^4.0.0",
+    "react-native-image-picker": "^7.0.0",
     "react-native-ionicons": "^4.6.5",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-navigation-bar-color": "^2.0.2",
@@ -38,7 +40,8 @@
     "react-native-system-setting": "^1.7.6",
     "react-native-vector-icons": "^10.0.0",
     "react-redux": "^8.1.2",
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "victory-native": "^36.6.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
