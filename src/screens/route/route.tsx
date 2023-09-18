@@ -278,12 +278,7 @@ export const Route = ({route, navigation}) => {
               hiker={false}
               nonHikerIcon={'golf-outline'}
               icon={'arrow-back-outline'}
-              // placeholder={
-              //   searchState[0]?.searchName
-              //     ? searchStatus[0].searchName
-              //     : tra('search.cerca')
-              // }
-              placeholder={"Luogo di partenza"}
+              placeholder={tra("route.partenza")}
               value={Object.keys(routeStack[0]).length !== 0 ? routeStack[0].searchName : ""}
               callback={queryPlaces}
               onPress={() =>
@@ -307,7 +302,7 @@ export const Route = ({route, navigation}) => {
               hiker={false}
               nonHikerIcon={'pin-outline'}
               icon={'arrow-back-outline'}
-              placeholder={"Luogo di arrivo"}
+              placeholder={tra("route.arrivo")}
               value={Object.keys(routeStack[1]).length !== 0 ? routeStack[1].searchName : ""}
               callback={queryPlaces}
               onPress={() =>{
@@ -316,13 +311,12 @@ export const Route = ({route, navigation}) => {
                     fromRoute: true,
                     searchInput: 1,
                   })
-                  
                 }
               }
             />
           </View>
           {/* TODO fix language */}
-          <BottoneBase text={'Calcola Percorso'} isLoading={loading} onPress={() => calculate()} />
+          <BottoneBase text={tra("route.calcolaPercorso")} isLoading={loading} onPress={() => calculate()} />
         </SafeAreaView>
       </KeyboardAwareScrollView>
       <Pressable

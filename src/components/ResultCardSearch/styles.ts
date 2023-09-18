@@ -14,9 +14,9 @@ export const styles = StyleSheet.create({
         //marginTop:10
     },
     placeText:{
-        fontFamily:"InriaSans-Light",
-        width:"88%",
-        maxWidth:"88%",
+        fontFamily:"InriaSans-Regular",
+        width:"100%",
+        maxWidth:"100%",
         color:colors.primary,
     }
 })

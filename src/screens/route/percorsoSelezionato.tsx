@@ -3,14 +3,12 @@ import {
   Dimensions,
   Platform,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
 } from 'react-native';
 
 import {useTranslations} from '../../hooks/useTranslations';
-import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 import {colors} from '../../utils/colors';
@@ -40,10 +38,6 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   const [pavimentazione, setPavimentazione] = React.useState([]);
   const map = useRef<MapboxGL.MapView>(null);
   const camera = useRef<Camera>(null);
-
-  const queryPlaces = async query => {
-    console.log('sium');
-  };
 
   const getTrailDifficulty = e => {
     let max = 0;
@@ -358,13 +352,13 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             paddingHorizontal: 30
           }}>
           <BottoneBase
-            text={'Apri Mappa'}
+            text={tra('percorsoSelezionato.apriMappa')}
             fixedWidth={{marginRight: 10, flex:1}}
 
             onPress={() => {}}
           />
           <BottoneBase
-            text={'Salva tracciato offline'}
+            text={tra('percorsoSelezionato.salvaTracciato')}
             fixedWidth={{flex:2}}
             outlined
             onPress={() => navigation.navigate('SaveTrack', {track: track})}
@@ -372,18 +366,18 @@ export const PercorsoSelezionato = ({route, navigation}) => {
         </View>
 
         <View style={[{marginTop:30, paddingHorizontal:30}]}>
-          <Text style={styles.sectionText}>DATA</Text>
+          <Text style={styles.sectionText}>{tra('percorsoSelezionato.info')}</Text>
           <View style={{flexDirection: 'column'}}>
             <Text style={styles.subText}>
-              Difficulty:{' '}
+              {tra('percorsoSelezionato.difficolta')}
               <Text style={{fontFamily:"InriaSans-Bold"}}>
-              {getTrailDifficulty(
-                track.features[0].properties.extras.traildifficulty.summary,
-              )}
+                {getTrailDifficulty(
+                  track.features[0].properties.extras.traildifficulty.summary,
+                )}
               </Text>
             </Text>
             <Text style={styles.subText}>
-              Distance:{' '}
+              {tra('percorsoSelezionato.distanza')}
               <Text style={{fontFamily:"InriaSans-Bold"}}>
                 {(
                   Math.round(
@@ -396,7 +390,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               </Text>
             </Text>
             <Text style={styles.subText}>
-              Duration:{' '}
+              {tra('percorsoSelezionato.durata')}
               <Text style={{fontFamily:"InriaSans-Bold"}}>
                 {(
                   Math.round(
@@ -409,10 +403,12 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               </Text>
             </Text>
             <Text style={styles.subText}>
-              Elevation gain: <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.ascent.toString()} m</Text>
+              {tra('percorsoSelezionato.dislivello')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.ascent.toString()} m</Text>
             </Text>
             <Text style={styles.subText}>
-              Elevation loss: <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.descent.toString()} m</Text>
+              {tra('percorsoSelezionato.perditaQuota')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.descent.toString()} m</Text>
             </Text>
           </View>
         </View>
@@ -420,7 +416,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
         {readytToRender && (
           <View>
             <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>ELEVATION:</Text>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
               <VictoryChart
                 width={Dimensions.get('window').width}
                 height={400}
@@ -443,18 +439,18 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             </View>
             
             <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>PENDENZA</Text>
-              <VictoryStack theme={VictoryTheme.material} height={100}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pendenza')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
                 {pendenza.map(item => (
-                  <VictoryBar barWidth={20} horizontal data={[item]} />
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
                 ))}
               </VictoryStack>
-              <View style={{marginLeft: 50, display: 'flex'}}>
+              <View style={{marginLeft: 50, display: 'flex', height:150}}>
                 <VictoryLegend
                   theme={VictoryTheme.material}
                   width={Dimensions.get('window').width}
                   height={120}
-                  title="Legend"
+                  title={tra('percorsoSelezionato.legenda')}
                   centerTitle
                   data={pendenza.map(item => ({name: item.x}))}
                 />
@@ -462,17 +458,17 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             </View>
             
             <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>PAVIMENTAZIONE</Text>
-              <VictoryStack theme={VictoryTheme.material} height={100}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pavimentazione')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
                 {pavimentazione.map(item => (
-                  <VictoryBar barWidth={20} horizontal data={[item]} />
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
                 ))}
               </VictoryStack>
               <View style={{marginLeft: 10, display: 'flex', height:200}}>
                 <VictoryLegend
                   theme={VictoryTheme.material}
                   width={Dimensions.get('window').width}
-                  title="Legend"
+                  title={tra('percorsoSelezionato.legenda')}
                   centerTitle
                   borderPadding={20}
                   data={pavimentazione.map(item => ({name: item.x}))}
@@ -499,13 +495,14 @@ const styles = StyleSheet.create({
     fontSize:18,
     color:colors.primary,
     width:'100%',
-    marginBottom: 5
+    marginBottom: 8,
+    textTransform:"uppercase"
   },
   subText:{
     fontFamily:'InriaSans-Regular',
     fontSize:16,
     color:colors.primary,
     width:'100%',
-    marginBottom: 2
+    marginBottom: 3
   }
 });

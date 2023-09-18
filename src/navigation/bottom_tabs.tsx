@@ -75,7 +75,7 @@ export const BottomTabsNavigation = () => {
           searchResult: false,
           searchCoordinates: [0, 0],
         }}
-        name="Map"
+        name="Mappa"
         component={Mappa}
       />
       <Tab.Screen

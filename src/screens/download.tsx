@@ -72,22 +72,9 @@ export const Download = () => {
         transparent
         statusBarTranslucent>
         <View
-          style={{
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(30,30,30,0.6)',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingHorizontal: 30,
-          }}>
+          style={styles.modalBackground}>
           <View
-            style={{
-              backgroundColor: colors.secondary,
-              width: '100%',
-              borderRadius: 10,
-              paddingHorizontal: 20,
-              paddingVertical: 20,
-            }}>
+            style={styles.modalWrapper}>
             <Text allowFontScaling={false} style={styles.titoloModal}>
               {tra('download.titoloModal')}
             </Text>
@@ -141,7 +128,9 @@ export const Download = () => {
             />
           ))
           :
-          <Text style={{alignSelf:"center", textAlignVertical:"center", height: Dimensions.get("window").height/1.3, fontFamily:"InriaSans-Light", color:colors.medium}}>Non ci sono percorsi offline salvati</Text>
+          <Text style={styles.noPercorsi}>
+            {tra("download.nonPresenti")}
+          </Text>
         }
       </ScrollView>
     </PrincipalWrapper>
@@ -149,6 +138,21 @@ export const Download = () => {
 };
 
 export const styles = StyleSheet.create({
+  modalBackground:{
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(30,30,30,0.6)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+  },
+  modalWrapper:{
+    backgroundColor: colors.secondary,
+    width: '100%',
+    borderRadius: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
+  },
   titoloModal: {
     color: colors.primary,
     fontFamily: 'InriaSans-Bold',
@@ -162,4 +166,11 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
   },
+  noPercorsi:{
+    alignSelf:"center",
+    textAlignVertical:"center",
+    height: Dimensions.get("window").height/1.3,
+    fontFamily:"InriaSans-Light",
+    color:colors.medium
+  }
 });

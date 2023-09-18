@@ -104,10 +104,10 @@ export const SaveTrack = ({route, navigation}) => {
               paddingVertical: 20,
             }}>
             <Text allowFontScaling={false} style={styles.titoloModal}>
-              Nome percorso già presente
+              {tra("saveTrack.percorsoEsiste")}
             </Text>
             <Text allowFontScaling={false} style={styles.testoModal}>
-              Attenzione, il nome del percorso che hai scelto è già stato utilizzato. Vuoi sovrascrivere il file?
+              {tra("saveTrack.textModal")}
             </Text>
             <View
               style={{
@@ -118,7 +118,7 @@ export const SaveTrack = ({route, navigation}) => {
                 marginTop: 15,
               }}>
               <BottoneBase
-                text={"Sovrascrivi"}
+                text={tra("saveTrack.sovrascrivi")}
                 onPress={() => {
                   RNFS.writeFile(fileUri, JSON.stringify(track), 'utf8').then((result) => {
                     navigation.navigate('Download');
