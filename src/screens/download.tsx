@@ -17,19 +17,24 @@ import {CardPercorso} from '../components/CardPercorso';
 import {BottoneBase} from '../components/BottoneBase';
 import {PrincipalWrapper} from '../components/PrincipalWrapper';
 import RNFS from 'react-native-fs';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPercorsiOffline } from '../redux/settingsSlice';
 
 export const Download = () => {
   const {tra} = useTranslations();
   const [showModal, setShowModal] = useState(false);
   const [files, setFiles] = useState([]);
   const [deleteFile, setDeleteFile] = useState('');
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  
+  const {percorsiOffline} = useSelector(state => state.settings)
+  const dispatch = useDispatch()
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    setTimeout(() => {
+    getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`).then(() => {
       setRefreshing(false);
-    }, 2000);
+    });
   }, []);
 
   const getFileContent = async path => {
@@ -41,11 +46,16 @@ export const Download = () => {
       item.image = c[1];
       return item;
     });
-    setFiles(reader);
+    dispatch(setPercorsiOffline(reader));
   };
+
   useEffect(() => {
-    getFileContent(RNFS.DocumentDirectoryPath);
+    getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`);
   }, []);
+
+  useEffect(()=>{
+    console.log(percorsiOffline)
+  },[percorsiOffline])
 
   useFocusEffect(
     React.useCallback(() => {
@@ -96,6 +106,7 @@ export const Download = () => {
                 text={tra('download.conferma')}
                 onPress={() => {
                   RNFS.unlink(deleteFile);
+                  getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`);
                   setShowModal(false);
                 }}
               />
@@ -115,19 +126,23 @@ export const Download = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         style={{maxHeight: Dimensions.get('window').height - 143}}>
-        {files.map((file, index) => (
-          <CardPercorso
-            key={index}
-            name={file.name}
-            img={undefined}
-            onPress={undefined}
-            onDelete={() => {
-              console.log(file);
-              setDeleteFile(file.path);
-              setShowModal(true);
-            }}
-          />
-        ))}
+        {percorsiOffline.length!=0 ?
+          percorsiOffline.map((file, index) => (
+            <CardPercorso
+              key={index}
+              name={file.name}
+              img={undefined}
+              onPress={undefined}
+              onDelete={() => {
+                console.log(file);
+                setDeleteFile(file.path);
+                setShowModal(true);
+              }}
+            />
+          ))
+          :
+          <Text style={{alignSelf:"center", textAlignVertical:"center", height: Dimensions.get("window").height/1.3, fontFamily:"InriaSans-Light", color:colors.medium}}>Non ci sono percorsi offline salvati</Text>
+        }
       </ScrollView>
     </PrincipalWrapper>
   );

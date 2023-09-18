@@ -1,28 +1,31 @@
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslations} from '../../hooks/useTranslations';
 import {useFocusEffect} from '@react-navigation/native';
-import React from 'react';
-import {Platform, Pressable, StatusBar} from 'react-native';
+import React, { useState } from 'react';
+import {Modal, Platform, Pressable, StatusBar, Text, View} from 'react-native';
 import {colors} from '../../utils/colors';
 import {StyleSheet} from 'react-native';
 import {Dimensions} from 'react-native';
 import {PrincipalWrapper} from '../../components/PrincipalWrapper';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
-import {Text} from 'react-native-svg';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {launchImageLibrary} from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
 import {BottoneBase} from '../../components/BottoneBase';
+import { useEvent } from 'react-native-reanimated';
 
 export const SaveTrack = ({route, navigation}) => {
   const {track} = route?.params;
   const {tra} = useTranslations();
   const insets = useSafeAreaInsets();
-  const [image, setImage] = React.useState(null);
-  const [fileName, setFileName] = React.useState('');
+  const [image, setImage] = useState(null);
+  const [fileName, setFileName] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [fileUri, setFileUri] = useState(null);
 
   useFocusEffect(
     React.useCallback(() => {
+      console.log(navigation.getState())
       Platform.OS == 'android' &&
         StatusBar.setBackgroundColor(colors.secondary);
     }, []),
@@ -37,17 +40,39 @@ export const SaveTrack = ({route, navigation}) => {
     if (!result.cancelled) {
       setImage(undefined);
       //setImage(result.assets[0].uri);
+      
     }
   };
+
 
   const downloadGeoJson = async () => {
     console.log(image);
     if (!fileName.includes('~')) {
-      let fileUri =
-        RNFS.DocumentDirectoryPath + '/' + fileName + '~' + image + '.geojson';
+      setFileUri(RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '~' + image + '.geojson')
+      let uri= RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '~' + image + '.geojson';
       try {
-        await RNFS.writeFile(fileUri, JSON.stringify(track), 'utf8');
-        console.log('File scritto', fileUri);
+          RNFS.mkdir(RNFS.DocumentDirectoryPath + '/percorsiSalvati/').then((res) => {
+            RNFS.exists(uri).then((exists) => {
+                if(exists){
+                  setShowModal(true);
+                }else{
+                  RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
+                    navigation.navigate('Download');
+                  });
+                }
+            })
+
+          }).catch((err) => {
+            RNFS.exists(uri).then((exists) => {
+              if(exists){
+                setShowModal(true);
+              }else{
+                RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
+                  navigation.navigate('Download');
+                });
+              }
+            })
+          });
       } catch (e) {
         console.log(e);
       }
@@ -56,6 +81,61 @@ export const SaveTrack = ({route, navigation}) => {
 
   return (
     <PrincipalWrapper name={'Save file'}>
+      <Modal
+        visible={showModal}
+        animationType="fade"
+        transparent
+        statusBarTranslucent>
+        <View
+          style={{
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(30,30,30,0.6)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingHorizontal: 30,
+          }}>
+          <View
+            style={{
+              backgroundColor: colors.secondary,
+              width: '100%',
+              borderRadius: 10,
+              paddingHorizontal: 20,
+              paddingVertical: 20,
+            }}>
+            <Text allowFontScaling={false} style={styles.titoloModal}>
+              Nome percorso già presente
+            </Text>
+            <Text allowFontScaling={false} style={styles.testoModal}>
+              Attenzione, il nome del percorso che hai scelto è già stato utilizzato. Vuoi sovrascrivere il file?
+            </Text>
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: 15,
+              }}>
+              <BottoneBase
+                text={"Sovrascrivi"}
+                onPress={() => {
+                  RNFS.writeFile(fileUri, JSON.stringify(track), 'utf8').then((result) => {
+                    navigation.navigate('Download');
+                  });
+                  setShowModal(false);
+                }}
+              />
+              <View style={{width: 10}}></View>
+              <BottoneBase
+                text={tra('download.annulla')}
+                outlined
+                onPress={() => setShowModal(false)}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
       <Pressable
         style={{flex: 0.3}}
         onPress={() => {
