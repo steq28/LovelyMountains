@@ -28,7 +28,7 @@ import {
 } from 'victory-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
-import { LineChart } from 'react-native-gifted-charts';
+import { LineChart, PieChart } from 'react-native-gifted-charts';
 
 export const PercorsoSelezionato = ({route, navigation}) => {
   const {track} = route?.params;
@@ -38,8 +38,10 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   const [altitude, setAltitude] = React.useState([]);
   const [pendenza, setPendenza] = React.useState([]);
   const [pavimentazione, setPavimentazione] = React.useState([]);
+  const [pendenzaVisualizzata, setPendenzaVisualizzata] = React.useState({descrizione:"", value:0});
   const map = useRef<MapboxGL.MapView>(null);
   const camera = useRef<Camera>(null);
+  const colorPalette=["#0095FF", "#93FCF8", "#BDB2FA", "#FFA5BA", "#4E8074", "#FFD86A", "#FFF86A", "#A6D46A", "#6AC4D8", "#6A8CD8", "#6A6AD8", "#8C6AD8"]
 
   const getTrailDifficulty = e => {
     let max = 0;
@@ -103,18 +105,29 @@ export const PercorsoSelezionato = ({route, navigation}) => {
 
       // Pendenza
       let tot = 0;
+      let pendenzaTemp={descrizione:"", value:0}
       track.features[0].properties.extras.steepness.summary.map(item => {
         tot += item.distance;
       });
-      track.features[0].properties.extras.steepness.summary.map(item => {
+      track.features[0].properties.extras.steepness.summary.map((item, index) => {
+        // pendenza.push({
+        //   x: steepnessDictionary(item.value),
+        //   y:
+        //     Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
+        //     100,
+        // });
+        let valore = Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) / 100
+        if(pendenzaTemp.value < valore)
+          pendenzaTemp = {descrizione: steepnessDictionary(item.value), value: valore}
+        
         pendenza.push({
-          x: steepnessDictionary(item.value),
-          y:
-            Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
-            100,
+          //x: steepnessDictionary(item.value),
+          descrizione: steepnessDictionary(item.value),
+          color: colorPalette[index],
+          value: valore,
         });
       });
-
+      setPendenzaVisualizzata(pendenzaTemp)
       //Pavimentazione
       let tot2 = 0;
       track.features[0].properties.extras.surface.summary.map(item => {
@@ -132,7 +145,6 @@ export const PercorsoSelezionato = ({route, navigation}) => {
       setPendenza(pendenza);
       setPavimentazione(pavimentazione);
       setAltitude(profiloAltrimetrico);
-      console.log(profiloAltrimetrico.length);
     }
   };
 
@@ -276,6 +288,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             scrollEnabled={false}
             rotateEnabled={false}
             scaleBarEnabled={false}
+            zoomEnabled={false}
             logoEnabled={false}
             onDidFinishLoadingMap={() => {
               camera.current?.fitBounds(
@@ -537,28 +550,9 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             />
           </View>
           {readytToRender && (
-          <View>
+          <View style={{marginTop:50}}>
             <View style={{alignItems:"center"}}>
               <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
-              {/* <VictoryChart
-                width={Dimensions.get('window').width}
-                height={400}
-                theme={VictoryTheme.material}
-              >
-                <VictoryArea
-                  data={altitude}
-                  interpolation={'natural'}
-                  style={{
-                    data: {
-                      fill: '#333',
-                      fillOpacity: 0.5,
-                      stroke: '#333',
-                      strokeWidth: 4,
-                      strokeOpacity: 1,
-                    },
-                  }}
-                />
-              </VictoryChart> */}
               <LineChart
                 areaChart
                 data={altitude}
@@ -569,12 +563,17 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                 adjustToWidth 
                 //spacing={(Dimensions.get('screen').width)/(altitude.length+70)}
                 width={Dimensions.get('screen').width-120}
-                height={300}
+                height={250}
+                noOfSections={7}
+                //stepValue={50}
                 endFillColor={colors.secondary}
                 endOpacity={0.2}
                 curved
+                yAxisTextStyle={{fontFamily:"InriaSans-Regular", color:colors.medium, margin:0}}
                 hideDataPoints
-                focusEnabled
+                yAxisLabelSuffix={" m"}
+                yAxisLabelWidth={50}
+                yAxisLabelContainerStyle={{margin:0, paddingRight:5, justifyContent:"flex-end"}}
                 pointerConfig={{
                   pointerColor:colors.primary,
                   activatePointersDelay:0,
@@ -585,8 +584,6 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                           height: 90,
                           width: 100,
                           justifyContent: 'center',
-                          // marginTop: -30,
-                          // marginLeft: -40,
                         }}>
                         <View
                           style={{
@@ -594,8 +591,10 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                             paddingVertical: 6,
                             borderRadius: 16,
                             backgroundColor: 'white',
+                            borderColor: colors.primary,
+                            borderWidth: 1,
                           }}>
-                          <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
+                          <Text style={{fontFamily: "InriaSans-Regular", color:colors.primary, textAlign: 'center'}}>
                             {items[0].value+ " m"}
                           </Text>
                         </View>
@@ -607,8 +606,8 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             </View>
             
             <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pendenza')}</Text>
-              <VictoryStack theme={VictoryTheme.material} height={80}>
+              <Text style={[styles.sectionText, {marginBottom:20}]}>{tra('percorsoSelezionato.pendenza')}</Text>
+              {/* <VictoryStack theme={VictoryTheme.material} height={80}>
                 {pendenza.map(item => (
                   <VictoryBar barWidth={30} horizontal data={[item]} />
                 ))}
@@ -622,7 +621,31 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                   centerTitle
                   data={pendenza.map(item => ({name: item.x}))}
                 />
-              </View>
+              </View> */}
+                <PieChart
+                  data={pendenza}
+                  donut
+                  focusOnPress
+                  onPress={(val)=>{
+                    setPendenzaVisualizzata(val)
+                  }}
+                  showGradient
+                  sectionAutoFocus
+                  radius={90}
+                  innerRadius={60}
+                  innerCircleColor={colors.primary}
+                  centerLabelComponent={() => {
+                    return (
+                      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <Text
+                          style={{fontSize: 22, color: colors.secondary, fontFamily:"InriaSans-Bold"}}>
+                          {pendenzaVisualizzata.value + '%'}
+                        </Text>
+                        <Text style={{fontSize: 14, color: colors.secondary, fontFamily:"InriaSans-Light"}}>{pendenzaVisualizzata.descrizione}</Text>
+                      </View>
+                    );
+                  }}
+                />
             </View>
             
             <View style={styles.wrapperSection}>
