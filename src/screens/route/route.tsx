@@ -8,26 +8,28 @@ import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BottoneBase} from '../../components/BottoneBase';
+import { useSelector } from 'react-redux';
 
 export const Route = ({route, navigation}) => {
-  const {searchStatus} = route?.params;
   const {tra} = useTranslations();
   const insets = useSafeAreaInsets();
+  
+  const {routeStack} = useSelector(state => state.settings)
+  const [loading, setLoading] = useState(false);
 
-  const [searchState, setSearchState] = useState([]);
+  //const [searchState, setSearchState] = useState([]);
 
   const queryPlaces = async query => {
     console.log('sium');
   };
 
-  useEffect(() => {
-    setSearchState(searchStatus);
-  }, [searchStatus]);
-
   const calculate = async () => {
+    setLoading(true);
     let points = [];
-    searchState.map(item => {
-      points.push(item.searchCoordinates);
+    routeStack.map(item => {
+      console.log(item)
+      if(Object.keys(item).length !== 0)
+        points.push(item.searchCoordinates);
     });
     const key = '5b3ce3597851110001cf6248f3beea2f6e124872b3e48deff92f1c30';
     const url = `https://api.openrouteservice.org/v2/directions/foot-hiking/geojson`;
@@ -62,6 +64,7 @@ export const Route = ({route, navigation}) => {
     }).then(resp => {
       let a = resp.json();
       a.then(data => {
+        setLoading(false);
         navigation.navigate('PercorsoSelezionato', {track: data});
       });
       // this.setState(
@@ -275,17 +278,18 @@ export const Route = ({route, navigation}) => {
               hiker={false}
               nonHikerIcon={'golf-outline'}
               icon={'arrow-back-outline'}
-              placeholder={
-                searchState[0]?.searchName
-                  ? searchStatus[0].searchName
-                  : tra('search.cerca')
-              }
+              // placeholder={
+              //   searchState[0]?.searchName
+              //     ? searchStatus[0].searchName
+              //     : tra('search.cerca')
+              // }
+              placeholder={"Luogo di partenza"}
+              value={Object.keys(routeStack[0]).length !== 0 ? routeStack[0].searchName : ""}
               callback={queryPlaces}
               onPress={() =>
-                navigation.navigate('SearchScreen', {
+                navigation.navigate('Search', {
                   pickEnabled: true,
                   fromRoute: true,
-                  searchStatus: searchStatus,
                   searchInput: 0,
                 })
               }
@@ -303,24 +307,22 @@ export const Route = ({route, navigation}) => {
               hiker={false}
               nonHikerIcon={'pin-outline'}
               icon={'arrow-back-outline'}
-              placeholder={
-                searchState[1]?.searchName
-                  ? searchStatus[1].searchName
-                  : tra('search.cerca')
-              }
+              placeholder={"Luogo di arrivo"}
+              value={Object.keys(routeStack[1]).length !== 0 ? routeStack[1].searchName : ""}
               callback={queryPlaces}
-              onPress={() =>
-                navigation.navigate('SearchScreen', {
-                  pickEnabled: true,
-                  fromRoute: true,
-                  searchStatus: searchStatus,
-                  searchInput: 1,
-                })
+              onPress={() =>{
+                  navigation.navigate('Search', {
+                    pickEnabled: true,
+                    fromRoute: true,
+                    searchInput: 1,
+                  })
+                  
+                }
               }
             />
           </View>
           {/* TODO fix language */}
-          <BottoneBase text={'Calcola Percorso'} onPress={() => calculate()} />
+          <BottoneBase text={'Calcola Percorso'} isLoading={loading} onPress={() => calculate()} />
         </SafeAreaView>
       </KeyboardAwareScrollView>
       <Pressable

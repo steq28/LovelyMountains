@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, View, Text, StyleSheet, Pressable, Animated} from 'react-native';
+import {ScrollView, View, Text, StyleSheet, Pressable} from 'react-native';
 import {SearchBox} from '../components/SearchBox';
 import {colors} from '../utils/colors';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -14,7 +14,7 @@ import { addRouteStack, setRicercaCorrente } from '../redux/settingsSlice';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const Search = ({route, navigation}) => {
+export const SearchScreen = ({route, navigation}) => {
   const {pickEnabled, fromRoute, searchInput, searchStatus} = route?.params;
   const {tra} = useTranslations();
   const {ricercaCorrente} = useSelector(state => state.settings)
@@ -141,9 +141,8 @@ export const Search = ({route, navigation}) => {
                             }
                           }  
                         ))
-                        navigation.navigate('RouteStack', {
-                            screen: 'Route'
-                        });
+
+                        navigation.navigate('Route');
                       }
                     }}
                     icon={'location-outline'}
@@ -152,7 +151,6 @@ export const Search = ({route, navigation}) => {
           </View>
         )}
       </ScrollView>
-      
     </PrincipalWrapper>
   );
 };

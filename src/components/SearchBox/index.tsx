@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {Dimensions, Keyboard, Pressable, TextInput, View} from 'react-native';
 import {styles} from './styles';
 import {BoxShadow} from 'react-native-shadow';
@@ -14,7 +14,9 @@ interface ISearchBox {
   nonHikerIcon: string;
   callback: () => string | null;
   onPress: () => void | null;
-  small?: boolean
+  small?: boolean,
+  value?: string,
+  setValue?: (e:string) => void
 }
 
 export const SearchBox: FC<ISearchBox> = ({
@@ -25,6 +27,8 @@ export const SearchBox: FC<ISearchBox> = ({
   onPress = null,
   callback = null,
   small = false,
+  value = "",
+  setValue = () => {}
 }) => {
   const width = Dimensions.get('window').width - 60;
   const navigation = useNavigation<any>();
@@ -49,6 +53,7 @@ export const SearchBox: FC<ISearchBox> = ({
               onPress={() => {
                 Keyboard.dismiss();
                 navigation.goBack();
+                setValue("")
               }}
               style={{width: '10%'}}>
               {!onPress && <Icon name={icon} color={colors.medium} size={25} />}
@@ -64,12 +69,13 @@ export const SearchBox: FC<ISearchBox> = ({
               )}
             </Pressable>
             <TextInput
-              onChangeText={e => callback(e)}
+              onChangeText={e => {callback(e); setValue(e)}}
               autoFocus={onPress ? false : true}
               focusable={onPress ? false : true}
               placeholder={placeholder}
               placeholderTextColor={colors.light}
               style={styles.textInput}
+              value={value}
             />
           </View>
           {onPress && (
@@ -98,12 +104,13 @@ export const SearchBox: FC<ISearchBox> = ({
                 )}
               </Pressable>
               <TextInput
-                onChangeText={e => callback(e)}
+                onChangeText={e => {callback(e); setValue(e)}}
                 autoFocus={onPress ? false : true}
                 focusable={onPress ? false : true}
                 placeholder={placeholder}
                 placeholderTextColor={colors.light}
                 style={styles.textInput}
+                value={value}
               />
             </View>
             {onPress && (

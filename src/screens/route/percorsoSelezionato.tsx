@@ -237,16 +237,18 @@ export const PercorsoSelezionato = ({route, navigation}) => {
     }, []),
   );
   return (
-    <PrincipalWrapper>
-      <ScrollView>
+    <PrincipalWrapper fullscreen>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginTop: 10,
+            marginTop: StatusBar.currentHeight + 10,
+            width: '100%',
+            marginLeft: 15,
           }}>
           <Pressable
-            style={{flex: 0.3}}
+            style={{flex: 1}}
             onPress={() => {
               navigation.goBack();
             }}>
@@ -352,106 +354,130 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             alignItems: 'flex-start',
             marginTop: 20,
             justifyContent: 'center',
+            width:"100%",
+            paddingHorizontal: 30
           }}>
           <BottoneBase
             text={'Apri Mappa'}
-            fixedWidth={{marginRight: 10}}
+            fixedWidth={{marginRight: 10, flex:1}}
+
             onPress={() => {}}
           />
           <BottoneBase
             text={'Salva tracciato offline'}
+            fixedWidth={{flex:2}}
             outlined
             onPress={() => navigation.navigate('SaveTrack', {track: track})}
           />
         </View>
-        <Text>DATA</Text>
-        <View style={{flexDirection: 'column'}}>
-          <Text>
-            Difficulty:{' '}
-            {getTrailDifficulty(
-              track.features[0].properties.extras.traildifficulty.summary,
-            )}
-          </Text>
-          <Text>
-            Distance:{' '}
-            {(
-              Math.round(
-                (track.features[0].properties.summary.distance / 1000 +
-                  Number.EPSILON) *
-                  100,
-              ) / 100
-            ).toString()}{' '}
-            Km
-          </Text>
-          <Text>
-            Duration:{' '}
-            {(
-              Math.round(
-                (track.features[0].properties.summary.duration / 3600 +
-                  Number.EPSILON) *
-                  100,
-              ) / 100
-            ).toString()}{' '}
-            Hr
-          </Text>
-          <Text>
-            Elevation gain: {track.features[0].properties.ascent.toString()} m
-          </Text>
-          <Text>
-            Elevation loss: {track.features[0].properties.descent.toString()} m
-          </Text>
+
+        <View style={[{marginTop:30, paddingHorizontal:30}]}>
+          <Text style={styles.sectionText}>DATA</Text>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.subText}>
+              Difficulty:{' '}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>
+              {getTrailDifficulty(
+                track.features[0].properties.extras.traildifficulty.summary,
+              )}
+              </Text>
+            </Text>
+            <Text style={styles.subText}>
+              Distance:{' '}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.distance / 1000 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Km
+              </Text>
+            </Text>
+            <Text style={styles.subText}>
+              Duration:{' '}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.duration / 3600 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Hr
+              </Text>
+            </Text>
+            <Text style={styles.subText}>
+              Elevation gain: <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.ascent.toString()} m</Text>
+            </Text>
+            <Text style={styles.subText}>
+              Elevation loss: <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.descent.toString()} m</Text>
+            </Text>
+          </View>
         </View>
+
         {readytToRender && (
           <View>
-            <Text>ELEVATION:</Text>
-            <VictoryChart
-              width={Dimensions.get('window').width}
-              theme={VictoryTheme.material}>
-              <VictoryArea
-                data={altitude}
-                interpolation={'natural'}
-                style={{
-                  data: {
-                    fill: '#333',
-                    fillOpacity: 0.5,
-                    stroke: '#333',
-                    strokeWidth: 4,
-                    strokeOpacity: 1,
-                  },
-                }}
-              />
-            </VictoryChart>
-            <Text>PENDENZA</Text>
-            <VictoryStack theme={VictoryTheme.material} height={100}>
-              {pendenza.map(item => (
-                <VictoryBar barWidth={20} horizontal data={[item]} />
-              ))}
-            </VictoryStack>
-            <View style={{marginLeft: 10, display: 'flex'}}>
-              <VictoryLegend
-                theme={VictoryTheme.material}
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>ELEVATION:</Text>
+              <VictoryChart
                 width={Dimensions.get('window').width}
-                title="Legend"
-                centerTitle
-                borderPadding={20}
-                data={pendenza.map(item => ({name: item.x}))}
-              />
+                height={400}
+                theme={VictoryTheme.material}
+              >
+                <VictoryArea
+                  data={altitude}
+                  interpolation={'natural'}
+                  style={{
+                    data: {
+                      fill: '#333',
+                      fillOpacity: 0.5,
+                      stroke: '#333',
+                      strokeWidth: 4,
+                      strokeOpacity: 1,
+                    },
+                  }}
+                />
+              </VictoryChart>
             </View>
-            <Text>PAVIMENTAZIONE</Text>
-            <VictoryStack theme={VictoryTheme.material} height={100}>
-              {pavimentazione.map(item => (
-                <VictoryBar barWidth={20} horizontal data={[item]} />
-              ))}
-            </VictoryStack>
-            <View style={{marginLeft: 10, display: 'flex', marginBottom: 40}}>
-              <VictoryLegend
-                theme={VictoryTheme.material}
-                width={Dimensions.get('window').width}
-                title="Legend"
-                centerTitle
-                borderPadding={20}
-                data={pavimentazione.map(item => ({name: item.x}))}
-              />
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>PENDENZA</Text>
+              <VictoryStack theme={VictoryTheme.material} height={100}>
+                {pendenza.map(item => (
+                  <VictoryBar barWidth={20} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 50, display: 'flex'}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  height={120}
+                  title="Legend"
+                  centerTitle
+                  data={pendenza.map(item => ({name: item.x}))}
+                />
+              </View>
+            </View>
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>PAVIMENTAZIONE</Text>
+              <VictoryStack theme={VictoryTheme.material} height={100}>
+                {pavimentazione.map(item => (
+                  <VictoryBar barWidth={20} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 10, display: 'flex', height:200}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  title="Legend"
+                  centerTitle
+                  borderPadding={20}
+                  data={pavimentazione.map(item => ({name: item.x}))}
+                />
+              </View>
             </View>
           </View>
         )}
@@ -459,4 +485,27 @@ export const PercorsoSelezionato = ({route, navigation}) => {
     </PrincipalWrapper>
   );
 };
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapperSection:{
+    paddingHorizontal: 30,
+    justifyContent:'center',
+    alignItems:"center",
+    marginTop:20,
+    width:"100%"
+  },
+
+  sectionText:{
+    fontFamily:'InriaSans-Bold',
+    fontSize:18,
+    color:colors.primary,
+    width:'100%',
+    marginBottom: 5
+  },
+  subText:{
+    fontFamily:'InriaSans-Regular',
+    fontSize:16,
+    color:colors.primary,
+    width:'100%',
+    marginBottom: 2
+  }
+});
