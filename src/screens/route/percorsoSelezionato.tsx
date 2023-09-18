@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {
   Dimensions,
   Platform,
@@ -27,6 +27,8 @@ import {
   VictoryTheme,
 } from 'victory-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import { LineChart } from 'react-native-gifted-charts';
 
 export const PercorsoSelezionato = ({route, navigation}) => {
   const {track} = route?.params;
@@ -91,8 +93,9 @@ export const PercorsoSelezionato = ({route, navigation}) => {
       //Profilo altimetrico
       track.features[0].properties.segments[0].steps.map(item => {
         profiloAltrimetrico.push({
-          x: sommaCumulata,
-          y: track.features[0].geometry.coordinates[item.way_points[1]][2],
+          //x: sommaCumulata,
+          //y: track.features[0].geometry.coordinates[item.way_points[1]][2],
+          value: track.features[0].geometry.coordinates[item.way_points[1]][2],
         });
         sommaCumulata +=
           Math.round((item.distance / 1000 + Number.EPSILON) * 100) / 100;
@@ -129,8 +132,19 @@ export const PercorsoSelezionato = ({route, navigation}) => {
       setPendenza(pendenza);
       setPavimentazione(pavimentazione);
       setAltitude(profiloAltrimetrico);
+      console.log(profiloAltrimetrico.length);
     }
   };
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['20%', '60%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
   const surfaceDictionary = value => {
     switch (value) {
@@ -232,8 +246,12 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   );
   return (
     <PrincipalWrapper fullscreen>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View
+            <StatusBar
+        barStyle={'dark-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
+        {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
@@ -248,31 +266,8 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             }}>
             <Icon name="arrow-back-outline" size={30} color={colors.medium} />
           </Pressable>
-          {/* <View
-            style={{
-              flex: 0.3,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Icon name="flag-outline" size={30} color={colors.medium} />
-            <Icon
-              name="ellipsis-vertical-outline"
-              size={30}
-              color={colors.light}
-            />
-            <Icon name="location-outline" size={30} color={colors.medium} />
-          </View>
-          <View style={{flex: 1.7, marginHorizontal: 10}}>
-            <SearchBox small placeholder={''} onPress={() => {}} />
-            <View style={{height: 20}} />
-            <SearchBox small placeholder={''} onPress={() => {}} />
-          </View> */}
-          {/* <Pressable
-            style={{flex: 0.3, alignItems: 'center', justifyContent: 'center'}}>
-            <Icon name="repeat-outline" size={30} color={colors.medium} />
-          </Pressable> */}
-        </View>
-        <View style={{height: 250, marginTop: 20}}>
+        </View> */}
+        <View style={{height: "82%"}}>
           <MapboxGL.MapView
             ref={map}
             style={{flex: 1, marginHorizontal: -30}}
@@ -286,7 +281,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               camera.current?.fitBounds(
                 track.bbox.slice(0, 2),
                 track.bbox.slice(3, 5),
-                10,
+                100,
               );
             }}
             compassFadeWhenNorth
@@ -342,7 +337,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
         </View>
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             alignItems: 'flex-start',
@@ -363,9 +358,8 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             outlined
             onPress={() => navigation.navigate('SaveTrack', {track: track})}
           />
-        </View>
-
-        <View style={[{marginTop:30, paddingHorizontal:30}]}>
+        </View> */}
+        {/* <View style={[{marginTop:30, paddingHorizontal:30}]}>
           <Text style={styles.sectionText}>{tra('percorsoSelezionato.info')}</Text>
           <View style={{flexDirection: 'column'}}>
             <Text style={styles.subText}>
@@ -476,8 +470,183 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               </View>
             </View>
           </View>
+        )} */}
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+      >
+        <BottomSheetScrollView style={{paddingHorizontal:30, paddingVertical:10}}>
+          <View style={{flexDirection:"row", alignItems:"flex-start", justifyContent:"center"}}>
+            <View style={{flex:1}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.distanza')}</Text>
+              <Text style={styles.subText}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.distance / 1000 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Km
+              </Text>
+            </View>
+
+            <View style={{flex:1}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.durata')}</Text>
+              <Text style={styles.subText}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.duration / 3600 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Hr
+              </Text>
+            </View>
+
+            <View style={{flex:1}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.difficolta')}</Text>
+              <Text numberOfLines={2} style={styles.subText}>
+                {getTrailDifficulty(
+                  track.features[0].properties.extras.traildifficulty.summary,
+                )}
+              </Text>
+            </View>
+
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              marginTop: 20,
+              justifyContent: 'center',
+              width:"100%",
+            }}>
+            <BottoneBase
+              text={tra('percorsoSelezionato.apriMappa')}
+              fixedWidth={{marginRight: 10, flex:1}}
+
+              onPress={() => {}}
+            />
+            <BottoneBase
+              text={tra('percorsoSelezionato.salvaTracciato')}
+              fixedWidth={{flex:2}}
+              outlined
+              onPress={() => navigation.navigate('SaveTrack', {track: track})}
+            />
+          </View>
+          {readytToRender && (
+          <View>
+            <View style={{alignItems:"center"}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
+              {/* <VictoryChart
+                width={Dimensions.get('window').width}
+                height={400}
+                theme={VictoryTheme.material}
+              >
+                <VictoryArea
+                  data={altitude}
+                  interpolation={'natural'}
+                  style={{
+                    data: {
+                      fill: '#333',
+                      fillOpacity: 0.5,
+                      stroke: '#333',
+                      strokeWidth: 4,
+                      strokeOpacity: 1,
+                    },
+                  }}
+                />
+              </VictoryChart> */}
+              <LineChart
+                areaChart
+                data={altitude}
+                startFillColor={colors.primary}
+                startOpacity={0.8}
+                initialSpacing={0}
+                endSpacing={0}
+                adjustToWidth 
+                //spacing={(Dimensions.get('screen').width)/(altitude.length+70)}
+                width={Dimensions.get('screen').width-120}
+                height={300}
+                endFillColor={colors.secondary}
+                endOpacity={0.2}
+                curved
+                hideDataPoints
+                focusEnabled
+                pointerConfig={{
+                  pointerColor:colors.primary,
+                  activatePointersDelay:0,
+                  pointerLabelComponent: items => {
+                    return (
+                      <View
+                        style={{
+                          height: 90,
+                          width: 100,
+                          justifyContent: 'center',
+                          // marginTop: -30,
+                          // marginLeft: -40,
+                        }}>
+                        <View
+                          style={{
+                            paddingHorizontal: 14,
+                            paddingVertical: 6,
+                            borderRadius: 16,
+                            backgroundColor: 'white',
+                          }}>
+                          <Text style={{fontWeight: 'bold', textAlign: 'center'}}>
+                            {items[0].value+ " m"}
+                          </Text>
+                        </View>
+                      </View>
+                    );
+                  },
+                }}
+              />
+            </View>
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pendenza')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
+                {pendenza.map(item => (
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 50, display: 'flex', height:150}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  height={120}
+                  title={tra('percorsoSelezionato.legenda')}
+                  centerTitle
+                  data={pendenza.map(item => ({name: item.x}))}
+                />
+              </View>
+            </View>
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pavimentazione')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
+                {pavimentazione.map(item => (
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 10, display: 'flex', height:200}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  title={tra('percorsoSelezionato.legenda')}
+                  centerTitle
+                  borderPadding={20}
+                  data={pavimentazione.map(item => ({name: item.x}))}
+                />
+              </View>
+            </View>
+          </View>
         )}
-      </ScrollView>
+        </BottomSheetScrollView>
+      </BottomSheet>
     </PrincipalWrapper>
   );
 };
@@ -491,18 +660,18 @@ const styles = StyleSheet.create({
   },
 
   sectionText:{
+    fontFamily:'InriaSans-Regular',
+    fontSize:16,
+    color:colors.medium,
+    width:'100%',
+    marginBottom: 5,
+    textAlign:"center"
+  },
+  subText:{
     fontFamily:'InriaSans-Bold',
     fontSize:18,
     color:colors.primary,
     width:'100%',
-    marginBottom: 8,
-    textTransform:"uppercase"
-  },
-  subText:{
-    fontFamily:'InriaSans-Regular',
-    fontSize:16,
-    color:colors.primary,
-    width:'100%',
-    marginBottom: 3
+    textAlign:"center"
   }
 });
