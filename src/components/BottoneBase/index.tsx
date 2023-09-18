@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import {Text, Pressable, ViewStyle} from "react-native";
+import {Text, Pressable, ViewStyle, ActivityIndicator} from "react-native";
 import { styles } from "./styles";
+import { colors } from "../../utils/colors";
 
 interface IBottoneBase{
     text: string,
@@ -8,12 +9,17 @@ interface IBottoneBase{
     outlined?: boolean,
     fixedWidth?: ViewStyle
     size?: "small" | "big"
+    isLoading?: boolean
 }
 
-export const BottoneBase: FC<IBottoneBase> = ({text, onPress, outlined=false, fixedWidth, size}) =>{
+export const BottoneBase: FC<IBottoneBase> = ({text, onPress, outlined=false, fixedWidth, size, isLoading}) =>{
     return(
-        <Pressable style={[styles.wrapper, outlined && styles.wrapperOutlined, fixedWidth, size=="big" && styles.wrapperBig]} onPress={onPress}>
-            <Text allowFontScaling={false} style={[styles.text, outlined && styles.textOutlined, size=="big" && styles.textBig]}>{text}</Text>
+        <Pressable disabled={isLoading} style={[styles.wrapper, outlined && styles.wrapperOutlined, fixedWidth, size=="big" && styles.wrapperBig]} onPress={onPress}>
+            {isLoading ? 
+                <ActivityIndicator color={outlined ? colors.primary : colors.secondary} size={size=="big" ? 29 : 22}/>
+                :
+                <Text allowFontScaling={false} style={[styles.text, outlined && styles.textOutlined, size=="big" && styles.textBig]}>{text}</Text>
+            }
         </Pressable>
     );
 };

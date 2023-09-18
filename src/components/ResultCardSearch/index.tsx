@@ -5,7 +5,7 @@ import {BoxShadow} from 'react-native-shadow';
 import {colors} from '../../utils/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export const ResultCardSearch = ({isEnd, name, icon, callback}) => {
+export const ResultCardSearch = ({isEnd, name, icon, callback, address}) => {
   return (
     <Pressable
       onPress={() => callback()}
@@ -13,9 +13,14 @@ export const ResultCardSearch = ({isEnd, name, icon, callback}) => {
       <View style={{width: '10%'}}>
         <Icon name={icon} size={25} color={colors.primary} />
       </View>
-      <Text style={styles.placeText} numberOfLines={1}>
-        {name}
-      </Text>
+      <View style={{flex:1, marginLeft:5}}>
+        <Text style={styles.placeText} numberOfLines={1}>
+          {name}
+        </Text>
+        <Text style={[styles.placeText, {fontFamily:"InriaSans-Light"}]} numberOfLines={1}>
+          {address}
+        </Text>
+      </View>
     </Pressable>
   );
 };

@@ -1,16 +1,16 @@
-import {Pressable, Text, View} from 'react-native';
+import {Pressable, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React, {FC} from 'react';
 import {Download} from '../screens/download';
-import {Route} from '../screens/route/route';
 import {RouteStack} from './route_stack';
 import {colors} from '../utils/colors';
-import {Settings} from '../screens/settings';
-import {MapStack} from './map_stack';
 import {SettingsStack} from './settings_stack';
 import {Platform} from 'react-native';
-import { TransitionPresets } from '@react-navigation/stack';
+import { useDispatch } from 'react-redux';
+import { resetState } from '../redux/settingsSlice';
+import { Search } from '../screens/search';
+import { Mappa } from '../screens/mappa';
 
 interface INavItem {
   props: any;
@@ -19,8 +19,10 @@ interface INavItem {
 }
 
 const NavItem: FC<INavItem> = ({props, icon}) => {
+  const dispatch = useDispatch()
+
   return (
-    <Pressable {...props}>
+    <Pressable {...props} onPress={() => {props.onPress(); dispatch(resetState())}} >
       <View
         style={{
           width: '70%',
@@ -51,7 +53,9 @@ export const BottomTabsNavigation = () => {
           height: Platform.OS == 'android' ? 70 : 90,
           borderTopWidth: 0,
         },
+        unmountOnBlur: true
       }}
+      backBehavior="history"
       sceneContainerStyle={{backgroundColor: colors.secondary}}>
       <Tab.Screen
         options={{
@@ -62,11 +66,17 @@ export const BottomTabsNavigation = () => {
               icon={props?.accessibilityState?.selected ? 'map' : 'map-outline'}
             />
           ),
+
           tabBarInactiveTintColor: colors.light,
           tabBarActiveTintColor: colors.primary,
+          unmountOnBlur: false
         }}
-        name="MapStack"
-        component={MapStack}
+        initialParams={{
+          searchResult: false,
+          searchCoordinates: [0, 0],
+        }}
+        name="Mappa"
+        component={Mappa}
       />
       <Tab.Screen
         options={{
@@ -120,6 +130,24 @@ export const BottomTabsNavigation = () => {
         }}
         name="SettingsStack"
         component={SettingsStack}
+      />
+      <Tab.Screen
+        options={{
+          tabBarButton: props => (
+            <></>
+          ),
+          tabBarInactiveTintColor: colors.light,
+          tabBarActiveTintColor: colors.primary,
+          tabBarStyle: {
+            display: 'none'
+          }
+        }}
+        initialParams={{
+          fromRoute: false,
+          pickEnabled: false,
+        }}
+        name="Search"
+        component={Search}
       />
     </Tab.Navigator>
   );

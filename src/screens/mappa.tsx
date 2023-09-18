@@ -150,7 +150,7 @@ export const Mappa = ({route, navigation}) => {
           hiker={true}
           icon={'prism-outline'}
           placeholder={tra('search.cerca')}
-          onPress={() => navigation.navigate('SearchScreen')}
+          onPress={() => navigation.navigate('Search')}
         />
       </View>
       <View style={styles.container}>

@@ -1,16 +1,14 @@
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {
   Dimensions,
   Platform,
   Pressable,
-  SafeAreaView,
   StyleSheet,
   View,
   Text,
 } from 'react-native';
 
 import {useTranslations} from '../../hooks/useTranslations';
-import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import {StatusBar} from 'react-native';
 import {colors} from '../../utils/colors';
@@ -29,6 +27,8 @@ import {
   VictoryTheme,
 } from 'victory-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import { LineChart, PieChart } from 'react-native-gifted-charts';
 
 export const PercorsoSelezionato = ({route, navigation}) => {
   const {track} = route?.params;
@@ -38,12 +38,10 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   const [altitude, setAltitude] = React.useState([]);
   const [pendenza, setPendenza] = React.useState([]);
   const [pavimentazione, setPavimentazione] = React.useState([]);
+  const [pendenzaVisualizzata, setPendenzaVisualizzata] = React.useState({descrizione:"", value:0});
   const map = useRef<MapboxGL.MapView>(null);
   const camera = useRef<Camera>(null);
-
-  const queryPlaces = async query => {
-    console.log('sium');
-  };
+  const colorPalette=["#0095FF", "#93FCF8", "#BDB2FA", "#FFA5BA", "#4E8074", "#FFD86A", "#FFF86A", "#A6D46A", "#6AC4D8", "#6A8CD8", "#6A6AD8", "#8C6AD8"]
 
   const getTrailDifficulty = e => {
     let max = 0;
@@ -97,8 +95,9 @@ export const PercorsoSelezionato = ({route, navigation}) => {
       //Profilo altimetrico
       track.features[0].properties.segments[0].steps.map(item => {
         profiloAltrimetrico.push({
-          x: sommaCumulata,
-          y: track.features[0].geometry.coordinates[item.way_points[1]][2],
+          //x: sommaCumulata,
+          //y: track.features[0].geometry.coordinates[item.way_points[1]][2],
+          value: track.features[0].geometry.coordinates[item.way_points[1]][2],
         });
         sommaCumulata +=
           Math.round((item.distance / 1000 + Number.EPSILON) * 100) / 100;
@@ -106,18 +105,29 @@ export const PercorsoSelezionato = ({route, navigation}) => {
 
       // Pendenza
       let tot = 0;
+      let pendenzaTemp={descrizione:"", value:0}
       track.features[0].properties.extras.steepness.summary.map(item => {
         tot += item.distance;
       });
-      track.features[0].properties.extras.steepness.summary.map(item => {
+      track.features[0].properties.extras.steepness.summary.map((item, index) => {
+        // pendenza.push({
+        //   x: steepnessDictionary(item.value),
+        //   y:
+        //     Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
+        //     100,
+        // });
+        let valore = Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) / 100
+        if(pendenzaTemp.value < valore)
+          pendenzaTemp = {descrizione: steepnessDictionary(item.value), value: valore}
+        
         pendenza.push({
-          x: steepnessDictionary(item.value),
-          y:
-            Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
-            100,
+          //x: steepnessDictionary(item.value),
+          descrizione: steepnessDictionary(item.value),
+          color: colorPalette[index],
+          value: valore,
         });
       });
-
+      setPendenzaVisualizzata(pendenzaTemp)
       //Pavimentazione
       let tot2 = 0;
       track.features[0].properties.extras.surface.summary.map(item => {
@@ -137,6 +147,16 @@ export const PercorsoSelezionato = ({route, navigation}) => {
       setAltitude(profiloAltrimetrico);
     }
   };
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['20%', '60%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
   const surfaceDictionary = value => {
     switch (value) {
@@ -237,46 +257,29 @@ export const PercorsoSelezionato = ({route, navigation}) => {
     }, []),
   );
   return (
-    <PrincipalWrapper>
-      <ScrollView>
-        <View
+    <PrincipalWrapper fullscreen>
+            <StatusBar
+        barStyle={'dark-content'}
+        backgroundColor={'transparent'}
+        translucent
+      />
+        {/* <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            marginTop: 10,
+            marginTop: StatusBar.currentHeight + 10,
+            width: '100%',
+            marginLeft: 15,
           }}>
           <Pressable
-            style={{flex: 0.3}}
+            style={{flex: 1}}
             onPress={() => {
               navigation.goBack();
             }}>
             <Icon name="arrow-back-outline" size={30} color={colors.medium} />
           </Pressable>
-          {/* <View
-            style={{
-              flex: 0.3,
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <Icon name="flag-outline" size={30} color={colors.medium} />
-            <Icon
-              name="ellipsis-vertical-outline"
-              size={30}
-              color={colors.light}
-            />
-            <Icon name="location-outline" size={30} color={colors.medium} />
-          </View>
-          <View style={{flex: 1.7, marginHorizontal: 10}}>
-            <SearchBox small placeholder={''} onPress={() => {}} />
-            <View style={{height: 20}} />
-            <SearchBox small placeholder={''} onPress={() => {}} />
-          </View> */}
-          {/* <Pressable
-            style={{flex: 0.3, alignItems: 'center', justifyContent: 'center'}}>
-            <Icon name="repeat-outline" size={30} color={colors.medium} />
-          </Pressable> */}
-        </View>
-        <View style={{height: 250, marginTop: 20}}>
+        </View> */}
+        <View style={{height: "82%"}}>
           <MapboxGL.MapView
             ref={map}
             style={{flex: 1, marginHorizontal: -30}}
@@ -285,12 +288,13 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             scrollEnabled={false}
             rotateEnabled={false}
             scaleBarEnabled={false}
+            zoomEnabled={false}
             logoEnabled={false}
             onDidFinishLoadingMap={() => {
               camera.current?.fitBounds(
                 track.bbox.slice(0, 2),
                 track.bbox.slice(3, 5),
-                10,
+                100,
               );
             }}
             compassFadeWhenNorth
@@ -346,117 +350,351 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             </MapboxGL.PointAnnotation>
           </MapboxGL.MapView>
         </View>
-        <View
+        {/* <View
           style={{
             flexDirection: 'row',
             alignItems: 'flex-start',
             marginTop: 20,
             justifyContent: 'center',
+            width:"100%",
+            paddingHorizontal: 30
           }}>
           <BottoneBase
-            text={'Apri Mappa'}
-            fixedWidth={{marginRight: 10}}
+            text={tra('percorsoSelezionato.apriMappa')}
+            fixedWidth={{marginRight: 10, flex:1}}
+
             onPress={() => {}}
           />
           <BottoneBase
-            text={'Salva tracciato offline'}
+            text={tra('percorsoSelezionato.salvaTracciato')}
+            fixedWidth={{flex:2}}
             outlined
             onPress={() => navigation.navigate('SaveTrack', {track: track})}
           />
+        </View> */}
+        {/* <View style={[{marginTop:30, paddingHorizontal:30}]}>
+          <Text style={styles.sectionText}>{tra('percorsoSelezionato.info')}</Text>
+          <View style={{flexDirection: 'column'}}>
+            <Text style={styles.subText}>
+              {tra('percorsoSelezionato.difficolta')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>
+                {getTrailDifficulty(
+                  track.features[0].properties.extras.traildifficulty.summary,
+                )}
+              </Text>
+            </Text>
+            <Text style={styles.subText}>
+              {tra('percorsoSelezionato.distanza')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.distance / 1000 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Km
+              </Text>
+            </Text>
+            <Text style={styles.subText}>
+              {tra('percorsoSelezionato.durata')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.duration / 3600 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Hr
+              </Text>
+            </Text>
+            <Text style={styles.subText}>
+              {tra('percorsoSelezionato.dislivello')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.ascent.toString()} m</Text>
+            </Text>
+            <Text style={styles.subText}>
+              {tra('percorsoSelezionato.perditaQuota')}
+              <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.descent.toString()} m</Text>
+            </Text>
+          </View>
         </View>
-        <Text>DATA</Text>
-        <View style={{flexDirection: 'column'}}>
-          <Text>
-            Difficulty:{' '}
-            {getTrailDifficulty(
-              track.features[0].properties.extras.traildifficulty.summary,
-            )}
-          </Text>
-          <Text>
-            Distance:{' '}
-            {(
-              Math.round(
-                (track.features[0].properties.summary.distance / 1000 +
-                  Number.EPSILON) *
-                  100,
-              ) / 100
-            ).toString()}{' '}
-            Km
-          </Text>
-          <Text>
-            Duration:{' '}
-            {(
-              Math.round(
-                (track.features[0].properties.summary.duration / 3600 +
-                  Number.EPSILON) *
-                  100,
-              ) / 100
-            ).toString()}{' '}
-            Hr
-          </Text>
-          <Text>
-            Elevation gain: {track.features[0].properties.ascent.toString()} m
-          </Text>
-          <Text>
-            Elevation loss: {track.features[0].properties.descent.toString()} m
-          </Text>
-        </View>
+
         {readytToRender && (
           <View>
-            <Text>ELEVATION:</Text>
-            <VictoryChart
-              width={Dimensions.get('window').width}
-              theme={VictoryTheme.material}>
-              <VictoryArea
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
+              <VictoryChart
+                width={Dimensions.get('window').width}
+                height={400}
+                theme={VictoryTheme.material}
+              >
+                <VictoryArea
+                  data={altitude}
+                  interpolation={'natural'}
+                  style={{
+                    data: {
+                      fill: '#333',
+                      fillOpacity: 0.5,
+                      stroke: '#333',
+                      strokeWidth: 4,
+                      strokeOpacity: 1,
+                    },
+                  }}
+                />
+              </VictoryChart>
+            </View>
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pendenza')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
+                {pendenza.map(item => (
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 50, display: 'flex', height:150}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  height={120}
+                  title={tra('percorsoSelezionato.legenda')}
+                  centerTitle
+                  data={pendenza.map(item => ({name: item.x}))}
+                />
+              </View>
+            </View>
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pavimentazione')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
+                {pavimentazione.map(item => (
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 10, display: 'flex', height:200}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  title={tra('percorsoSelezionato.legenda')}
+                  centerTitle
+                  borderPadding={20}
+                  data={pavimentazione.map(item => ({name: item.x}))}
+                />
+              </View>
+            </View>
+          </View>
+        )} */}
+      <BottomSheet
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+      >
+        <BottomSheetScrollView style={{paddingHorizontal:30, paddingVertical:10}}>
+          <View style={{flexDirection:"row", alignItems:"flex-start", justifyContent:"center"}}>
+            <View style={{flex:1}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.distanza')}</Text>
+              <Text style={styles.subText}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.distance / 1000 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Km
+              </Text>
+            </View>
+
+            <View style={{flex:1}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.durata')}</Text>
+              <Text style={styles.subText}>
+                {(
+                  Math.round(
+                    (track.features[0].properties.summary.duration / 3600 +
+                      Number.EPSILON) *
+                      100,
+                  ) / 100
+                ).toString()}{' '}
+                Hr
+              </Text>
+            </View>
+
+            <View style={{flex:1}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.difficolta')}</Text>
+              <Text numberOfLines={2} style={styles.subText}>
+                {getTrailDifficulty(
+                  track.features[0].properties.extras.traildifficulty.summary,
+                )}
+              </Text>
+            </View>
+
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              marginTop: 20,
+              justifyContent: 'center',
+              width:"100%",
+            }}>
+            <BottoneBase
+              text={tra('percorsoSelezionato.apriMappa')}
+              fixedWidth={{marginRight: 10, flex:1}}
+
+              onPress={() => {}}
+            />
+            <BottoneBase
+              text={tra('percorsoSelezionato.salvaTracciato')}
+              fixedWidth={{flex:2}}
+              outlined
+              onPress={() => navigation.navigate('SaveTrack', {track: track})}
+            />
+          </View>
+          {readytToRender && (
+          <View style={{marginTop:50}}>
+            <View style={{alignItems:"center"}}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
+              <LineChart
+                areaChart
                 data={altitude}
-                interpolation={'natural'}
-                style={{
-                  data: {
-                    fill: '#333',
-                    fillOpacity: 0.5,
-                    stroke: '#333',
-                    strokeWidth: 4,
-                    strokeOpacity: 1,
+                startFillColor={colors.primary}
+                startOpacity={0.8}
+                initialSpacing={0}
+                endSpacing={0}
+                adjustToWidth 
+                //spacing={(Dimensions.get('screen').width)/(altitude.length+70)}
+                width={Dimensions.get('screen').width-120}
+                height={250}
+                noOfSections={7}
+                //stepValue={50}
+                endFillColor={colors.secondary}
+                endOpacity={0.2}
+                curved
+                yAxisTextStyle={{fontFamily:"InriaSans-Regular", color:colors.medium, margin:0}}
+                hideDataPoints
+                yAxisLabelSuffix={" m"}
+                yAxisLabelWidth={50}
+                yAxisLabelContainerStyle={{margin:0, paddingRight:5, justifyContent:"flex-end"}}
+                pointerConfig={{
+                  pointerColor:colors.primary,
+                  activatePointersDelay:0,
+                  pointerLabelComponent: items => {
+                    return (
+                      <View
+                        style={{
+                          height: 90,
+                          width: 100,
+                          justifyContent: 'center',
+                        }}>
+                        <View
+                          style={{
+                            paddingHorizontal: 14,
+                            paddingVertical: 6,
+                            borderRadius: 16,
+                            backgroundColor: 'white',
+                            borderColor: colors.primary,
+                            borderWidth: 1,
+                          }}>
+                          <Text style={{fontFamily: "InriaSans-Regular", color:colors.primary, textAlign: 'center'}}>
+                            {items[0].value+ " m"}
+                          </Text>
+                        </View>
+                      </View>
+                    );
                   },
                 }}
               />
-            </VictoryChart>
-            <Text>PENDENZA</Text>
-            <VictoryStack theme={VictoryTheme.material} height={100}>
-              {pendenza.map(item => (
-                <VictoryBar barWidth={20} horizontal data={[item]} />
-              ))}
-            </VictoryStack>
-            <View style={{marginLeft: 10, display: 'flex'}}>
-              <VictoryLegend
-                theme={VictoryTheme.material}
-                width={Dimensions.get('window').width}
-                title="Legend"
-                centerTitle
-                borderPadding={20}
-                data={pendenza.map(item => ({name: item.x}))}
-              />
             </View>
-            <Text>PAVIMENTAZIONE</Text>
-            <VictoryStack theme={VictoryTheme.material} height={100}>
-              {pavimentazione.map(item => (
-                <VictoryBar barWidth={20} horizontal data={[item]} />
-              ))}
-            </VictoryStack>
-            <View style={{marginLeft: 10, display: 'flex', marginBottom: 40}}>
-              <VictoryLegend
-                theme={VictoryTheme.material}
-                width={Dimensions.get('window').width}
-                title="Legend"
-                centerTitle
-                borderPadding={20}
-                data={pavimentazione.map(item => ({name: item.x}))}
-              />
+            
+            <View style={styles.wrapperSection}>
+              <Text style={[styles.sectionText, {marginBottom:20}]}>{tra('percorsoSelezionato.pendenza')}</Text>
+              {/* <VictoryStack theme={VictoryTheme.material} height={80}>
+                {pendenza.map(item => (
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 50, display: 'flex', height:150}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  height={120}
+                  title={tra('percorsoSelezionato.legenda')}
+                  centerTitle
+                  data={pendenza.map(item => ({name: item.x}))}
+                />
+              </View> */}
+                <PieChart
+                  data={pendenza}
+                  donut
+                  focusOnPress
+                  onPress={(val)=>{
+                    setPendenzaVisualizzata(val)
+                  }}
+                  showGradient
+                  sectionAutoFocus
+                  radius={90}
+                  innerRadius={60}
+                  innerCircleColor={colors.primary}
+                  centerLabelComponent={() => {
+                    return (
+                      <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <Text
+                          style={{fontSize: 22, color: colors.secondary, fontFamily:"InriaSans-Bold"}}>
+                          {pendenzaVisualizzata.value + '%'}
+                        </Text>
+                        <Text style={{fontSize: 14, color: colors.secondary, fontFamily:"InriaSans-Light"}}>{pendenzaVisualizzata.descrizione}</Text>
+                      </View>
+                    );
+                  }}
+                />
+            </View>
+            
+            <View style={styles.wrapperSection}>
+              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pavimentazione')}</Text>
+              <VictoryStack theme={VictoryTheme.material} height={80}>
+                {pavimentazione.map(item => (
+                  <VictoryBar barWidth={30} horizontal data={[item]} />
+                ))}
+              </VictoryStack>
+              <View style={{marginLeft: 10, display: 'flex', height:200}}>
+                <VictoryLegend
+                  theme={VictoryTheme.material}
+                  width={Dimensions.get('window').width}
+                  title={tra('percorsoSelezionato.legenda')}
+                  centerTitle
+                  borderPadding={20}
+                  data={pavimentazione.map(item => ({name: item.x}))}
+                />
+              </View>
             </View>
           </View>
         )}
-      </ScrollView>
+        </BottomSheetScrollView>
+      </BottomSheet>
     </PrincipalWrapper>
   );
 };
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapperSection:{
+    paddingHorizontal: 30,
+    justifyContent:'center',
+    alignItems:"center",
+    marginTop:20,
+    width:"100%"
+  },
+
+  sectionText:{
+    fontFamily:'InriaSans-Regular',
+    fontSize:16,
+    color:colors.medium,
+    width:'100%',
+    marginBottom: 5,
+    textAlign:"center"
+  },
+  subText:{
+    fontFamily:'InriaSans-Bold',
+    fontSize:18,
+    color:colors.primary,
+    width:'100%',
+    textAlign:"center"
+  }
+});
