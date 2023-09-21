@@ -28,10 +28,10 @@ import {
 } from 'victory-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
-import { LineChart, PieChart } from 'react-native-gifted-charts';
+import {LineChart, PieChart } from 'react-native-gifted-charts';
 
 export const PercorsoSelezionato = ({route, navigation}) => {
-  const {track} = route?.params;
+  const {track, routeStack} = route?.params;
   const {tra} = useTranslations();
   const insets = useSafeAreaInsets();
   const [readytToRender, setReadyToRender] = React.useState(false);
@@ -228,6 +228,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
     }
   };
   useEffect(() => {
+    console.log(track.features[0].properties.summary.duration)
     zioPedroCheFunzioneDifficileCheSara();
   });
 
@@ -507,14 +508,12 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             <View style={{flex:1}}>
               <Text style={styles.sectionText}>{tra('percorsoSelezionato.durata')}</Text>
               <Text style={styles.subText}>
-                {(
-                  Math.round(
-                    (track.features[0].properties.summary.duration / 3600 +
-                      Number.EPSILON) *
-                      100,
-                  ) / 100
-                ).toString()}{' '}
-                Hr
+                {
+                  Math.floor(track.features[0].properties.summary.duration / 3600 ) > 0 &&
+                  Math.floor(track.features[0].properties.summary.duration / 3600 )+ "H " 
+                }
+                {Math.floor(((track.features[0].properties.summary.duration / 3600 ) - Math.floor(track.features[0].properties.summary.duration / 3600 ))*60)}
+                min
               </Text>
             </View>
 
@@ -546,12 +545,12 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               text={tra('percorsoSelezionato.salvaTracciato')}
               fixedWidth={{flex:2}}
               outlined
-              onPress={() => navigation.navigate('SaveTrack', {track: track})}
+              onPress={() => navigation.navigate('SaveTrack', {track: track, routeStack: routeStack})}
             />
           </View>
           {readytToRender && (
           <View style={{marginTop:50}}>
-            <View style={{alignItems:"center"}}>
+            <View style={{alignItems:"center",}}>
               <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
               <LineChart
                 areaChart

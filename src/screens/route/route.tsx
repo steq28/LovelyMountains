@@ -66,7 +66,12 @@ export const Route = ({route, navigation}) => {
       let a = resp.json();
       a.then(data => {
         setLoading(false);
-        navigation.navigate('PercorsoSelezionato', {track: data});
+        navigation.navigate('PercorsoSelezionato',
+        {
+          track: data,
+          routeStack: routeStack.filter(item => Object.keys(item).length !== 0)
+        }
+        );
       });
       // this.setState(
       //   {
