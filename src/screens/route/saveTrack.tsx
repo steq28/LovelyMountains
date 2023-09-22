@@ -1,8 +1,8 @@
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useTranslations} from '../../hooks/useTranslations';
 import {useFocusEffect} from '@react-navigation/native';
-import React, { useState } from 'react';
-import {Modal, Platform, Pressable, StatusBar, Text, View} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {Image, Modal, Platform, Pressable, StatusBar, Text, View} from 'react-native';
 import {colors} from '../../utils/colors';
 import {StyleSheet} from 'react-native';
 import {Dimensions} from 'react-native';
@@ -13,8 +13,8 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import RNFS from 'react-native-fs';
 import {BottoneBase} from '../../components/BottoneBase';
 import { useEvent } from 'react-native-reanimated';
-import { Image } from 'react-native-svg';
 import { it } from '../../translations/resources';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ItemRoute = ({icon, location, secondaryText}) =>{
   return(
@@ -39,61 +39,124 @@ export const SaveTrack = ({route, navigation}) => {
   const [fileName, setFileName] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [fileUri, setFileUri] = useState(null);
+  const [durata, setDurata] = useState("");
+  const [lunghezza, setLunghezza] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
-      console.log(track)
       Platform.OS == 'android' &&
         StatusBar.setBackgroundColor(colors.secondary);
     }, []),
   );
 
-  const pickImage = async () => {
-    const result = await launchImageLibrary({
+  useEffect(()=>{
+    let hours= (Math.floor(track?.features[0].properties.summary.duration / 3600 ) > 0) ? (Math.floor(track?.features[0].properties.summary.duration / 3600 )).toString()+ "H " : ""
+    let mins = (Math.floor(((track?.features[0].properties.summary.duration / 3600 ) - Math.floor(track?.features[0].properties.summary.duration / 3600 ))*60)).toString()+ " min"
+    setDurata(hours + mins)
+    setLunghezza((Math.round((track?.features[0].properties.summary.distance / 1000 + Number.EPSILON) * 100) / 100).toString()+" Km")
+  },[])
+
+  const pickImage = () => {
+    launchImageLibrary({
       mediaType: 'photo',
       selectionLimit: 1,
-    });
-
-    if (!result.cancelled) {
-      setImage(undefined);
-      //setImage(result.assets[0].uri);
+    }).then((res) => {
+      if (!res.didCancel) {
+        setImage(res.assets[0].uri);
+      }
       
-    }
+    });
   };
 
 
   const downloadGeoJson = async () => {
-    console.log(image);
-    if (!fileName.includes('~')) {
-      setFileUri(RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '~' + image + '.geojson')
-      let uri= RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '~' + image + '.geojson';
-      try {
-          RNFS.mkdir(RNFS.DocumentDirectoryPath + '/percorsiSalvati/').then((res) => {
-            RNFS.exists(uri).then((exists) => {
-                if(exists){
-                  setShowModal(true);
-                }else{
+    const uri= RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '.geojson';
+    try {
+      RNFS.mkdir(RNFS.DocumentDirectoryPath + '/percorsiSalvati/').then((res) => {
+        RNFS.exists(uri).then((exists) => {
+            if(exists){
+              setShowModal(true);
+            }else{
+              setIsLoading(true);
+              AsyncStorage.getItem('savedTrackImages').then((savedTrackImages) => {
+                if(savedTrackImages == null){
+                  savedTrackImages="[]"
+                }
+                savedTrackImages = JSON.parse(savedTrackImages);
+                savedTrackImages.push({
+                  name: fileName,
+                  image: image,
+                  lunghezza: lunghezza,
+                  durata: durata
+                });
+                AsyncStorage.setItem('savedTrackImages', JSON.stringify(savedTrackImages)).then(()=>{
                   RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
                     navigation.navigate('Download');
                   });
-                }
-            })
-
-          }).catch((err) => {
-            RNFS.exists(uri).then((exists) => {
-              if(exists){
-                setShowModal(true);
-              }else{
+                });
+              });
+            }
+        })
+      }).catch((err) => {
+        RNFS.exists(uri).then((exists) => {
+          if(exists){
+            setShowModal(true);
+          }else{
+            AsyncStorage.getItem('savedTrackImages').then((savedTrackImages) => {
+              if(savedTrackImages == null){
+                savedTrackImages="[]"
+              }
+              savedTrackImages = JSON.parse(savedTrackImages);
+              savedTrackImages.push({
+                name: fileName,
+                image: image,
+                lunghezza: lunghezza,
+                durata: durata
+              });
+              AsyncStorage.setItem('savedTrackImages', JSON.stringify(savedTrackImages)).then(()=>{
                 RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
                   navigation.navigate('Download');
                 });
-              }
-            })
-          });
-      } catch (e) {
-        console.log(e);
-      }
+              });
+            });
+          }
+        })
+      });
+    } catch (e) {
+      console.log(e);
     }
+
+    // if (!fileName.includes('~')) {
+    //   setFileUri(RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '.geojson')
+    //   let uri= RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '.geojson';
+    //   try {
+    //     RNFS.mkdir(RNFS.DocumentDirectoryPath + '/percorsiSalvati/').then((res) => {
+    //       RNFS.exists(uri).then((exists) => {
+    //           if(exists){
+    //             setShowModal(true);
+    //           }else{
+    //             RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
+    //               navigation.navigate('Download');
+    //             });
+    //           }
+    //       })
+
+    //     }).catch((err) => {
+    //       RNFS.exists(uri).then((exists) => {
+    //         if(exists){
+    //           setShowModal(true);
+    //         }else{
+    //           RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
+    //             navigation.navigate('Download');
+    //           });
+    //         }
+    //       })
+    //     });
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
   };
 
   return (
@@ -137,8 +200,26 @@ export const SaveTrack = ({route, navigation}) => {
               <BottoneBase
                 text={tra("saveTrack.sovrascrivi")}
                 onPress={() => {
-                  RNFS.writeFile(fileUri, JSON.stringify(track), 'utf8').then((result) => {
-                    navigation.navigate('Download');
+                  setIsLoading(true);
+                  AsyncStorage.getItem('savedTrackImages').then((savedTrackImages) => {
+                    if(savedTrackImages == null){
+                      savedTrackImages="[]"
+                    }
+                    savedTrackImages = JSON.parse(savedTrackImages);
+                    savedTrackImages.push({
+                      name: fileName,
+                      image: image,
+                      lunghezza: lunghezza,
+                      durata: durata
+                    });
+                    AsyncStorage.setItem('savedTrackImages', JSON.stringify(savedTrackImages));
+                  });
+
+                  const uri= RNFS.DocumentDirectoryPath + '/percorsiSalvati/' + fileName + '.geojson';
+                  RNFS.writeFile(uri, JSON.stringify(track), 'utf8').then((result) => {
+                    setTimeout(()=>{
+                      navigation.navigate('Download');
+                    },1000)
                   });
                   setShowModal(false);
                 }}
@@ -185,25 +266,13 @@ export const SaveTrack = ({route, navigation}) => {
                   <View style={styles.fieldWrapper}>
                     <Text allowFontScaling={false} style={styles.nameField}>Distanza</Text>
                     <Text allowFontScaling={false} style={styles.fieldValue}>
-                      {(
-                        Math.round(
-                          (track.features[0].properties.summary.distance / 1000 +
-                            Number.EPSILON) *
-                            100,
-                        ) / 100
-                      ).toString()}{' '}
-                      Km
+                      {lunghezza}
                     </Text>
                   </View>
                   <View style={[styles.fieldWrapper, {borderLeftWidth:1, borderRightWidth:1, borderColor:colors.veryLight}]}>
                     <Text allowFontScaling={false} style={styles.nameField}>Durata</Text>
                     <Text style={styles.fieldValue}>
-                      {
-                        Math.floor(track.features[0].properties.summary.duration / 3600 ) > 0 &&
-                        Math.floor(track.features[0].properties.summary.duration / 3600 )+ "H " 
-                      }
-                      {Math.floor(((track.features[0].properties.summary.duration / 3600 ) - Math.floor(track.features[0].properties.summary.duration / 3600 ))*60)}
-                      min
+                      {durata}
                     </Text>
                   </View>
                   <View style={styles.fieldWrapper}>
@@ -212,8 +281,14 @@ export const SaveTrack = ({route, navigation}) => {
                   </View>
             </View>
             <View style={{flexDirection:"row", marginBottom:40}}>
-              <Pressable style={styles.camera}>
-                <Icon name={'camera-outline'} size={50} color={colors.secondary}/>
+              <Pressable
+                style={styles.camera}
+                onPress={()=>{
+                  pickImage()
+                }}
+              >
+                {image==null && <Icon name={'camera-outline'} size={50} color={colors.secondary}/>}
+                {image && <Image source={{uri:image}} height={90} width={90} resizeMode='cover' style={{borderRadius:7}}/>}
               </Pressable>
               <View style={{flex:1, marginLeft:10, justifyContent:"center"}}>
                 <Text allowFontScaling={false} style={{fontFamily:"InriaSans-Bold", fontSize:16, color:colors.primary}}>Nome del percorso</Text>
@@ -225,7 +300,7 @@ export const SaveTrack = ({route, navigation}) => {
                 />
               </View>
             </View>
-            <BottoneBase text={'Salva Percorso'} onPress={()=>{}}/>
+            <BottoneBase text={'Salva Percorso'} isLoading={isLoading} onPress={downloadGeoJson}/>
           </View>
       </ScrollView>
       {/* <Pressable

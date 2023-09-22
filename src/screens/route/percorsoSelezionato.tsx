@@ -228,7 +228,6 @@ export const PercorsoSelezionato = ({route, navigation}) => {
     }
   };
   useEffect(() => {
-    console.log(track.features[0].properties.summary.duration)
     zioPedroCheFunzioneDifficileCheSara();
   });
 

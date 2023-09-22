@@ -57,7 +57,6 @@ export const Route = ({route, navigation}) => {
         'surface',
       ],
     };
-    console.log(url, headers, body)
     fetch(url, {
       method: 'POST',
       headers: headers,
