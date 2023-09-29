@@ -56,14 +56,6 @@ export const Search = ({route, navigation}) => {
     )()
   },[])
 
-
-  useEffect(()=>{
-    if(recentSearch.length > 0)
-      recentSearch.map((item, index) => {
-        console.log(item)
-      })
-  },[recentSearch])
-
   return (
     <PrincipalWrapper>
       <View style={{height: '10%'}}>

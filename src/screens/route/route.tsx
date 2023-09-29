@@ -27,7 +27,6 @@ export const Route = ({route, navigation}) => {
     setLoading(true);
     let points = [];
     routeStack.map(item => {
-      console.log(item)
       if(Object.keys(item).length !== 0)
         points.push(item.searchCoordinates);
     });
