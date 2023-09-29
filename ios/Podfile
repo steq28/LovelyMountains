@@ -53,7 +53,7 @@ target 'LovelyMountains' do
 
   pre_install do |installer|
     $RNMapboxMaps.pre_install(installer)
-  end
+  end#
 
   post_install do |installer|
     $RNMapboxMaps.post_install(installer)

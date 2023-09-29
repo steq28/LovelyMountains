@@ -17,8 +17,8 @@ import {CardPercorso} from '../components/CardPercorso';
 import {BottoneBase} from '../components/BottoneBase';
 import {PrincipalWrapper} from '../components/PrincipalWrapper';
 import RNFS from 'react-native-fs';
-import { useDispatch, useSelector } from 'react-redux';
-import { setPercorsiOffline } from '../redux/settingsSlice';
+import {useDispatch, useSelector} from 'react-redux';
+import {setPercorsiOffline} from '../redux/settingsSlice';
 
 export const Download = () => {
   const {tra} = useTranslations();
@@ -26,15 +26,17 @@ export const Download = () => {
   const [files, setFiles] = useState([]);
   const [deleteFile, setDeleteFile] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-  
-  const {percorsiOffline} = useSelector(state => state.settings)
-  const dispatch = useDispatch()
+
+  const {percorsiOffline} = useSelector(state => state.settings);
+  const dispatch = useDispatch();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`).then(() => {
-      setRefreshing(false);
-    });
+    getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`).then(
+      () => {
+        setRefreshing(false);
+      },
+    );
   }, []);
 
   const getFileContent = async path => {
@@ -53,9 +55,9 @@ export const Download = () => {
     getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`);
   }, []);
 
-  useEffect(()=>{
-    console.log(percorsiOffline)
-  },[percorsiOffline])
+  useEffect(() => {
+    console.log(percorsiOffline);
+  }, [percorsiOffline]);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,10 +73,8 @@ export const Download = () => {
         animationType="fade"
         transparent
         statusBarTranslucent>
-        <View
-          style={styles.modalBackground}>
-          <View
-            style={styles.modalWrapper}>
+        <View style={styles.modalBackground}>
+          <View style={styles.modalWrapper}>
             <Text allowFontScaling={false} style={styles.titoloModal}>
               {tra('download.titoloModal')}
             </Text>
@@ -93,7 +93,9 @@ export const Download = () => {
                 text={tra('download.conferma')}
                 onPress={() => {
                   RNFS.unlink(deleteFile);
-                  getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`);
+                  getFileContent(
+                    `${RNFS.DocumentDirectoryPath}/percorsiSalvati/`,
+                  );
                   setShowModal(false);
                 }}
               />
@@ -113,7 +115,7 @@ export const Download = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         style={{maxHeight: Dimensions.get('window').height - 143}}>
-        {percorsiOffline.length!=0 ?
+        {percorsiOffline.length != 0 ? (
           percorsiOffline.map((file, index) => (
             <CardPercorso
               key={index}
@@ -127,18 +129,24 @@ export const Download = () => {
               }}
             />
           ))
-          :
-          <Text style={styles.noPercorsi}>
-            {tra("download.nonPresenti")}
-          </Text>
-        }
+        ) : (
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              display: 'flex',
+              height: Dimensions.get('window').height / 1.4,
+            }}>
+            <Text style={styles.noPercorsi}>{tra('download.nonPresenti')}</Text>
+          </View>
+        )}
       </ScrollView>
     </PrincipalWrapper>
   );
 };
 
 export const styles = StyleSheet.create({
-  modalBackground:{
+  modalBackground: {
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(30,30,30,0.6)',
@@ -146,7 +154,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 30,
   },
-  modalWrapper:{
+  modalWrapper: {
     backgroundColor: colors.secondary,
     width: '100%',
     borderRadius: 10,
@@ -166,11 +174,11 @@ export const styles = StyleSheet.create({
     fontSize: 17,
     textAlign: 'center',
   },
-  noPercorsi:{
-    alignSelf:"center",
-    textAlignVertical:"center",
-    height: Dimensions.get("window").height/1.3,
-    fontFamily:"InriaSans-Light",
-    color:colors.medium
-  }
+  noPercorsi: {
+    alignSelf: 'center',
+    textAlignVertical: 'center',
+    //height: Dimensions.get('window').height / 1.3,
+    fontFamily: 'InriaSans-Light',
+    color: colors.medium,
+  },
 });
