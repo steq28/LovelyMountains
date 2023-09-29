@@ -229,20 +229,21 @@ export const Mappa = ({route, navigation}) => {
                     text="Conferma"
                     disabled={fileName == ''}
                     onPress={async () => {
-                      const visibleBounds =
-                        await map.current.getVisibleBounds();
-                      await MapboxGL.offlineManager.createPack(
-                        {
-                          name: fileName,
-                          styleURL:
-                            'mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d',
-                          minZoom: 14,
-                          maxZoom: 20,
-                          bounds: visibleBounds,
-                        },
-                        progressListener,
-                        errorListener,
-                      );
+                      console.log('work in progress');
+                      // const visibleBounds =
+                      //   await map.current.getVisibleBounds();
+                      // await MapboxGL.offlineManager.createPack(
+                      //   {
+                      //     name: fileName,
+                      //     styleURL:
+                      //       'mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d',
+                      //     minZoom: 14,
+                      //     maxZoom: 20,
+                      //     bounds: visibleBounds,
+                      //   },
+                      //   progressListener,
+                      //   errorListener,
+                      // );
                     }}
                   />
                 </View>
