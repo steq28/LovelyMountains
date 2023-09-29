@@ -9,11 +9,12 @@ import {LocalSvg} from 'react-native-svg';
 
 interface ISearchBox {
   icon?: string;
-  placeholder: string;
-  hiker: boolean;
-  nonHikerIcon: string;
-  callback: () => string | null;
-  onPress: () => void | null;
+  placeholder?: string;
+  hiker?: boolean;
+  nonHikerIcon?: string;
+  callback?: () => string | null;
+  onPress?: () => void | null;
+  onPressIcon?: () => void | null;
   small?: boolean,
   value?: string,
   setValue?: (e:string) => void
@@ -25,6 +26,7 @@ export const SearchBox: FC<ISearchBox> = ({
   hiker,
   nonHikerIcon,
   onPress = null,
+  onPressIcon = null,
   callback = null,
   small = false,
   value = "",
@@ -50,7 +52,7 @@ export const SearchBox: FC<ISearchBox> = ({
       {!small ? <BoxShadow setting={shadowOpt}>
           <View style={styles.wrapper}>
             <Pressable
-              onPress={() => {
+              onPress={onPressIcon ? () => onPressIcon() : () => {
                 Keyboard.dismiss();
                 navigation.goBack();
                 setValue("")
@@ -80,7 +82,7 @@ export const SearchBox: FC<ISearchBox> = ({
           </View>
           {onPress && (
             <Pressable
-              style={{width: '100%', height: '100%', position: 'absolute'}}
+              style={{width: onPressIcon ? '85%' : '100%', height: '100%', position: 'absolute', left: onPressIcon ? 50 : 0}}
               onPress={onPress}
             />
           )}

@@ -7,6 +7,7 @@ export const settingsSlice = createSlice({
     lingua: "it",
     percorsiOffline: [],
     ricercaCorrente: "",
+    risultatoSingoloMappa: null
   },
 
   reducers: {
@@ -25,14 +26,18 @@ export const settingsSlice = createSlice({
     setRicercaCorrente: (state, action) => {
         state.ricercaCorrente = action.payload;
     },
+    setRisultatoSingoloMappa: (state, action) => {
+      state.risultatoSingoloMappa = action.payload;
+    },
     resetState: (state) => {
         state.routeStack = [{},{},{},{},{}];
         state.ricercaCorrente = "";
+        state.risultatoSingoloMappa = null
     } 
   }
 })
 
 // Action creators are generated for each case reducer function
-export const { setLanguage, setPercorsiOffline, setRouteStack, setRicercaCorrente, addRouteStack, resetState } = settingsSlice.actions
+export const { setLanguage, setPercorsiOffline, setRouteStack, setRicercaCorrente, addRouteStack, resetState, setRisultatoSingoloMappa } = settingsSlice.actions
 
 export default settingsSlice.reducer

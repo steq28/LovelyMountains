@@ -10,7 +10,7 @@ import axios from 'axios';
 import {PrincipalWrapper} from '../components/PrincipalWrapper';
 import {Keyboard} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { addRouteStack, setRicercaCorrente } from '../redux/settingsSlice';
+import { addRouteStack, setRicercaCorrente, setRisultatoSingoloMappa } from '../redux/settingsSlice';
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from 'react-native';
@@ -29,21 +29,6 @@ export const Search = ({route, navigation}) => {
 
   const queryPlaces = async query => {
     if (query.length > 4) {
-      // await axios
-      //   .get(
-      //     `https://api.openrouteservice.org/geocode/autocomplete?layers=venue,address,street&api_key=5b3ce3597851110001cf6248f3beea2f6e124872b3e48deff92f1c30&text=${query}&size=5`,
-      //   )
-      //   .then(res => {
-      //     console.log(res.data);
-      //     setAutocomplete(res.data.features);
-      //   });
-      // fetch(`https://api.locationiq.com/v1/autocomplete?key=pk.2f431d7187a78c08d82874d26509ef9d&q=${query}&limit=5&accept-language=it`, {
-      //   method: 'GET',
-      // }).then(resp => {
-      //   resp.json().then(data => {
-      //     setAutocomplete(data)
-      //   })
-      // })
       setIsLoading(true)
       await axios
         .get(
@@ -69,7 +54,15 @@ export const Search = ({route, navigation}) => {
         }
       }
     )()
-  })
+  },[])
+
+
+  useEffect(()=>{
+    if(recentSearch.length > 0)
+      recentSearch.map((item, index) => {
+        console.log(item)
+      })
+  },[recentSearch])
 
   return (
     <PrincipalWrapper>
@@ -86,7 +79,7 @@ export const Search = ({route, navigation}) => {
         {autocomplete.length > 0 && !isLoading && (
           <View style={{marginTop: 15}}>
               <View>
-                {autocomplete.map((item, index) => (
+                {autocomplete.map((item:any, index) => (
                   <ResultCardSearch
                     key={index}
                     isEnd={index == autocomplete.length - 1 ? true : false}
@@ -111,10 +104,8 @@ export const Search = ({route, navigation}) => {
                       }
 
                       if (!fromRoute) {
-                        navigation.navigate('Mappa', {
-                          searchResult: true,
-                          searchCoordinates:[item.lon, item.lat],
-                        });
+                        dispatch(setRisultatoSingoloMappa({name: item.display_place, coordinates: [item.lon, item.lat]}))
+                        navigation.navigate('Mappa');
                       } else {
 
                         dispatch(
@@ -164,10 +155,8 @@ export const Search = ({route, navigation}) => {
                       dispatch(setRicercaCorrente(""))
                       setAutocomplete([]);
                       if (!fromRoute) {
-                        navigation.navigate('Mappa', {
-                          searchResult: true,
-                          searchCoordinates: item.searchCoordinates,
-                        });
+                        dispatch(setRisultatoSingoloMappa({name: item.searchName, coordinates: item.searchCoordinates}))
+                        navigation.navigate('Mappa');
                       } else {
 
                         dispatch(
@@ -186,7 +175,7 @@ export const Search = ({route, navigation}) => {
                         });
                       }
                     }}
-                    icon={item.searchCoordinates=="peak" ? "prism-outline" : item.searchCoordinates=="cross" ? 'leaf-outline' : item.searchCoordinates=="waterfall" ? "water-outline" : item.searchCoordinates=="path" ? "footsteps-outline"  : "location-outline"}
+                    icon={item.searchType=="peak" ? "prism-outline" : item.searchType=="cross" ? 'leaf-outline' : item.searchType=="waterfall" ? "water-outline" : item.searchType=="path" ? "footsteps-outline"  : "location-outline"}
                   />
                 ))}
           </View>

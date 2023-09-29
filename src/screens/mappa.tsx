@@ -9,9 +9,6 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Text,
-  Modal,
-  Dimensions,
-  TextInput,
 } from 'react-native';
 import GetLocation from 'react-native-get-location';
 import MapboxGL, {Camera, PointAnnotation} from '@rnmapbox/maps';
@@ -24,19 +21,18 @@ import {useFocusEffect} from '@react-navigation/native';
 import SystemSetting from 'react-native-system-setting';
 import React = require('react');
 import {PrincipalWrapper} from '../components/PrincipalWrapper';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import i18n from '../translations';
-import {setLanguage} from '../redux/settingsSlice';
+import {setLanguage, setRisultatoSingoloMappa} from '../redux/settingsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BottoneBase} from '../components/BottoneBase';
-import * as Progress from 'react-native-progress';
+import { ModalSalvataggio } from '../layout/mappa/modalSalvataggio';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
 );
 
 export const Mappa = ({route, navigation}) => {
-  const {searchResult, searchCoordinates} = route?.params;
   const [currentLocation, setcurrentLocation] = useState([0, 0]);
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const [showCurrentRadar, setshowCurrentRadar] = useState(false);
@@ -51,6 +47,7 @@ export const Mappa = ({route, navigation}) => {
   const insets = useSafeAreaInsets();
   const {tra} = useTranslations();
   const dispatch = useDispatch();
+  const {risultatoSingoloMappa} = useSelector(state => state.settings)
 
   const requestLocationPermission = async () => {
     if (Platform.OS == 'android') {
@@ -110,6 +107,7 @@ export const Mappa = ({route, navigation}) => {
           camera.current?.setCamera({
             centerCoordinate: [location.longitude, location.latitude],
             zoomLevel: 14,
+            animationMode: 'flyTo',
           });
           setLoading(false);
         }
@@ -143,13 +141,14 @@ export const Mappa = ({route, navigation}) => {
   const errorListener = (offlineRegion, err) => console.log(offlineRegion, err);
 
   useEffect(() => {
-    if (searchResult) {
+    if (risultatoSingoloMappa) {
       camera.current?.setCamera({
-        centerCoordinate: searchCoordinates,
+        centerCoordinate: risultatoSingoloMappa.coordinates,
         zoomLevel: 14,
+        animationMode: 'flyTo',
       });
     }
-  }, [searchCoordinates]);
+  }, [risultatoSingoloMappa]);
 
   useEffect(() => {
     getData();
@@ -159,9 +158,13 @@ export const Mappa = ({route, navigation}) => {
     if (JSON.stringify(currentLocation) == JSON.stringify([0, 0]))
       camera.current?.setCamera({
         centerCoordinate: [9.365615, 45.602012],
+        animationMode: 'flyTo',
       });
-    Platform.OS === 'android' && StatusBar.setTranslucent(true);
-    Platform.OS === 'android' && StatusBar.setBackgroundColor('transparent');
+
+    if(Platform.OS === 'android'){
+      StatusBar.setTranslucent(true);
+      StatusBar.setBackgroundColor('transparent');
+    }
   }, []);
 
   useFocusEffect(
@@ -172,89 +175,7 @@ export const Mappa = ({route, navigation}) => {
 
   return (
     <PrincipalWrapper fullscreen>
-      <Modal
-        statusBarTranslucent
-        visible={modalIsVisible}
-        animationType="fade"
-        transparent>
-        <View
-          style={{
-            height: Dimensions.get('screen').height,
-            width: Dimensions.get('screen').width,
-            backgroundColor: 'rgba(51,51,51,0.5)',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-          }}
-        />
-        <View
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            height: Dimensions.get('screen').height,
-            width: Dimensions.get('screen').width,
-            paddingHorizontal: 20,
-          }}>
-          <View
-            style={{
-              backgroundColor: colors.secondary,
-              padding: 20,
-              borderRadius: 10,
-            }}>
-            <Text>Scarica mappa</Text>
-            {downloadProgress == 0 && (
-              <View>
-                <Text>
-                  Per poter procedere con il salvataggio inserire il capitano
-                  per il download
-                </Text>
-                <TextInput
-                  style={styles.textInput}
-                  onChangeText={e => setFileName(e)}
-                  placeholder="Francesco Totti"
-                />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    marginVertical: 20,
-                    justifyContent: 'space-around',
-                  }}>
-                  <BottoneBase
-                    text="Annulla"
-                    outlined
-                    onPress={() => setModalIsVisible(false)}
-                  />
-                  <BottoneBase
-                    text="Conferma"
-                    disabled={fileName == ''}
-                    onPress={async () => {
-                      console.log('work in progress');
-                      // const visibleBounds =
-                      //   await map.current.getVisibleBounds();
-                      // await MapboxGL.offlineManager.createPack(
-                      //   {
-                      //     name: fileName,
-                      //     styleURL:
-                      //       'mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d',
-                      //     minZoom: 14,
-                      //     maxZoom: 20,
-                      //     bounds: visibleBounds,
-                      //   },
-                      //   progressListener,
-                      //   errorListener,
-                      // );
-                    }}
-                  />
-                </View>
-              </View>
-            )}
-            {downloadProgress > 0 && (
-              <Progress.Bar progress={0.3} width={200} />
-            )}
-          </View>
-        </View>
-      </Modal>
+      <ModalSalvataggio modalIsVisible={modalIsVisible} setFileName={(e) => setFileName(e)} setModalIsVisible={(e) => setModalIsVisible(e)} fileName={fileName} downloadProgress={downloadProgress}/>
       <StatusBar
         barStyle={'dark-content'}
         backgroundColor={'transparent'}
@@ -272,10 +193,13 @@ export const Mappa = ({route, navigation}) => {
         }}>
         {!downloadMap && (
           <SearchBox
-            hiker={true}
+            hiker={risultatoSingoloMappa ? false : true}
             icon={'prism-outline'}
+            nonHikerIcon='arrow-back-outline'
             placeholder={tra('search.cerca')}
             onPress={() => navigation.navigate('Search')}
+            value={risultatoSingoloMappa ? risultatoSingoloMappa.name : ''}
+            onPressIcon={risultatoSingoloMappa ? () => dispatch(setRisultatoSingoloMappa(null)) : null}
           />
         )}
       </View>
@@ -291,7 +215,7 @@ export const Mappa = ({route, navigation}) => {
           compassPosition={{
             top:
               Platform.OS === 'android'
-                ? StatusBar.currentHeight + 75
+                ? StatusBar?.currentHeight + 75
                 : insets.top + 75,
             right: 10,
           }}
@@ -301,21 +225,12 @@ export const Mappa = ({route, navigation}) => {
             animated
             androidRenderMode={'compass'}
           />
-          {searchResult && (
+          {risultatoSingoloMappa && (
             <MapboxGL.PointAnnotation
               id="searchResult"
               title="searchResult"
-              coordinate={searchCoordinates}>
-              <View
-                style={{
-                  height: 30,
-                  width: 30,
-                  backgroundColor: 'red',
-                  borderRadius: 50,
-                  borderColor: colors.secondary,
-                  borderWidth: 3,
-                }}
-              />
+              coordinate={risultatoSingoloMappa.coordinates}>
+              <Icon name={'location'} size={35} color={"red"} />
             </MapboxGL.PointAnnotation>
           )}
           <Camera ref={camera} />
