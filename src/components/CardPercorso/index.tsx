@@ -4,14 +4,14 @@ import {styles} from './styles';
 import {colors} from '../../utils/colors';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export const CardPercorso = ({name, img, onPress, onDelete}) => {
+export const CardPercorso = ({name, img, lunghezza, durata, onPress, onDelete}) => {
   return (
     <Pressable style={styles.wrapper} onPress={onPress}>
       <View style={styles.left}>
         <View
           style={{height: 70, width: 70, borderRadius: 5, overflow: 'hidden'}}>
           <Image
-            source={{uri: 'https://picsum.photos/200'}}
+            source={img==undefined ? {uri: 'https://picsum.photos/200'} : {uri: img}}
             style={{resizeMode: 'cover', height: '100%', width: '100%'}}
           />
         </View>
@@ -21,11 +21,11 @@ export const CardPercorso = ({name, img, onPress, onDelete}) => {
           </Text>
           <Text numberOfLines={1} style={styles.statsText}>
             Lunghezza totale:{' '}
-            <Text style={{fontFamily: 'InriaSans-Light'}}>50km</Text>
+            <Text style={{fontFamily: 'InriaSans-Light'}}>{lunghezza}</Text>
           </Text>
           <Text numberOfLines={1} style={styles.statsText}>
             Durata media:{' '}
-            <Text style={{fontFamily: 'InriaSans-Light'}}>2h e 43 min</Text>
+            <Text style={{fontFamily: 'InriaSans-Light'}}>{durata}</Text>
           </Text>
         </View>
       </View>
