@@ -1863,10 +1863,10 @@
     redux-thunk "^2.4.2"
     reselect "^4.1.8"
 
-"@rnmapbox/maps@^10.0.11":
-  version "10.0.15"
-  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.0.15.tgz#cf63c8eb6beffb22451718f148c2bea655a3cdb6"
-  integrity sha512-2diBwMF+e7gR6keZ1AEI3xw8U7Cu9+xhv8ce75Bw7flg9aTk+d0KgWv4VDQn4wSphD23EroUgFprVymHvVzZGQ==
+"@rnmapbox/maps@10.0.14":
+  version "10.0.14"
+  resolved "https://registry.yarnpkg.com/@rnmapbox/maps/-/maps-10.0.14.tgz#62348150a7d3555751ded5d19abacaa67cb0fff8"
+  integrity sha512-tPzR5enXUhygKmclnGSrskYVkiEKquJ+p2QNwq7epGK01lBCrY3yv3yFu9ipynKTrx3uRj0516NQMHtxAhQ9gA==
   dependencies:
     "@turf/along" "6.5.0"
     "@turf/distance" "6.5.0"
@@ -2111,9 +2111,9 @@
   integrity sha512-1rkryxURpr6aWP7R786/UQOkJ3PcpQiWkAXBmdWc7ryFWqN6a4xfK7BtjXvFBKO9LjQ+MWQSWxYeZX1OApnArA==
 
 "@types/geojson@^7946.0.7":
-  version "7946.0.10"
-  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.10.tgz#6dfbf5ea17142f7f9a043809f1cd4c448cb68249"
-  integrity sha512-Nmh0K3iWQJzniTuPRcJn5hxXkfB1T1pgB89SBig5PlJQU5yocazeu4jATJlaA0GYFKWMqDdvYemoSnF2pXgLVA==
+  version "7946.0.11"
+  resolved "https://registry.yarnpkg.com/@types/geojson/-/geojson-7946.0.11.tgz#012c17cb2256ad8de78560da851ab914a7b9b40e"
+  integrity sha512-L7A0AINMXQpVwxHJ4jxD6/XjZ4NDufaRlUJHjNIFKYUFBH1SvOW+neaqb0VTRSLW5suSrSu19ObFEFnfNcr+qg==
 
 "@types/graceful-fs@^4.1.3":
   version "4.1.6"
@@ -6479,6 +6479,13 @@ react-native-navigation-bar-color@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-native-navigation-bar-color/-/react-native-navigation-bar-color-2.0.2.tgz#2e14ca79a656d81d5b4b7433ae43966ef5206444"
   integrity sha512-ZmpLWRocyme1au11e5ZuecMS/UCi57nlzgnioi03Q6ERMbeUOqqbWgNBaNB7SsCeqBV6fZPjo3+A64zEIpzw4w==
+
+react-native-progress@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-5.0.0.tgz#f5ac6ceaeee27f184c660b00f29419e82a9d0ab0"
+  integrity sha512-KjnGIt3r9i5Kn2biOD9fXLJocf0bwxPRxOyAgXEnZTJQU2O+HyzgGFRCbM5h3izm9kKIkSc1txh8aGmMafCD9A==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-native-radio-buttons-group@^3.0.3:
   version "3.0.3"
