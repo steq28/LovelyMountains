@@ -17,8 +17,9 @@ import {CardPercorso} from '../components/CardPercorso';
 import {BottoneBase} from '../components/BottoneBase';
 import {PrincipalWrapper} from '../components/PrincipalWrapper';
 import RNFS from 'react-native-fs';
-import {useDispatch, useSelector} from 'react-redux';
-import {setPercorsiOffline} from '../redux/settingsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPercorsiOffline } from '../redux/settingsSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Download = () => {
   const {tra} = useTranslations();
@@ -26,9 +27,10 @@ export const Download = () => {
   const [files, setFiles] = useState([]);
   const [deleteFile, setDeleteFile] = useState('');
   const [refreshing, setRefreshing] = useState(false);
-
-  const {percorsiOffline} = useSelector(state => state.settings);
-  const dispatch = useDispatch();
+  const [deleteName, setDeleteName] = useState('');
+  
+  const {percorsiOffline} = useSelector(state => state.settings)
+  const dispatch = useDispatch()
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -40,24 +42,38 @@ export const Download = () => {
   }, []);
 
   const getFileContent = async path => {
-    let reader = await RNFS.readDir(path);
-    reader = reader.map(item => {
-      let c = item.name.replace('.geojson', '');
-      c = c.split('~');
-      item.name = c[0];
-      item.image = c[1];
-      return item;
+    AsyncStorage.getItem('savedTrackImages').then((imagesObject)=>{
+      imagesObject = JSON.parse(imagesObject);
+      RNFS.readDir(path).then((reader)=>{
+        reader = reader.map(item => {
+          let name = item.name.replace('.geojson', '');
+          item.name = name;
+
+          imagesObject.forEach(image => {
+            if(image.name == name){
+              item.image = image.image;
+              item.lunghezza = image.lunghezza;
+              item.durata = image.durata;
+            }
+          })
+
+          return item;
+        });
+        dispatch(setPercorsiOffline(reader));
+      }).catch(err => console.log(err));
     });
-    dispatch(setPercorsiOffline(reader));
+
+    
+
   };
 
   useEffect(() => {
     getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`);
   }, []);
 
-  useEffect(() => {
-    console.log(percorsiOffline);
-  }, [percorsiOffline]);
+  // useEffect(()=>{
+  //   console.log(percorsiOffline)
+  // },[percorsiOffline])
 
   useFocusEffect(
     React.useCallback(() => {
@@ -93,10 +109,15 @@ export const Download = () => {
                 text={tra('download.conferma')}
                 onPress={() => {
                   RNFS.unlink(deleteFile);
-                  getFileContent(
-                    `${RNFS.DocumentDirectoryPath}/percorsiSalvati/`,
-                  );
-                  setShowModal(false);
+                  AsyncStorage.getItem('savedTrackImages').then((imagesObject)=>{
+                    imagesObject = JSON.parse(imagesObject);
+                    imagesObject = imagesObject.filter(image => image.name != deleteName);
+                    AsyncStorage.setItem('savedTrackImages', JSON.stringify(imagesObject)).then(() => {
+                      getFileContent(`${RNFS.DocumentDirectoryPath}/percorsiSalvati/`);
+                      setShowModal(false);
+                    });
+                  })
+                  
                 }}
               />
               <View style={{width: 10}}></View>
@@ -120,11 +141,13 @@ export const Download = () => {
             <CardPercorso
               key={index}
               name={file.name}
-              img={undefined}
+              img={file.image}
+              durata={file.durata}
+              lunghezza={file.lunghezza}
               onPress={undefined}
               onDelete={() => {
-                console.log(file);
                 setDeleteFile(file.path);
+                setDeleteName(file.name);
                 setShowModal(true);
               }}
             />

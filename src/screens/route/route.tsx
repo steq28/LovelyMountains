@@ -57,7 +57,6 @@ export const Route = ({route, navigation}) => {
         'surface',
       ],
     };
-    console.log(url, headers, body)
     fetch(url, {
       method: 'POST',
       headers: headers,
@@ -66,7 +65,12 @@ export const Route = ({route, navigation}) => {
       let a = resp.json();
       a.then(data => {
         setLoading(false);
-        navigation.navigate('PercorsoSelezionato', {track: data});
+        navigation.navigate('PercorsoSelezionato',
+        {
+          track: data,
+          routeStack: routeStack.filter(item => Object.keys(item).length !== 0)
+        }
+        );
       });
       // this.setState(
       //   {
