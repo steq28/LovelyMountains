@@ -60,11 +60,11 @@ export const SearchBox: FC<ISearchBox> = ({
               style={{width: '10%'}}>
               {!onPress && <Icon name={icon} color={colors.medium} size={25} />}
               {onPress && !hiker && (
-                <Icon name={nonHikerIcon} color={colors.medium} size={25} />
+                <Icon name={nonHikerIcon} color={colors.primary} size={25} />
               )}
               {onPress && hiker && (
                 <LocalSvg
-                  asset={require('../../assets/images/svg/logo-mountains-medium.svg')}
+                  asset={require('../../assets/images/svg/logo-mountains-light.svg')}
                   height={'100%'}
                   width={'100%'}
                 />
@@ -76,7 +76,7 @@ export const SearchBox: FC<ISearchBox> = ({
               focusable={onPress ? false : true}
               placeholder={placeholder}
               placeholderTextColor={colors.light}
-              style={styles.textInput}
+              style={[styles.textInput, value=='' && {fontFamily:'InriaSans-Regular',}]}
               value={value}
             />
           </View>

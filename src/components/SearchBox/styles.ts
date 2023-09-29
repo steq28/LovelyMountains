@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
 
     textInput:{
         width:'89%',
-        fontFamily:'InriaSans-Regular',
+        fontFamily:'InriaSans-Bold',
         fontSize:17,
         color:colors.primary
     }
