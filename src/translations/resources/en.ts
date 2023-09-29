@@ -1,6 +1,7 @@
 export default {
   mappa: {
     abilitaGeo: 'Please enable geolocalization!',
+    centraArea: 'Center the screen on the area you want to download and press the button below'
   },
   search: {
     cerca: 'Search places',
@@ -13,7 +14,7 @@ export default {
       'Are you sure you want to delete the saved hike? Once confirmed you will not be able to view it offline',
     conferma: 'Confirm',
     annulla: 'Cancel',
-    nonPresenti:"There are no saved offline hikes"
+    nonPresenti:'There are no saved offline hikes'
   },
   impostazioni: {
     titolo: 'Settings',
@@ -28,26 +29,26 @@ export default {
   },
   percorsoSelezionato: {
     apriMappa: 'Open map',
-    salvaTracciato: "Save offline track",
-    info: "Track information: ",
-    difficolta: "Difficulty",
-    distanza: "Distance",
-    durata: "Duration",
-    dislivello: "Altitude difference: ",
-    perditaQuota: "Altitude loss: ",
-    elevazione: "Elevation: ",
-    pendenza: "Slope: ",
-    pavimentazione: "Pavement: ",
-    legenda: "Legend: ",
+    salvaTracciato: 'Save offline track',
+    info: 'Track information: ',
+    difficolta: 'Difficulty',
+    distanza: 'Distance',
+    durata: 'Duration',
+    dislivello: 'Altitude difference: ',
+    perditaQuota: 'Altitude loss: ',
+    elevazione: 'Elevation: ',
+    pendenza: 'Slope: ',
+    pavimentazione: 'Pavement: ',
+    legenda: 'Legend: ',
   },
   route:{
-    partenza: "Start place",
-    arrivo:"Finish place",
-    calcolaPercorso:"Calculate route",
+    partenza: 'Start place',
+    arrivo:'Finish place',
+    calcolaPercorso:'Calculate route',
   },
   saveTrack:{
-    percorsoEsiste: "Track name already exists",
-    textModal:"Warning, the name of the track you have chosen has already been used. Do you want to overwrite the file?",
-    sovrascrivi: "Overwrite",
+    percorsoEsiste: 'Track name already exists',
+    textModal:'Warning, the name of the track you have chosen has already been used. Do you want to overwrite the file?',
+    sovrascrivi: 'Overwrite',
   },
 };

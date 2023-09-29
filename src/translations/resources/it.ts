@@ -1,6 +1,7 @@
 export default {
   mappa: {
     abilitaGeo: 'Abilita la geolocalizzazione!',
+    centraArea: 'Centrare lo schermo sull\'area che si desidera scaricare e premere il pulsante in basso'
   },
   search: {
     cerca: 'Cerca luoghi',
@@ -13,7 +14,7 @@ export default {
       'Sei sicuro di voler eliminare il percorso salvato? Una volta confermato non potrai visualizzarlo offline',
     conferma: 'Conferma',
     annulla: 'Annulla',
-    nonPresenti:"Non ci sono percorsi offline salvati"
+    nonPresenti:'Non ci sono percorsi offline salvati'
   },
   impostazioni: {
     titolo: 'Impostazioni',
@@ -28,26 +29,26 @@ export default {
   },
   percorsoSelezionato: {
     apriMappa: 'Apri mappa',
-    salvaTracciato: "Salva tracciato offline",
-    info: "Informazioni tracciato:",
-    difficolta: "Difficoltà",
-    distanza: "Distanza",
-    durata: "Durata",
-    dislivello: "Dislivello: ",
-    perditaQuota: "Perdita di quota: ",
-    elevazione: "Elevazione: ",
-    pendenza: "Pendenza: ",
-    pavimentazione: "Pavimentazione: ",
-    legenda: "Legenda: ",
+    salvaTracciato: 'Salva tracciato offline',
+    info: 'Informazioni tracciato:',
+    difficolta: 'Difficoltà',
+    distanza: 'Distanza',
+    durata: 'Durata',
+    dislivello: 'Dislivello: ',
+    perditaQuota: 'Perdita di quota: ',
+    elevazione: 'Elevazione: ',
+    pendenza: 'Pendenza: ',
+    pavimentazione: 'Pavimentazione: ',
+    legenda: 'Legenda: ',
   },
   route:{
-    partenza: "Luogo di partenza",
-    arrivo:"Luogo di arrivo",
-    calcolaPercorso:"Calcola percorso",
+    partenza: 'Luogo di partenza',
+    arrivo:'Luogo di arrivo',
+    calcolaPercorso:'Calcola percorso',
   },
   saveTrack:{
-    percorsoEsiste: "Nome percorso già presente",
-    textModal:"Attenzione, il nome del percorso che hai scelto è già stato utilizzato. Vuoi sovrascrivere il file?",
-    sovrascrivi: "Sovrascrivi",
+    percorsoEsiste: 'Nome percorso già presente',
+    textModal:'Attenzione, il nome del percorso che hai scelto è già stato utilizzato. Vuoi sovrascrivere il file?',
+    sovrascrivi: 'Sovrascrivi',
   },
 };

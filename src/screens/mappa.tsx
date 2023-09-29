@@ -270,7 +270,7 @@ export const Mappa = ({route, navigation}) => {
           paddingTop:
             Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
         }}>
-        {downloadMap && (
+        {!downloadMap && (
           <SearchBox
             hiker={true}
             icon={'prism-outline'}
@@ -312,7 +312,7 @@ export const Mappa = ({route, navigation}) => {
                   width: 30,
                   backgroundColor: 'red',
                   borderRadius: 50,
-                  borderColor: '#fff',
+                  borderColor: colors.secondary,
                   borderWidth: 3,
                 }}
               />
@@ -329,7 +329,7 @@ export const Mappa = ({route, navigation}) => {
             </MapboxGL.RasterSource>
           )}
         </MapboxGL.MapView>
-        {downloadMap && (
+        {!downloadMap && (
           <Pressable
             style={styles.button}
             disabled={loading}
@@ -365,55 +365,56 @@ export const Mappa = ({route, navigation}) => {
             ) : (
               <Icon
                 name={'navigate-circle-outline'}
-                color={'#333333'}
+                color={colors.primary}
                 size={35}
               />
             )}
           </Pressable>
         )}
         <Pressable
-          style={[styles.button, {bottom: 30}]}
+          style={[styles.button, {bottom: 30, padding:10}]}
           onPress={() => {
             setdownloadMap(!downloadMap);
           }}>
           <Icon
             name={'cloud-download-outline'}
-            color={!downloadMap ? 'rgb(0,122,255)' : '#333333'}
-            size={35}
+            color={downloadMap ? colors.blue : colors.primary}
+            size={33}
           />
         </Pressable>
-        {downloadMap && (
+        {!downloadMap && (
           <Pressable
-            style={[styles.button, {bottom: 170}]}
+            style={[styles.button, {bottom: 170, padding:10}]}
             onPress={() => {
               setshowCurrentRadar(!showCurrentRadar);
             }}>
             <Icon
-              name={'partly-sunny-outline'}
-              color={showCurrentRadar ? 'rgb(0,122,255)' : '#333'}
-              size={35}
+              name={'rainy-outline'}
+              color={showCurrentRadar ? colors.blue : colors.primary}
+              size={33}
             />
           </Pressable>
         )}
-        {!downloadMap && (
+        {downloadMap && (
           <View
             style={{
               position: 'absolute',
               zIndex: 999,
               top: 100,
-              backgroundColor: '#FFF',
+              backgroundColor: colors.secondary,
+              borderColor: colors.veryLight,
+              borderWidth: 1,
               borderRadius: 10,
               alignSelf: 'center',
               width: '70%',
               padding: 10,
             }}>
-            <Text style={{textAlign: 'center'}}>
-              Center the screen on the area you want to download and press the
-              button below
+            <Text style={{textAlign: 'center', fontFamily:"InriaSans-Regular", color:colors.medium, fontSize:14}}>
+              {tra('mappa.centraArea')}
             </Text>
           </View>
         )}
-        {!downloadMap && (
+        {downloadMap && (
           <View
             style={{
               position: 'absolute',

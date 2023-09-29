@@ -38,7 +38,7 @@ export const SearchBox: FC<ISearchBox> = ({
     height: 55,
     color: '#000',
     border: 5,
-    radius: 25,
+    radius: 20,
     opacity: 0.06,
     x: 0,
     y: 3,
