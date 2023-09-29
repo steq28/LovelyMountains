@@ -16,9 +16,9 @@ import { useEvent } from 'react-native-reanimated';
 import { it } from '../../translations/resources';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ItemRoute = ({icon, location, secondaryText}) =>{
+const ItemRoute = ({icon, location, secondaryText, key}) =>{
   return(
-    <View style={{flexDirection:"row", alignItems:"center", marginBottom:20}}>
+    <View key={key} style={{flexDirection:"row", alignItems:"center", marginBottom:20}}>
       <View style={{backgroundColor:colors.primary, height:30, width:45, alignItems:"center", justifyContent:"center", borderRadius:5, flexDirection:"row"}}>
         <Icon name={icon} size={icon=="golf-outline" ? 15 : 20} color={colors.secondary}/>
         {icon=="golf-outline" && <Text style={{fontFamily:"InriaSans-Regular", color:colors.secondary, marginLeft:2}}>1</Text> }
@@ -242,16 +242,16 @@ export const SaveTrack = ({route, navigation}) => {
                     if(item.searchName != undefined){
                       if(index == 0){
                         return(
-                          <ItemRoute icon={'location-outline'} location={item.searchName} secondaryText={item.searchAddress}/>
+                          <ItemRoute key={index} icon={'location-outline'} location={item.searchName} secondaryText={item.searchAddress}/>
                         )
                       }else{
                         if(index == routeStack.length-1){
                           return(
-                            <ItemRoute icon={'flag'} location={item.searchName} secondaryText={item.searchAddress}/>
+                            <ItemRoute key={index} icon={'flag'} location={item.searchName} secondaryText={item.searchAddress}/>
                           )
                         }else
                           return(
-                            <ItemRoute icon={'golf-outline'} location={item.searchName} secondaryText={item.searchAddress}/>
+                            <ItemRoute key={index} icon={'golf-outline'} location={item.searchName} secondaryText={item.searchAddress}/>
                           )
                       }
                     }

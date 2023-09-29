@@ -199,7 +199,7 @@ export const Mappa = ({route, navigation}) => {
           disabled={loading}
           onPress={() => {
             setLoading(true);
-
+            
             SystemSetting.isLocationEnabled().then(enable => {
               if (enable) {
                 if (JSON.stringify(currentLocation) != JSON.stringify([0, 0])) {

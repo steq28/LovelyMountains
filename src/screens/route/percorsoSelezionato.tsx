@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useMemo, useRef} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
   Dimensions,
   Platform,
@@ -6,6 +6,8 @@ import {
   StyleSheet,
   View,
   Text,
+  ToastAndroid,
+  ActivityIndicator
 } from 'react-native';
 
 import {useTranslations} from '../../hooks/useTranslations';
@@ -26,9 +28,10 @@ import {
   VictoryStack,
   VictoryTheme,
 } from 'victory-native';
-import {ScrollView} from 'react-native-gesture-handler';
-import BottomSheet, { BottomSheetScrollView, BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import {LineChart, PieChart } from 'react-native-gifted-charts';
+import SystemSetting from 'react-native-system-setting';
+import GetLocation from 'react-native-get-location';
 
 export const PercorsoSelezionato = ({route, navigation}) => {
   const {track, routeStack} = route?.params;
@@ -40,6 +43,10 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   const [pavimentazione, setPavimentazione] = React.useState([]);
   const [pendenzaVisualizzata, setPendenzaVisualizzata] = React.useState({descrizione:"", value:0});
   const map = useRef<MapboxGL.MapView>(null);
+  const [currentLocation, setcurrentLocation] = useState([0, 0]);
+  const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const camera = useRef<Camera>(null);
   const colorPalette=["#0095FF", "#93FCF8", "#BDB2FA", "#FFA5BA", "#4E8074", "#FFD86A", "#FFF86A", "#A6D46A", "#6AC4D8", "#6A8CD8", "#6A6AD8", "#8C6AD8"]
 
@@ -231,20 +238,36 @@ export const PercorsoSelezionato = ({route, navigation}) => {
     zioPedroCheFunzioneDifficileCheSara();
   });
 
-  useFocusEffect(
-    React.useCallback(() => {
-      Platform.OS === 'android' &&
-        StatusBar.setBackgroundColor(colors.secondary);
-    }, []),
-  );
+  const getPosition = (zoomCamera = false) => {
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then(location => {
+        setcurrentLocation([location.longitude, location.latitude]);
+        if (zoomCamera) {
+          camera.current?.setCamera({
+            centerCoordinate: [location.longitude, location.latitude],
+            zoomLevel: 14,
+          });
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        const {code, message} = error;
+        console.info(code, message);
+        setLoading(false);
+      });
+  };
 
   useFocusEffect(
     useCallback(() => {
-      Platform.OS === 'android' &&
-        StatusBar.setBackgroundColor(colors.secondary);
+      // Platform.OS === 'android' &&
+      //   StatusBar.setBackgroundColor(colors.secondary);
       navigation.getParent().setOptions({
         tabBarStyle: {display: 'none'},
       });
+
       return () => {
         navigation.getParent().setOptions({
           tabBarStyle: {
@@ -258,232 +281,143 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   );
   return (
     <PrincipalWrapper fullscreen>
-            <StatusBar
+      <StatusBar
         barStyle={'dark-content'}
         backgroundColor={'transparent'}
         translucent
       />
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            marginTop: StatusBar.currentHeight + 10,
-            width: '100%',
-            marginLeft: 15,
-          }}>
-          <Pressable
-            style={{flex: 1}}
-            onPress={() => {
-              navigation.goBack();
-            }}>
-            <Icon name="arrow-back-outline" size={30} color={colors.medium} />
-          </Pressable>
-        </View> */}
-        <View style={{height: "82%"}}>
-          <MapboxGL.MapView
-            ref={map}
-            style={{flex: 1, marginHorizontal: -30}}
-            compassEnabled={false}
-            pitchEnabled={false}
-            scrollEnabled={false}
-            rotateEnabled={false}
-            scaleBarEnabled={false}
-            zoomEnabled={false}
-            logoEnabled={false}
-            onDidFinishLoadingMap={() => {
-              camera.current?.fitBounds(
-                track.bbox.slice(0, 2),
-                track.bbox.slice(3, 5),
-                100,
-              );
-            }}
-            compassFadeWhenNorth
-            attributionEnabled={false}
-            compassPosition={{
-              top: 15,
-              right: 10,
-            }}
-            styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d">
-            <MapboxGL.UserLocation
-              showsUserHeadingIndicator={true}
-              animated
-              androidRenderMode={'compass'}
+      <View style={{position:"absolute", flexDirection:"row", zIndex:999999,borderWidth:1, borderColor:colors.light, borderRadius:20, paddingHorizontal:10, paddingVertical:10, alignItems:"center", justifyContent:"center", top:Platform.OS==='android' ? StatusBar.currentHeight : insets.top, left:20, width:Dimensions.get("screen").width-40, backgroundColor:colors.secondary}}>
+        <Icon name="arrow-back-outline" size={30} color={colors.primary} onPress={()=>navigation.goBack()}/>
+        <View style={{flexDirection:"row", flex:1, marginLeft:10, overflow:'hidden'}}>
+          <Text numberOfLines={1} style={{fontFamily:"InriaSans-Bold", fontSize:16, color:colors.primary, textAlign:"left"}}>
+            {routeStack.map((item, index)=>{
+              if(index==routeStack.length-1)
+                return item.searchName
+              else
+                return item.searchName + " > "
+            })}
+          </Text>
+
+        </View>
+      </View>
+      <View style={{height: "85%"}}>
+        <MapboxGL.MapView
+          ref={map}
+          style={{flex: 1}}
+          compassEnabled={true}
+          pitchEnabled={false}
+          scrollEnabled={true}
+          rotateEnabled={true}
+          scaleBarEnabled={false}
+          zoomEnabled={true}
+          logoEnabled={false}
+          onDidFinishLoadingMap={() => {
+            camera.current?.fitBounds(
+              track.bbox.slice(0, 2),
+              track.bbox.slice(3, 5),
+              130
+            );
+          }}
+          
+          //compassFadeWhenNorth
+          attributionEnabled={false}
+          compassPosition={{
+            top: Platform.OS === 'android' ? StatusBar.currentHeight + 70 : insets.top + 70,
+            right: 10,
+          }}
+          styleURL="mapbox://styles/linodev/ckw951ybo54sb15ocs835d13d"
+        >
+          <MapboxGL.UserLocation
+            showsUserHeadingIndicator={true}
+            animated
+            androidRenderMode={'compass'}
+          />
+
+          <Camera ref={camera} />
+
+          <MapboxGL.ShapeSource
+            id={'hike'}
+            shape={track.features[0].geometry}
+          >
+            <MapboxGL.LineLayer
+              id="linelayer1"
+              style={{lineColor: '#007AFF', lineWidth: 4}}
             />
-            <Camera ref={camera} />
-            <MapboxGL.ShapeSource
-              id={'hike'}
-              shape={track.features[0].geometry}>
-              <MapboxGL.LineLayer
-                id="linelayer1"
-                style={{lineColor: '#007AFF', lineWidth: 3}}
-              />
-            </MapboxGL.ShapeSource>
-            <MapboxGL.PointAnnotation
-              id="searchResult"
-              title="searchResult"
-              coordinate={track.features[0].geometry.coordinates[0]}>
-              <View
-                style={{
-                  height: 15,
-                  width: 15,
-                  backgroundColor: 'green',
-                  borderRadius: 10,
-                  borderColor: '#fff',
-                  borderWidth: 3,
-                }}
-              />
-            </MapboxGL.PointAnnotation>
-            <MapboxGL.PointAnnotation
-              id="searchResult"
-              title="searchResult"
-              coordinate={track.features[0].geometry.coordinates.slice(-1)[0]}>
-              <View
-                style={{
-                  height: 15,
-                  width: 15,
-                  backgroundColor: 'black',
-                  borderRadius: 10,
-                  borderColor: '#fff',
-                  borderWidth: 3,
-                }}
-              />
-            </MapboxGL.PointAnnotation>
-          </MapboxGL.MapView>
-        </View>
-        {/* <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-            marginTop: 20,
-            justifyContent: 'center',
-            width:"100%",
-            paddingHorizontal: 30
+          </MapboxGL.ShapeSource>
+
+          <MapboxGL.PointAnnotation
+            id="searchResult"
+            title="searchResult"
+            coordinate={track.features[0].geometry.coordinates[0]}>
+            <View style={{backgroundColor:colors.secondary, borderRadius:99999, padding:3, borderColor:colors.primary, borderWidth:2}}>
+              <Icon name="location" size={14} color={colors.primary} />
+            </View>
+          </MapboxGL.PointAnnotation>
+
+          <MapboxGL.PointAnnotation
+            id="searchResult"
+            title="searchResult"
+            coordinate={track.features[0].geometry.coordinates.slice(-1)[0]}
+          >
+            <View style={{backgroundColor:colors.secondary, borderRadius:99999, padding:4, borderColor:colors.primary, borderWidth:2}}>
+              <Icon name="flag" size={13} color={colors.primary} />
+            </View>
+          </MapboxGL.PointAnnotation>
+
+        </MapboxGL.MapView>
+        <Pressable
+          style={[styles.button, {bottom: 170, padding:9.5}]}
+          disabled={loading}
+          onPress={() => {
+            camera.current?.fitBounds(
+              track.bbox.slice(0, 2),
+              track.bbox.slice(3, 5),
+              130, 1000
+            );
           }}>
-          <BottoneBase
-            text={tra('percorsoSelezionato.apriMappa')}
-            fixedWidth={{marginRight: 10, flex:1}}
+            <Icon
+              name={'scan'}
+              color={colors.primary}
+              size={30}
+            />
+        </Pressable>
+        
+        <Pressable
+          style={styles.button}
+          disabled={loading}
+          onPress={() => {
+            setLoading(true);
 
-            onPress={() => {}}
-          />
-          <BottoneBase
-            text={tra('percorsoSelezionato.salvaTracciato')}
-            fixedWidth={{flex:2}}
-            outlined
-            onPress={() => navigation.navigate('SaveTrack', {track: track})}
-          />
-        </View> */}
-        {/* <View style={[{marginTop:30, paddingHorizontal:30}]}>
-          <Text style={styles.sectionText}>{tra('percorsoSelezionato.info')}</Text>
-          <View style={{flexDirection: 'column'}}>
-            <Text style={styles.subText}>
-              {tra('percorsoSelezionato.difficolta')}
-              <Text style={{fontFamily:"InriaSans-Bold"}}>
-                {getTrailDifficulty(
-                  track.features[0].properties.extras.traildifficulty.summary,
-                )}
-              </Text>
-            </Text>
-            <Text style={styles.subText}>
-              {tra('percorsoSelezionato.distanza')}
-              <Text style={{fontFamily:"InriaSans-Bold"}}>
-                {(
-                  Math.round(
-                    (track.features[0].properties.summary.distance / 1000 +
-                      Number.EPSILON) *
-                      100,
-                  ) / 100
-                ).toString()}{' '}
-                Km
-              </Text>
-            </Text>
-            <Text style={styles.subText}>
-              {tra('percorsoSelezionato.durata')}
-              <Text style={{fontFamily:"InriaSans-Bold"}}>
-                {(
-                  Math.round(
-                    (track.features[0].properties.summary.duration / 3600 +
-                      Number.EPSILON) *
-                      100,
-                  ) / 100
-                ).toString()}{' '}
-                Hr
-              </Text>
-            </Text>
-            <Text style={styles.subText}>
-              {tra('percorsoSelezionato.dislivello')}
-              <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.ascent.toString()} m</Text>
-            </Text>
-            <Text style={styles.subText}>
-              {tra('percorsoSelezionato.perditaQuota')}
-              <Text style={{fontFamily:"InriaSans-Bold"}}>{track.features[0].properties.descent.toString()} m</Text>
-            </Text>
-          </View>
-        </View>
-
-        {readytToRender && (
-          <View>
-            <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>{tra('percorsoSelezionato.elevazione')}</Text>
-              <VictoryChart
-                width={Dimensions.get('window').width}
-                height={400}
-                theme={VictoryTheme.material}
-              >
-                <VictoryArea
-                  data={altitude}
-                  interpolation={'natural'}
-                  style={{
-                    data: {
-                      fill: '#333',
-                      fillOpacity: 0.5,
-                      stroke: '#333',
-                      strokeWidth: 4,
-                      strokeOpacity: 1,
-                    },
-                  }}
-                />
-              </VictoryChart>
-            </View>
-            
-            <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pendenza')}</Text>
-              <VictoryStack theme={VictoryTheme.material} height={80}>
-                {pendenza.map(item => (
-                  <VictoryBar barWidth={30} horizontal data={[item]} />
-                ))}
-              </VictoryStack>
-              <View style={{marginLeft: 50, display: 'flex', height:150}}>
-                <VictoryLegend
-                  theme={VictoryTheme.material}
-                  width={Dimensions.get('window').width}
-                  height={120}
-                  title={tra('percorsoSelezionato.legenda')}
-                  centerTitle
-                  data={pendenza.map(item => ({name: item.x}))}
-                />
-              </View>
-            </View>
-            
-            <View style={styles.wrapperSection}>
-              <Text style={styles.sectionText}>{tra('percorsoSelezionato.pavimentazione')}</Text>
-              <VictoryStack theme={VictoryTheme.material} height={80}>
-                {pavimentazione.map(item => (
-                  <VictoryBar barWidth={30} horizontal data={[item]} />
-                ))}
-              </VictoryStack>
-              <View style={{marginLeft: 10, display: 'flex', height:200}}>
-                <VictoryLegend
-                  theme={VictoryTheme.material}
-                  width={Dimensions.get('window').width}
-                  title={tra('percorsoSelezionato.legenda')}
-                  centerTitle
-                  borderPadding={20}
-                  data={pavimentazione.map(item => ({name: item.x}))}
-                />
-              </View>
-            </View>
-          </View>
-        )} */}
+            SystemSetting.isLocationEnabled().then(enable => {
+              if (enable) {
+                if (JSON.stringify(currentLocation) != JSON.stringify([0, 0])) {
+                  camera.current?.setCamera({
+                    centerCoordinate: currentLocation,
+                    zoomLevel: 14,
+                    animationMode: 'flyTo',
+                  });
+                  setLoading(false);
+                  Platform.OS === 'android' && StatusBar.setTranslucent(true);
+                  Platform.OS === 'android' &&
+                    StatusBar.setBackgroundColor('transparent');
+                } else getPosition(true);
+              } else {
+                ToastAndroid.show(tra('mappa.abilitaGeo'), ToastAndroid.SHORT);
+                setLoading(false);
+              }
+            });
+          }}>
+          {loading ? (
+            <ActivityIndicator size={35} color={colors.primary} />
+          ) : (
+            <Icon
+              name={'navigate-circle-outline'}
+              color={colors.primary}
+              size={35}
+            />
+          )}
+        </Pressable>
+      </View>
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
@@ -605,21 +539,6 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             
             <View style={styles.wrapperSection}>
               <Text style={[styles.sectionText, {marginBottom:20}]}>{tra('percorsoSelezionato.pendenza')}</Text>
-              {/* <VictoryStack theme={VictoryTheme.material} height={80}>
-                {pendenza.map(item => (
-                  <VictoryBar barWidth={30} horizontal data={[item]} />
-                ))}
-              </VictoryStack>
-              <View style={{marginLeft: 50, display: 'flex', height:150}}>
-                <VictoryLegend
-                  theme={VictoryTheme.material}
-                  width={Dimensions.get('window').width}
-                  height={120}
-                  title={tra('percorsoSelezionato.legenda')}
-                  centerTitle
-                  data={pendenza.map(item => ({name: item.x}))}
-                />
-              </View> */}
                 <PieChart
                   data={pendenza}
                   donut
@@ -694,5 +613,15 @@ const styles = StyleSheet.create({
     color:colors.primary,
     width:'100%',
     textAlign:"center"
+  },
+  button: {
+    position: 'absolute',
+    backgroundColor: 'white',
+    //zIndex: 999,
+    bottom: 100,
+    right: 10,
+    borderRadius: 30,
+    padding: 7,
+    elevation: 4,
   }
 });
