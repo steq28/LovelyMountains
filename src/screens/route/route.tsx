@@ -9,6 +9,7 @@ import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BottoneBase} from '../../components/BottoneBase';
 import { useSelector } from 'react-redux';
+import { setRouteStack } from '../../redux/settingsSlice';
 
 export const Route = ({route, navigation}) => {
   const {tra} = useTranslations();
@@ -25,13 +26,17 @@ export const Route = ({route, navigation}) => {
 
   const calculate = async () => {
     setLoading(true);
-    let points = [];
-    routeStack.map(item => {
+    let points = "";
+    let routeAppoggio=routeStack.filter(item => Object.keys(item).length !== 0)
+    routeAppoggio.map((item,index) => {
       if(Object.keys(item).length !== 0)
-        points.push(item.searchCoordinates);
+        points+=item.searchCoordinates[1]+","+item.searchCoordinates[0];
+      if(index !== routeAppoggio.length-1)
+        points+="|";
     });
     const key = '5b3ce3597851110001cf6248f3beea2f6e124872b3e48deff92f1c30';
     const url = `https://api.openrouteservice.org/v2/directions/foot-hiking/geojson`;
+
     const headers = {
       Authorization: key,
       'Content-Type': 'application/json',
@@ -56,10 +61,10 @@ export const Route = ({route, navigation}) => {
         'surface',
       ],
     };
-    fetch(url, {
-      method: 'POST',
-      headers: headers,
-      body: JSON.stringify(body),
+
+    fetch(`https://api.geoapify.com/v1/routing?waypoints=${points}&mode=hike&lang=it&details=instruction_details,route_details,elevation&apiKey=c4e97efe9ddc40039bbf49627c43e976`, {
+      method: 'GET',
+      headers: headers
     }).then(resp => {
       let a = resp.json();
       a.then(data => {
