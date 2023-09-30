@@ -385,7 +385,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             camera.current?.fitBounds(
               [track.properties.waypoints[0].lon,track.properties.waypoints[0].lat],
               [track.properties.waypoints[1].lon,track.properties.waypoints[1].lat],
-              140
+              150
             );
           }}
 
@@ -430,6 +430,8 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                 style={{
                   lineColor: showPendenza ? ["get", "colorPendenza"] : colors.blue,
                   lineWidth: 4,
+                  lineCap: "round",
+                  lineJoin: "round",
                 }}
               />
           </MapboxGL.ShapeSource>
@@ -473,7 +475,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
             camera.current?.fitBounds(
               [track.properties.waypoints[0].lon,track.properties.waypoints[0].lat],
               [track.properties.waypoints[1].lon,track.properties.waypoints[1].lat],
-              140, 1000
+              150, 1000
             );
           }}>
             <Icon
