@@ -138,7 +138,9 @@ export const Mappa = ({route, navigation}) => {
     }
     setDownloadProgress(status.percentage);
   };
-  const errorListener = (offlineRegion, err) => console.log(offlineRegion, err);
+  const errorListener = (offlineRegion, err) =>{
+    console.log("Errore:", offlineRegion, err)
+  };
 
   useEffect(() => {
     if (risultatoSingoloMappa) {
