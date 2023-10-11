@@ -24,6 +24,10 @@ export const Packs = ({navigation}) => {
     const offlinePacks = await MapboxGL.offlineManager.getPacks();
     setPacks(offlinePacks);
   };
+  const deletePack = async pack => {
+    MapboxGL.offlineManager.deletePack(pack.name);
+    getPacks();
+  };
   return (
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps={'always'}
@@ -54,7 +58,20 @@ export const Packs = ({navigation}) => {
             <Text style={styles.titolo}>{'Ste dai un nome'}</Text>
           </View>
           {packs.map((pack, index) => (
-            <Text key={index}>{pack.name}</Text>
+            <View style={{flexDirection: 'row', width: '100%'}}>
+              <Text key={index}>{pack.name}</Text>
+              <Pressable
+                onPress={() => {
+                  deletePack(pack);
+                }}>
+                <Icon
+                  style={{right: 0}}
+                  name="remove-circle"
+                  size={24}
+                  color={'red'}
+                />
+              </Pressable>
+            </View>
           ))}
         </View>
       </SafeAreaView>
