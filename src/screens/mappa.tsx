@@ -131,21 +131,25 @@ export const Mappa = ({route, navigation}) => {
   };
 
   const progressListener = (offlineRegion, status) => {
-    console.log(status.percentage);
     if (status.percentage === 100) {
       setDownloadProgress(0);
       setModalIsVisible(false);
+      setdownloadMap(false);
+    } else {
+      setDownloadProgress(status.percentage);
     }
-    setDownloadProgress(status.percentage);
   };
-  const errorListener = (offlineRegion, err) =>{
-    console.log("Errore:", offlineRegion, err)
+  const errorListener = (offlineRegion, err) => {
+    console.log('Errore:', offlineRegion, err);
   };
 
   useEffect(() => {
     if (risultatoSingoloMappa) {
       camera.current?.setCamera({
-        centerCoordinate: risultatoSingoloMappa.coordinates,
+        centerCoordinate: [
+          parseFloat(risultatoSingoloMappa.coordinates[0]),
+          parseFloat(risultatoSingoloMappa.coordinates[1]),
+        ],
         zoomLevel: 14,
         animationMode: 'flyTo',
       });
@@ -244,8 +248,11 @@ export const Mappa = ({route, navigation}) => {
             <MapboxGL.PointAnnotation
               id="searchResult"
               title="searchResult"
-              coordinate={risultatoSingoloMappa.coordinates}>
-              <Icon name={'location'} size={35} color={'red'} />
+              coordinate={[
+                parseFloat(risultatoSingoloMappa.coordinates[0]),
+                parseFloat(risultatoSingoloMappa.coordinates[1]),
+              ]}>
+              <Icon name={'pin'} size={35} color={'#D83F31'} />
             </MapboxGL.PointAnnotation>
           )}
           <Camera ref={camera} />

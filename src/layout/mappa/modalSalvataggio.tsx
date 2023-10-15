@@ -19,8 +19,8 @@ interface IModalSalvataggio {
   fileName: string;
   downloadProgress: number;
   mapRef: React.RefObject<any>;
-  progressListener: (e: any, a:any) => void;
-  errorListener: (e: any,  a:any) => void;
+  progressListener: (e: any, a: any) => void;
+  errorListener: (e: any, a: any) => void;
 }
 
 export const ModalSalvataggio = ({
@@ -63,8 +63,8 @@ export const ModalSalvataggio = ({
             backgroundColor: colors.secondary,
             padding: 20,
             borderRadius: 10,
-            width:"100%",
-            alignItems:"center"
+            width: '100%',
+            alignItems: 'center',
           }}>
           <Text>Scarica mappa</Text>
           {downloadProgress == 0 && (
@@ -94,8 +94,9 @@ export const ModalSalvataggio = ({
                   disabled={fileName == ''}
                   onPress={async () => {
                     //setModalIsVisible(false)
-                    const visibleBounds = await mapRef.current.getVisibleBounds();
-                    
+                    const visibleBounds =
+                      await mapRef.current.getVisibleBounds();
+
                     await MapboxGL.offlineManager.createPack(
                       {
                         name: fileName,
@@ -113,11 +114,25 @@ export const ModalSalvataggio = ({
               </View>
             </View>
           )}
-          {downloadProgress > 0 &&
-            <View style={{width:"80%", borderColor:colors.primary, borderWidth:1, height:10, borderRadius:200, overflow:"hidden"}}>
-                <View style={{backgroundColor:colors.primary, height:"100%", width:`${downloadProgress}%`}}/>
+          {downloadProgress > 0 && (
+            <View
+              style={{
+                width: '80%',
+                borderColor: colors.primary,
+                borderWidth: 1,
+                height: 10,
+                borderRadius: 200,
+                overflow: 'hidden',
+              }}>
+              <View
+                style={{
+                  backgroundColor: colors.primary,
+                  height: '100%',
+                  width: `${downloadProgress}%`,
+                }}
+              />
             </View>
-          }
+          )}
         </View>
       </View>
     </Modal>

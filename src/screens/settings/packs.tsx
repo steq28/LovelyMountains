@@ -10,6 +10,7 @@ import {Pressable} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Text} from 'react-native';
 import MapboxGL from '@rnmapbox/maps';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export const Packs = ({navigation}) => {
   const {tra} = useTranslations();
@@ -22,10 +23,11 @@ export const Packs = ({navigation}) => {
 
   const getPacks = async () => {
     const offlinePacks = await MapboxGL.offlineManager.getPacks();
+    let c = await MapboxGL.offlineManager.getPack('I');
     setPacks(offlinePacks);
   };
   const deletePack = async pack => {
-    MapboxGL.offlineManager.deletePack(pack.name);
+    await MapboxGL.offlineManager.deletePack(pack.name);
     getPacks();
   };
   return (
@@ -57,22 +59,44 @@ export const Packs = ({navigation}) => {
             </Pressable>
             <Text style={styles.titolo}>{'Ste dai un nome'}</Text>
           </View>
-          {packs.map((pack, index) => (
-            <View style={{flexDirection: 'row', width: '100%'}}>
-              <Text key={index}>{pack.name}</Text>
-              <Pressable
-                onPress={() => {
-                  deletePack(pack);
-                }}>
-                <Icon
-                  style={{right: 0}}
-                  name="remove-circle"
-                  size={24}
-                  color={'red'}
-                />
-              </Pressable>
-            </View>
-          ))}
+          <ScrollView>
+            {packs.map((pack, index) => (
+              <View key={index}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                  }}>
+                  <Text key={index}>{pack.name}</Text>
+                  <Pressable
+                    onPress={() => {
+                      deletePack(pack);
+                    }}>
+                    <Icon
+                      key={index}
+                      style={{right: 0}}
+                      name="remove-circle"
+                      size={24}
+                      color={'red'}
+                    />
+                  </Pressable>
+                </View>
+                {index !== packs.length - 1 && (
+                  <View
+                    style={{
+                      height: 1,
+                      backgroundColor: '#DDD',
+                      marginVertical: 10,
+                      width: '90%',
+                      alignSelf: 'flex-end',
+                    }}
+                  />
+                )}
+              </View>
+            ))}
+          </ScrollView>
         </View>
       </SafeAreaView>
     </KeyboardAwareScrollView>
