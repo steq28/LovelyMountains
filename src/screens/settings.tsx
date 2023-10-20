@@ -21,7 +21,9 @@ export const Settings = ({navigation}) => {
         <CardSetting
           name={tra('impostazioni.gestisci')}
           icon={'map'}
-          onPress={undefined}
+          onPress={() => {
+            navigation.navigate('Packs');
+          }}
         />
         <CardSetting
           name={tra('impostazioni.lingua')}

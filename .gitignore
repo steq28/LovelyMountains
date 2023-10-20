@@ -128,7 +128,6 @@ dist
 
 android/app/build
 yarn.lock
-android/.gradle
 
 # ios/Pods,
 ios/Pods/

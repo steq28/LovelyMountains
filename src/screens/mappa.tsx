@@ -26,7 +26,7 @@ import i18n from '../translations';
 import {setLanguage, setRisultatoSingoloMappa} from '../redux/settingsSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BottoneBase} from '../components/BottoneBase';
-import { ModalSalvataggio } from '../layout/mappa/modalSalvataggio';
+import {ModalSalvataggio} from '../layout/mappa/modalSalvataggio';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoibGlub2RldiIsImEiOiJja3Rpc291amEwdTVtMndvNmw0OHhldHRkIn0.CxsTqIuyhCtGGgLNmVuEAg',
@@ -47,7 +47,7 @@ export const Mappa = ({route, navigation}) => {
   const insets = useSafeAreaInsets();
   const {tra} = useTranslations();
   const dispatch = useDispatch();
-  const {risultatoSingoloMappa} = useSelector(state => state.settings)
+  const {risultatoSingoloMappa} = useSelector(state => state.settings);
 
   const requestLocationPermission = async () => {
     if (Platform.OS == 'android') {
@@ -133,17 +133,23 @@ export const Mappa = ({route, navigation}) => {
   const progressListener = (offlineRegion, status) => {
     if (status.percentage === 100) {
       setDownloadProgress(0);
-      //this.setState({downloadStatus: 0, modalVisibility: false});
+      setModalIsVisible(false);
+      setdownloadMap(false);
+    } else {
+      setDownloadProgress(status.percentage);
     }
-    setDownloadProgress(status.percentage);
-    //this.setState({downloadStatus: status.percentage});
   };
-  const errorListener = (offlineRegion, err) => console.log(offlineRegion, err);
+  const errorListener = (offlineRegion, err) => {
+    console.log('Errore:', offlineRegion, err);
+  };
 
   useEffect(() => {
     if (risultatoSingoloMappa) {
       camera.current?.setCamera({
-        centerCoordinate: risultatoSingoloMappa.coordinates,
+        centerCoordinate: [
+          parseFloat(risultatoSingoloMappa.coordinates[0]),
+          parseFloat(risultatoSingoloMappa.coordinates[1]),
+        ],
         zoomLevel: 14,
         animationMode: 'flyTo',
       });
@@ -161,7 +167,7 @@ export const Mappa = ({route, navigation}) => {
         animationMode: 'flyTo',
       });
 
-    if(Platform.OS === 'android'){
+    if (Platform.OS === 'android') {
       StatusBar.setTranslucent(true);
       StatusBar.setBackgroundColor('transparent');
     }
@@ -175,7 +181,16 @@ export const Mappa = ({route, navigation}) => {
 
   return (
     <PrincipalWrapper fullscreen>
-      <ModalSalvataggio modalIsVisible={modalIsVisible} setFileName={(e) => setFileName(e)} setModalIsVisible={(e) => setModalIsVisible(e)} fileName={fileName} downloadProgress={downloadProgress}/>
+      <ModalSalvataggio
+        modalIsVisible={modalIsVisible}
+        setFileName={e => setFileName(e)}
+        setModalIsVisible={e => setModalIsVisible(e)}
+        fileName={fileName}
+        downloadProgress={downloadProgress}
+        progressListener={progressListener}
+        errorListener={errorListener}
+        mapRef={map}
+      />
       <StatusBar
         barStyle={'dark-content'}
         backgroundColor={'transparent'}
@@ -195,11 +210,15 @@ export const Mappa = ({route, navigation}) => {
           <SearchBox
             hiker={risultatoSingoloMappa ? false : true}
             icon={'prism-outline'}
-            nonHikerIcon='arrow-back-outline'
+            nonHikerIcon="arrow-back-outline"
             placeholder={tra('search.cerca')}
             onPress={() => navigation.navigate('Search')}
             value={risultatoSingoloMappa ? risultatoSingoloMappa.name : ''}
-            onPressIcon={risultatoSingoloMappa ? () => dispatch(setRisultatoSingoloMappa(null)) : null}
+            onPressIcon={
+              risultatoSingoloMappa
+                ? () => dispatch(setRisultatoSingoloMappa(null))
+                : null
+            }
           />
         )}
       </View>
@@ -229,8 +248,11 @@ export const Mappa = ({route, navigation}) => {
             <MapboxGL.PointAnnotation
               id="searchResult"
               title="searchResult"
-              coordinate={risultatoSingoloMappa.coordinates}>
-              <Icon name={'location'} size={35} color={"red"} />
+              coordinate={[
+                parseFloat(risultatoSingoloMappa.coordinates[0]),
+                parseFloat(risultatoSingoloMappa.coordinates[1]),
+              ]}>
+              <Icon name={'pin'} size={35} color={'#D83F31'} />
             </MapboxGL.PointAnnotation>
           )}
           <Camera ref={camera} />
@@ -287,25 +309,41 @@ export const Mappa = ({route, navigation}) => {
           </Pressable>
         )}
         <Pressable
-          style={[styles.button, {bottom: 30, padding:10}]}
+          style={[
+            styles.button,
+            {
+              bottom: 30,
+              padding: 10,
+              backgroundColor: downloadMap ? colors.blue : colors.secondary,
+            },
+          ]}
           onPress={() => {
             setdownloadMap(!downloadMap);
           }}>
           <Icon
             name={'cloud-download-outline'}
-            color={downloadMap ? colors.blue : colors.primary}
+            color={downloadMap ? colors.secondary : colors.primary}
             size={33}
           />
         </Pressable>
         {!downloadMap && (
           <Pressable
-            style={[styles.button, {bottom: 170, padding:10}]}
+            style={[
+              styles.button,
+              {
+                bottom: 170,
+                padding: 10,
+                backgroundColor: showCurrentRadar
+                  ? colors.blue
+                  : colors.secondary,
+              },
+            ]}
             onPress={() => {
               setshowCurrentRadar(!showCurrentRadar);
             }}>
             <Icon
               name={'rainy-outline'}
-              color={showCurrentRadar ? colors.blue : colors.primary}
+              color={showCurrentRadar ? colors.secondary : colors.primary}
               size={33}
             />
           </Pressable>
@@ -324,7 +362,13 @@ export const Mappa = ({route, navigation}) => {
               width: '70%',
               padding: 10,
             }}>
-            <Text style={{textAlign: 'center', fontFamily:"InriaSans-Regular", color:colors.medium, fontSize:14}}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'InriaSans-Regular',
+                color: colors.medium,
+                fontSize: 14,
+              }}>
               {tra('mappa.centraArea')}
             </Text>
           </View>
@@ -343,17 +387,6 @@ export const Mappa = ({route, navigation}) => {
               icon="arrow-down-circle-outline"
               onPress={async () => {
                 setModalIsVisible(true);
-                // await MapboxGL.offlineManager.createPack(
-                //   {
-                //     name: '',
-                //     styleURL: '',
-                //     minZoom: 14,
-                //     maxZoom: 20,
-                //     bounds: visibleBounds,
-                //   },
-                //   this.progressListener,
-                //   this.errorListener,
-                // );
               }}
             />
           </View>
