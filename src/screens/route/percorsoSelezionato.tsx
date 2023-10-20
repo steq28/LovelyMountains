@@ -43,8 +43,8 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   const {tra} = useTranslations();
   const insets = useSafeAreaInsets();
   const [readytToRender, setReadyToRender] = React.useState(false);
-  const [altitude, setAltitude] = React.useState([]);
-  const [pendenza, setPendenza] = React.useState([]);
+  const [altitude, setAltitude] = useState([]);
+  const [pendenza, setPendenza] = useState([]);
   const [pavimentazione, setPavimentazione] = React.useState([]);
   const [pendenzaVisualizzata, setPendenzaVisualizzata] = React.useState({
     descrizione: '',
@@ -54,6 +54,8 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   const [currentLocation, setcurrentLocation] = useState([0, 0]);
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [arrayTracciato, setArrayTracciato] = useState([]);
+  const [showPendenza, setShowPendenza] = useState(false);
 
   const camera = useRef<Camera>(null);
   const colorPalette = [
@@ -113,76 +115,112 @@ export const PercorsoSelezionato = ({route, navigation}) => {
   //     {encoding: FileSystem.EncodingType.UTF8},
   //   );
   // };
+  const percentageToHsl = (percentage, hue0, hue1) => {
+    var hue = (percentage * (hue1 - hue0)) + hue0;
+    return 'hsl(' + hue + ', 90%, 50%)';
+}
 
   const zioPedroCheFunzioneDifficileCheSara = () => {
     let profiloAltrimetrico = [];
-    let pendenza = [];
+    let pendenza = 0;
     let pavimentazione = [];
     let sommaCumulata = 0;
+    let arrayTracciatoTemp=[];
+
+
     if (!readytToRender) {
-      //Profilo altimetrico
-      track.features[0].properties.segments[0].steps.map(item => {
+
+      track.features[0].properties.legs[0].elevation.map(item => {
         profiloAltrimetrico.push({
-          //x: sommaCumulata,
-          //y: track.features[0].geometry.coordinates[item.way_points[1]][2],
-          value: track.features[0].geometry.coordinates[item.way_points[1]][2],
+          value: item
         });
-        sommaCumulata +=
-          Math.round((item.distance / 1000 + Number.EPSILON) * 100) / 100;
-      });
+      })
 
+      track.features[0].properties.legs[0].steps.map((item, index) => {
+        if(track.features[0].geometry.coordinates[0].slice(item.from_index,item.to_index+1).length>1){
+          pendenza = Math.round(((item.elevation_gain/item.distance) + Number.EPSILON) * 100) / 100
+          if(index>0&& track.features[0].properties.legs[0].steps[index-1].to_index!=track.features[0].properties.legs[0].steps[index].from_index)
+            pendenza = Math.round(((track.features[0].properties.legs[0].steps[index-1].elevation_gain/track.features[0].properties.legs[0].steps[index-1].distance) + Number.EPSILON) * 100) / 100
+          arrayTracciatoTemp.push({
+            type: "Feature",
+            properties: {
+              colorPendenza: percentageToHsl(pendenza/0.37, 70, 0),//`rgb(${colorChange(pendenza).red}, ${colorChange(pendenza).green}, 0)`,
+              colorSurface: item.surface=="paved_smooth" ? "yellow" : item.surface=="paved"? "red" : item.surface=="paved_rough"? "green": item.surface=="compacted"? "#3D0C11" : item.surface=="dirt"? "orange" : item.surface=="gravel"? "blue" : item.surface=="path"? "black" : "#000"
+            },
+            geometry: {
+              type: "LineString",
+              coordinates: index > 0 && track.features[0].properties.legs[0].steps[index-1].to_index!=track.features[0].properties.legs[0].steps[index].from_index ? track.features[0].geometry.coordinates[0].slice(track.features[0].properties.legs[0].steps[index-1].to_index,item.to_index+1) : track.features[0].geometry.coordinates[0].slice(item.from_index,item.to_index+1)
+            }
+          })
+        }else{
+          if(track.features[0].properties.legs[0].steps[index-1].to_index!=item.to_index){
+            pendenza = Math.round(((track.features[0].properties.legs[0].steps[index-1].elevation_gain/track.features[0].properties.legs[0].steps[index-1].distance) + Number.EPSILON) * 100) / 100
+            arrayTracciatoTemp.push({
+              type: "Feature",
+              properties: {
+                colorPendenza: percentageToHsl(pendenza/0.4, 70, 0),//`rgb(${colorChange(pendenza).red}, ${colorChange(pendenza).green}, 0)`,
+                colorSurface: item.surface=="paved_smooth" ? "yellow" : item.surface=="paved"? "red" : item.surface=="paved_rough"? "green": item.surface=="compacted"? "#3D0C11" : item.surface=="dirt"? "orange" : item.surface=="gravel"? "blue" : item.surface=="path"? "black" : "#000"
+              },
+              geometry: {
+                type: "LineString",
+                coordinates: track.features[0].geometry.coordinates[0].slice(track.features[0].properties.legs[0].steps[index-1].to_index)
+              }
+            })
+          }
+        }
+      })
+
+      setArrayTracciato(arrayTracciatoTemp)
       // Pendenza
-      let tot = 0;
-      let pendenzaTemp = {descrizione: '', value: 0};
-      track.features[0].properties.extras.steepness.summary.map(item => {
-        tot += item.distance;
-      });
-      track.features[0].properties.extras.steepness.summary.map(
-        (item, index) => {
-          pendenza.push({
-            x: steepnessDictionary(item.value),
-            y:
-              Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
-              100,
-          });
-          // let valore =
-          //   Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
-          //   100;
-          // if (pendenzaTemp.value < valore)
-          //   pendenzaTemp = {
-          //     descrizione: steepnessDictionary(item.value),
-          //     value: valore,
-          //   };
+      // let tot = 0;
+      // let pendenzaTemp = {descrizione: '', value: 0};
+      // track.features[0].properties.extras.steepness.summary.map(item => {
+      //   tot += item.distance;
+      // });
+      // track.features[0].properties.extras.steepness.summary.map(
+      //   (item, index) => {
+      //     pendenza.push({
+      //       x: steepnessDictionary(item.value),
+      //       y:
+      //         Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
+      //         100,
+      //     });
+      //     // let valore =
+      //     //   Math.round(((item.distance * 100) / tot + Number.EPSILON) * 100) /
+      //     //   100;
+      //     // if (pendenzaTemp.value < valore)
+      //     //   pendenzaTemp = {
+      //     //     descrizione: steepnessDictionary(item.value),
+      //     //     value: valore,
+      //     //   };
 
-          // pendenza.push({
-          //   //x: steepnessDictionary(item.value),
-          //   descrizione: steepnessDictionary(item.value),
-          //   color: colorPalette[index],
-          //   value: valore,
-          // });
-        },
-      );
-      // setPendenzaVisualizzata(pendenzaTemp);
-      //Pavimentazione
-      let tot2 = 0;
-      track.features[0].properties.extras.surface.summary.map(item => {
-        tot2 += item.distance;
-      });
-      track.features[0].properties.extras.surface.summary.map(item => {
-        pavimentazione.push({
-          x:
-            surfaceDictionary(item.value) +
-            ':  ' +
-            Math.round((item.distance / 1000 + Number.EPSILON) * 100) / 100 +
-            'Km',
-          y:
-            Math.round(((item.distance * 100) / tot2 + Number.EPSILON) * 100) /
-            100,
-        });
-      });
+      //     // pendenza.push({
+      //     //   //x: steepnessDictionary(item.value),
+      //     //   descrizione: steepnessDictionary(item.value),setAltitude
+      //     //   color: colorPalette[index],
+      //     //   value: valore,
+      //     // });
+      //   },
+      // );
+      // // setPendenzaVisualizzata(pendenzaTemp);
+      // //Pavimentazione
+      // let tot2 = 0;
+      // track.features[0].properties.extras.surface.summary.map(item => {
+      //   tot2 += item.distance;
+      // });
+      // track.features[0].properties.extras.surface.summary.map(item => {
+      //   pavimentazione.push({
+      //     x:
+      //       surfaceDictionary(item.value) +
+      //       ':  ' +
+      //       Math.round((item.distance / 1000 + Number.EPSILON) * 100) / 100 +
+      //       'Km',
+      //     y:
+      //       Math.round(((item.distance * 100) / tot2 + Number.EPSILON) * 100) /
+      //       100,
+      //   });
+      // });
       setReadyToRender(true);
-      setPendenza(pendenza);
-      setPavimentazione(pavimentazione);
       setAltitude(profiloAltrimetrico);
     }
   };
@@ -332,7 +370,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
 
         </View>
       </View>
-      <View style={{height: "85%"}}>
+      <View style={{height: "90%"}}>
         <MapboxGL.MapView
           ref={map}
           style={{flex: 1}}
@@ -345,11 +383,12 @@ export const PercorsoSelezionato = ({route, navigation}) => {
           logoEnabled={false}
           onDidFinishLoadingMap={() => {
             camera.current?.fitBounds(
-              track.bbox.slice(0, 2),
-              track.bbox.slice(3, 5),
-              130
+              [track.properties.waypoints[0].lon,track.properties.waypoints[0].lat],
+              [track.properties.waypoints[1].lon,track.properties.waypoints[1].lat],
+              150
             );
           }}
+
           
           //compassFadeWhenNorth
           attributionEnabled={false}
@@ -367,20 +406,39 @@ export const PercorsoSelezionato = ({route, navigation}) => {
 
           <Camera ref={camera} />
 
+          {/* {arrayTracciato?.map((item, index)=>(
+            <MapboxGL.ShapeSource
+              id={`hike`}
+              shape={item}
+            >
+              <MapboxGL.LineLayer
+                id={`linelayer${index}`}
+                style={{lineColor: item.color, lineWidth: 4}}
+              />
+            </MapboxGL.ShapeSource>
+            ))
+          } */}
           <MapboxGL.ShapeSource
-            id={'hike'}
-            shape={track.features[0].geometry}
-          >
-            <MapboxGL.LineLayer
-              id="linelayer1"
-              style={{lineColor: '#007AFF', lineWidth: 4}}
-            />
+              id={`hike`}
+              shape={{
+                type: "FeatureCollection",
+                features: arrayTracciato,
+              }}
+            >
+              <MapboxGL.LineLayer
+                id={`linelayer`}
+                style={{
+                  lineColor: showPendenza ? ["get", "colorPendenza"] : colors.blue,
+                  lineWidth: 4,
+                  lineCap: "round",
+                  lineJoin: "round",
+                }}
+              />
           </MapboxGL.ShapeSource>
-
           <MapboxGL.PointAnnotation
             id="searchResult"
             title="searchResult"
-            coordinate={track.features[0].geometry.coordinates[0]}>
+            coordinate={[track.properties.waypoints[0].lon,track.properties.waypoints[0].lat]}>
             <View style={{backgroundColor:colors.secondary, borderRadius:99999, padding:3, borderColor:colors.primary, borderWidth:2}}>
               <Icon name="location" size={14} color={colors.primary} />
             </View>
@@ -389,7 +447,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
           <MapboxGL.PointAnnotation
             id="searchResult"
             title="searchResult"
-            coordinate={track.features[0].geometry.coordinates.slice(-1)[0]}
+            coordinate={[track.properties.waypoints[1].lon,track.properties.waypoints[1].lat]}
           >
             <View style={{backgroundColor:colors.secondary, borderRadius:99999, padding:4, borderColor:colors.primary, borderWidth:2}}>
               <Icon name="flag" size={13} color={colors.primary} />
@@ -398,13 +456,26 @@ export const PercorsoSelezionato = ({route, navigation}) => {
 
         </MapboxGL.MapView>
         <Pressable
-          style={[styles.button, {bottom: 170, padding:9.5}]}
+          style={[styles.button, {top: Dimensions.get('screen').height * 0.66 - 130, padding:9.5}]}
+          disabled={loading}
+          onPress={() => {
+            setShowPendenza(!showPendenza)
+          }}>
+            <Icon
+              name={'trending-up-outline'}
+              color={showPendenza ? colors.blue : colors.primary}
+              size={30}
+            />
+        </Pressable>
+
+        <Pressable
+          style={[styles.button, {top: Dimensions.get('screen').height * 0.66 - 65, padding:9.5}]}
           disabled={loading}
           onPress={() => {
             camera.current?.fitBounds(
-              track.bbox.slice(0, 2),
-              track.bbox.slice(3, 5),
-              130, 1000
+              [track.properties.waypoints[0].lon,track.properties.waypoints[0].lat],
+              [track.properties.waypoints[1].lon,track.properties.waypoints[1].lat],
+              150, 1000
             );
           }}>
             <Icon
@@ -461,7 +532,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               <Text style={styles.subText}>
                 {(
                   Math.round(
-                    (track.features[0].properties.summary.distance / 1000 +
+                    (track.features[0].properties.distance / 1000 +
                       Number.EPSILON) *
                       100,
                   ) / 100
@@ -476,10 +547,10 @@ export const PercorsoSelezionato = ({route, navigation}) => {
               </Text>
               <Text style={styles.subText}>
                 {
-                  Math.floor(track.features[0].properties.summary.duration / 3600 ) > 0 &&
-                  Math.floor(track.features[0].properties.summary.duration / 3600 )+ "H " 
+                  Math.floor(track.features[0].properties.time / 3600 ) > 0 &&
+                  Math.floor(track.features[0].properties.time / 3600 )+ "H " 
                 }
-                {Math.floor(((track.features[0].properties.summary.duration / 3600 ) - Math.floor(track.features[0].properties.summary.duration / 3600 ))*60)}
+                {Math.floor(((track.features[0].properties.time / 3600 ) - Math.floor(track.features[0].properties.time / 3600 ))*60)}
                 min
               </Text>
             </View>
@@ -489,9 +560,9 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                 {tra('percorsoSelezionato.difficolta')}
               </Text>
               <Text numberOfLines={2} style={styles.subText}>
-                {getTrailDifficulty(
+                {/* {getTrailDifficulty(
                   track.features[0].properties.extras.traildifficulty.summary,
-                )}
+                )} */}
               </Text>
             </View>
           </View>
@@ -586,7 +657,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                   // }}
                 />
               </View>
-
+{/* 
               <View style={styles.wrapperSection}>
                 <Text style={[styles.sectionText]}>
                   {tra('percorsoSelezionato.pendenza')}
@@ -605,7 +676,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                     centerTitle
                     data={pendenza.map(item => ({name: item.x}))}
                   />
-                </View>
+                </View> */}
                 {/* <PieChart
                   data={pendenza}
                   donut
@@ -645,7 +716,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                     );
                   }}
                 /> */}
-              </View>
+              {/* </View>
 
               <View style={[styles.wrapperSection, {marginBottom: 40}]}>
                 <Text style={styles.sectionText}>
@@ -666,7 +737,7 @@ export const PercorsoSelezionato = ({route, navigation}) => {
                     data={pavimentazione.map(item => ({name: item.x}))}
                   />
                 </View>
-              </View>
+              </View> */}
             </View>
           )}
         </BottomSheetScrollView>
@@ -702,7 +773,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'white',
     //zIndex: 999,
-    bottom: 100,
+    top: Dimensions.get('screen').height * 0.66,
     right: 10,
     borderRadius: 30,
     padding: 7,
