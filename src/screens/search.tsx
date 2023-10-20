@@ -108,6 +108,7 @@ export const Search = ({route, navigation}) => {
                               searchAddress:item.display_address,
                               searchType:item.type,
                               searchCoordinates: [item.lon, item.lat],
+                              visible:true
                             }
                           }  
                         ))
@@ -159,6 +160,7 @@ export const Search = ({route, navigation}) => {
                               searchAddress: item.searchAddress,
                               searchCoordinates: item.searchCoordinates,
                               searchType:item.searchType,
+                              visible:true
                             }
                           }  
                         ))

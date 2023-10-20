@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const settingsSlice = createSlice({
   name: 'settings',
   initialState: {
-    routeStack: [{},{},{},{},{}],
+    routeStack: [{visible:true},{visible:false},{visible:false},{visible:false},{visible:true}],
     lingua: "it",
     percorsiOffline: [],
     ricercaCorrente: "",
@@ -30,7 +30,7 @@ export const settingsSlice = createSlice({
       state.risultatoSingoloMappa = action.payload;
     },
     resetState: (state) => {
-        state.routeStack = [{},{},{},{},{}];
+        state.routeStack = [{visible:true},{visible:false},{visible:false},{visible:false},{visible:true}],
         state.ricercaCorrente = "";
         state.risultatoSingoloMappa = null
     } 

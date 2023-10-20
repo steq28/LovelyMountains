@@ -19,22 +19,11 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {PrincipalWrapper} from '../../components/PrincipalWrapper';
 import MapboxGL, {Camera} from '@rnmapbox/maps';
 import {BottoneBase} from '../../components/BottoneBase';
-import {
-  VictoryArea,
-  VictoryBar,
-  VictoryChart,
-  VictoryLegend,
-  VictoryStack,
-  VictoryTheme,
-} from 'victory-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import BottomSheet, {
-  BottomSheetScrollView,
-  BottomSheetView,
+  BottomSheetScrollView
 } from '@gorhom/bottom-sheet';
-import {LineChart, PieChart} from 'react-native-gifted-charts';
+import {LineChart} from 'react-native-gifted-charts';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {inlineStyles} from 'react-native-svg';
 import SystemSetting from 'react-native-system-setting';
 import GetLocation from 'react-native-get-location';
 
