@@ -15,9 +15,10 @@ interface ISearchBox {
   callback?: () => string | null;
   onPress?: () => void | null;
   onPressIcon?: () => void | null;
-  small?: boolean,
-  value?: string,
-  setValue?: (e:string) => void
+  small?: boolean;
+  value?: string;
+  pickEnabled?: boolean;
+  setValue?: (e: string) => void;
 }
 
 export const SearchBox: FC<ISearchBox> = ({
@@ -29,8 +30,9 @@ export const SearchBox: FC<ISearchBox> = ({
   onPressIcon = null,
   callback = null,
   small = false,
-  value = "",
-  setValue = () => {}
+  value = '',
+  pickEnabled = false,
+  setValue = () => {},
 }) => {
   const width = Dimensions.get('window').width - 60;
   const navigation = useNavigation<any>();
@@ -49,14 +51,19 @@ export const SearchBox: FC<ISearchBox> = ({
 
   return (
     <>
-      {!small ? <BoxShadow setting={shadowOpt}>
+      {!small ? (
+        <BoxShadow setting={shadowOpt}>
           <View style={styles.wrapper}>
             <Pressable
-              onPress={onPressIcon ? () => onPressIcon() : () => {
-                Keyboard.dismiss();
-                navigation.goBack();
-                setValue("")
-              }}
+              onPress={
+                onPressIcon
+                  ? () => onPressIcon()
+                  : () => {
+                      Keyboard.dismiss();
+                      navigation.goBack();
+                      setValue('');
+                    }
+              }
               style={{width: '10%'}}>
               {!onPress && <Icon name={icon} color={colors.medium} size={25} />}
               {onPress && !hiker && (
@@ -71,58 +78,78 @@ export const SearchBox: FC<ISearchBox> = ({
               )}
             </Pressable>
             <TextInput
-              onChangeText={e => {callback(e); setValue(e)}}
+              onChangeText={e => {
+                callback(e);
+                setValue(e);
+              }}
               autoFocus={onPress ? false : true}
               focusable={onPress ? false : true}
               placeholder={placeholder}
               placeholderTextColor={colors.light}
-              style={[styles.textInput, value=='' && {fontFamily:'InriaSans-Regular',}]}
+              style={[
+                styles.textInput,
+                value == '' && {fontFamily: 'InriaSans-Regular'},
+              ]}
               value={value}
             />
           </View>
           {onPress && (
             <Pressable
-              style={{width: onPressIcon ? '85%' : '100%', height: '100%', position: 'absolute', left: onPressIcon ? 50 : 0}}
+              style={{
+                width: onPressIcon ? '85%' : '100%',
+                height: '100%',
+                position: 'absolute',
+                left: onPressIcon ? 50 : 0,
+              }}
               onPress={onPress}
             />
           )}
         </BoxShadow>
-        :
+      ) : (
         <>
-          <View style={[styles.wrapper, {borderRadius:8, height:45, elevation:2}]}>
-              <Pressable
-                onPress={() => {
-                  Keyboard.dismiss();
-                  navigation.goBack();
-                }}
-                style={{width: '10%'}}>
-                {!onPress && icon && <Icon name={icon} color={colors.medium} size={25} />}
-                {onPress && icon && (
-                  <LocalSvg
-                    asset={require('../../assets/images/svg/logo-mountains-medium.svg')}
-                    height={'100%'}
-                    width={'100%'}
-                  />
-                )}
-              </Pressable>
-              <TextInput
-                onChangeText={e => {callback(e); setValue(e)}}
-                autoFocus={onPress ? false : true}
-                focusable={onPress ? false : true}
-                placeholder={placeholder}
-                placeholderTextColor={colors.light}
-                style={styles.textInput}
-                value={value}
-              />
-            </View>
-            {onPress && (
-              <Pressable
-                style={{width: '100%', height: '100%', position: 'absolute'}}
-                onPress={onPress}
-              />
+          <View
+            style={[
+              styles.wrapper,
+              {borderRadius: 8, height: 45, elevation: 2},
+            ]}>
+            <Pressable
+              onPress={() => {
+                Keyboard.dismiss();
+                navigation.goBack();
+              }}
+              style={{width: '10%'}}>
+              {!onPress && icon && (
+                <Icon name={icon} color={colors.medium} size={25} />
+              )}
+              {onPress && icon && (
+                <LocalSvg
+                  asset={require('../../assets/images/svg/logo-mountains-medium.svg')}
+                  height={'100%'}
+                  width={'100%'}
+                />
+              )}
+            </Pressable>
+            <TextInput
+              onChangeText={e => {
+                callback(e);
+                setValue(e);
+              }}
+              autoFocus={onPress ? false : true}
+              focusable={onPress ? false : true}
+              placeholder={placeholder}
+              placeholderTextColor={colors.light}
+              style={styles.textInput}
+              value={value}
+            />
+          </View>
+          {onPress && (
+            <Pressable
+              style={{width: '100%', height: '100%', position: 'absolute'}}
+              onPress={onPress}
+            />
           )}
         </>
-      }
+      )}
     </>
   );
 };

@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   ToastAndroid,
   Text,
+  Dimensions,
 } from 'react-native';
 import GetLocation from 'react-native-get-location';
 import MapboxGL, {Camera, PointAnnotation} from '@rnmapbox/maps';
@@ -35,6 +36,7 @@ MapboxGL.setAccessToken(
 export const Mappa = ({route, navigation}) => {
   const [currentLocation, setcurrentLocation] = useState([0, 0]);
   const [hasLocationPermissions, sethasLocationPermissions] = useState(false);
+  const [pickEnabled, setpickEnabled] = useState(true);
   const [showCurrentRadar, setshowCurrentRadar] = useState(false);
   const [downloadMap, setdownloadMap] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -206,7 +208,7 @@ export const Mappa = ({route, navigation}) => {
           paddingTop:
             Platform.OS === 'android' ? StatusBar.currentHeight : insets.top,
         }}>
-        {!downloadMap && (
+        {!downloadMap && !pickEnabled && (
           <SearchBox
             hiker={risultatoSingoloMappa ? false : true}
             icon={'prism-outline'}
@@ -266,7 +268,7 @@ export const Mappa = ({route, navigation}) => {
             </MapboxGL.RasterSource>
           )}
         </MapboxGL.MapView>
-        {!downloadMap && (
+        {!downloadMap && !pickEnabled && (
           <Pressable
             style={styles.button}
             disabled={loading}
@@ -308,25 +310,27 @@ export const Mappa = ({route, navigation}) => {
             )}
           </Pressable>
         )}
-        <Pressable
-          style={[
-            styles.button,
-            {
-              bottom: 30,
-              padding: 10,
-              backgroundColor: downloadMap ? colors.blue : colors.secondary,
-            },
-          ]}
-          onPress={() => {
-            setdownloadMap(!downloadMap);
-          }}>
-          <Icon
-            name={'cloud-download-outline'}
-            color={downloadMap ? colors.secondary : colors.primary}
-            size={33}
-          />
-        </Pressable>
-        {!downloadMap && (
+        {!pickEnabled && (
+          <Pressable
+            style={[
+              styles.button,
+              {
+                bottom: 30,
+                padding: 10,
+                backgroundColor: downloadMap ? colors.blue : colors.secondary,
+              },
+            ]}
+            onPress={() => {
+              setdownloadMap(!downloadMap);
+            }}>
+            <Icon
+              name={'cloud-download-outline'}
+              color={downloadMap ? colors.secondary : colors.primary}
+              size={33}
+            />
+          </Pressable>
+        )}
+        {!downloadMap && !pickEnabled && (
           <Pressable
             style={[
               styles.button,
@@ -388,6 +392,57 @@ export const Mappa = ({route, navigation}) => {
               onPress={async () => {
                 setModalIsVisible(true);
               }}
+            />
+          </View>
+        )}
+        {pickEnabled && (
+          <View
+            style={{
+              zIndex: 999,
+              position: 'absolute',
+              flex: 1,
+              top: Dimensions.get('window').height / 2 - 15,
+              left: Dimensions.get('window').width / 2 - 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Icon name="location" size={30} color={'#333'} />
+          </View>
+        )}
+        {pickEnabled && (
+          <View
+            style={{
+              position: 'absolute',
+              zIndex: 999,
+              bottom: 10,
+              backgroundColor: colors.secondary,
+              borderColor: colors.veryLight,
+              borderWidth: 1,
+              borderRadius: 10,
+              alignSelf: 'center',
+              width: '70%',
+              padding: 10,
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                fontFamily: 'InriaSans-Regular',
+                color: colors.medium,
+                fontSize: 14,
+                marginBottom: 10,
+              }}>
+              Center the screen at the right coordinates and press the button
+              below
+            </Text>
+            <BottoneBase
+              onPress={async () => {
+                const coordinates = await map.current.getCoordinateFromView([
+                  Dimensions.get('window').height / 2,
+                  Dimensions.get('window').width / 2,
+                ]);
+                console.log(coordinates);
+              }}
+              text={'Press me'}
             />
           </View>
         )}
