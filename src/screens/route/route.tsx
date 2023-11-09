@@ -8,14 +8,14 @@ import {SearchBox} from '../../components/SearchBox';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {BottoneBase} from '../../components/BottoneBase';
-import { useSelector } from 'react-redux';
-import { setRouteStack } from '../../redux/settingsSlice';
+import {useSelector} from 'react-redux';
+import {setRouteStack} from '../../redux/settingsSlice';
 
 export const Route = ({route, navigation}) => {
   const {tra} = useTranslations();
   const insets = useSafeAreaInsets();
-  
-  const {routeStack} = useSelector(state => state.settings)
+
+  const {routeStack} = useSelector(state => state.settings);
   const [loading, setLoading] = useState(false);
 
   //const [searchState, setSearchState] = useState([]);
@@ -26,53 +26,59 @@ export const Route = ({route, navigation}) => {
 
   const calculate = async () => {
     setLoading(true);
-    let points = "";
-    let routeAppoggio=routeStack.filter(item => Object.keys(item).length !== 0)
-    routeAppoggio.map((item,index) => {
-      if(Object.keys(item).length !== 0)
-        points+=item.searchCoordinates[1]+","+item.searchCoordinates[0];
-      if(index !== routeAppoggio.length-1)
-        points+="|";
+    let points = '';
+    let routeAppoggio = routeStack.filter(
+      item => Object.keys(item).length !== 0,
+    );
+    routeAppoggio.map((item, index) => {
+      if (Object.keys(item).length !== 0)
+        points += item.searchCoordinates[1] + ',' + item.searchCoordinates[0];
+      if (index !== routeAppoggio.length - 1) points += '|';
     });
 
     const headers = {
       'Content-Type': 'application/json',
     };
 
-    setTimeout(()=>{
+    setTimeout(() => {
       setLoading(false);
-    }, 10000)
+    }, 10000);
 
-    fetch(`https://api.geoapify.com/v1/routing?waypoints=${points}&mode=hike&lang=it&details=instruction_details,route_details,elevation&apiKey=c4e97efe9ddc40039bbf49627c43e976`, {
-      method: 'GET',
-      headers: headers
-    }).then(resp => {
-      let a = resp.json();
-      a.then(data => {
-        setLoading(false);
-        navigation.navigate('PercorsoSelezionato',
-        {
-          track: data,
-          routeStack: routeStack.filter(item => Object.keys(item).length !== 0)
-        }
-        );
-      });
-      // this.setState(
-      //   {
-      //     route: resp.data,
-      //   },
-      //   () => {
-      //     //onsole.log(resp.data.features[0].properties.extras.steepness);
-      //     this.steepnessHanlder(
-      //       resp.data.features[0].properties.extras.steepness.summary
-      //     );
-      //     this.elevationCalc(resp.data.features[0].geometry.coordinates);
-      //     this.surfaceCalc(
-      //       resp.data.features[0].properties.extras.surface.summary
-      //     );
-      //   }
-      // );
-    }).catch(err => (console.log("Errrrrore", err)));
+    fetch(
+      `https://api.geoapify.com/v1/routing?waypoints=${points}&mode=hike&lang=it&details=instruction_details,route_details,elevation&apiKey=c4e97efe9ddc40039bbf49627c43e976`,
+      {
+        method: 'GET',
+        headers: headers,
+      },
+    )
+      .then(resp => {
+        let a = resp.json();
+        a.then(data => {
+          setLoading(false);
+          navigation.navigate('PercorsoSelezionato', {
+            track: data,
+            routeStack: routeStack.filter(
+              item => Object.keys(item).length !== 0,
+            ),
+          });
+        });
+        // this.setState(
+        //   {
+        //     route: resp.data,
+        //   },
+        //   () => {
+        //     //onsole.log(resp.data.features[0].properties.extras.steepness);
+        //     this.steepnessHanlder(
+        //       resp.data.features[0].properties.extras.steepness.summary
+        //     );
+        //     this.elevationCalc(resp.data.features[0].geometry.coordinates);
+        //     this.surfaceCalc(
+        //       resp.data.features[0].properties.extras.surface.summary
+        //     );
+        //   }
+        // );
+      })
+      .catch(err => console.log('Errrrrore', err));
   };
   const steepnessDictionary = item => {
     switch (item) {
@@ -268,8 +274,13 @@ export const Route = ({route, navigation}) => {
               hiker={false}
               nonHikerIcon={'golf-outline'}
               icon={'arrow-back-outline'}
-              placeholder={tra("route.partenza")}
-              value={Object.keys(routeStack[0]).length !== 0 ? routeStack[0].searchName : ""}
+              placeholder={tra('route.partenza')}
+              value={
+                Object.keys(routeStack[0]).length !== 0
+                  ? routeStack[0].searchName
+                  : ''
+              }
+              pickEnabled={true}
               callback={queryPlaces}
               onPress={() =>
                 navigation.navigate('Search', {
@@ -292,21 +303,28 @@ export const Route = ({route, navigation}) => {
               hiker={false}
               nonHikerIcon={'pin-outline'}
               icon={'arrow-back-outline'}
-              placeholder={tra("route.arrivo")}
-              value={Object.keys(routeStack[1]).length !== 0 ? routeStack[1].searchName : ""}
-              callback={queryPlaces}
-              onPress={() =>{
-                  navigation.navigate('Search', {
-                    pickEnabled: true,
-                    fromRoute: true,
-                    searchInput: 1,
-                  })
-                }
+              placeholder={tra('route.arrivo')}
+              value={
+                Object.keys(routeStack[1]).length !== 0
+                  ? routeStack[1].searchName
+                  : ''
               }
+              callback={queryPlaces}
+              onPress={() => {
+                navigation.navigate('Search', {
+                  pickEnabled: true,
+                  fromRoute: true,
+                  searchInput: 1,
+                });
+              }}
             />
           </View>
           {/* TODO fix language */}
-          <BottoneBase text={tra("route.calcolaPercorso")} isLoading={loading} onPress={() => calculate()} />
+          <BottoneBase
+            text={tra('route.calcolaPercorso')}
+            isLoading={loading}
+            onPress={() => calculate()}
+          />
         </SafeAreaView>
       </KeyboardAwareScrollView>
       <Pressable
